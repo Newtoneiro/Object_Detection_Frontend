@@ -1,6 +1,6 @@
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { Camera, CameraType } from "expo-camera";
 import { useState, useEffect } from "react";
+import { Camera, CameraType } from "expo-camera";
 
 export default function CameraPage() {
   const [type, setType] = useState(CameraType.back);

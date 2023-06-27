@@ -1,16 +1,5 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Text, Button } from "react-native";
-
-type RootStackParamList = {
-  LandingPage: undefined;
-  CameraPage: undefined;
-};
-
-type Props = NativeStackScreenProps<
-  RootStackParamList,
-  "LandingPage",
-  "CameraPage"
->;
+import { Props } from "./LandingPage.types";
 
 export default function LandingPage({ navigation }: Props) {
   return (

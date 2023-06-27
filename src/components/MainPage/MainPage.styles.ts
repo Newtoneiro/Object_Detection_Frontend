@@ -1,7 +1,7 @@
 import config from "../../config";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const mainPageStyles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
@@ -14,4 +14,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default mainPageStyles;

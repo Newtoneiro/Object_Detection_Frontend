@@ -1,21 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface IAuthState {
-  expiresAt: string | null;
-  userInfo: {};
-}
-
-interface IAuthContext {
-  authState: IAuthState;
-  setAuthInfo: (authState: IAuthState) => void;
-  isAuthenticated: () => boolean;
-  logout: () => void;
-}
-
-interface IProps {
-  children: string | JSX.Element | JSX.Element[] | "() => JSX.Element";
-}
+import { IAuthContext, IAuthState, IProps } from "./AuthContext.types";
 
 const defaultAuthContext: IAuthContext = {
   authState: {
@@ -58,7 +44,7 @@ const AuthProvider = ({ children }: IProps) => {
   };
 
   const isAuthenticated = () => {
-    return true;
+    return false;
     if (!authState || !authState.expiresAt) {
       return false;
     }

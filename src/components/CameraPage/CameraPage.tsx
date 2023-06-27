@@ -1,6 +1,6 @@
-import { View, TouchableOpacity, Text } from "react-native";
-import { useState, useEffect } from "react";
 import { Camera, CameraType } from "expo-camera";
+import { Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
 
 import { cameraPageStyles } from "./CameraPage.styles";
 

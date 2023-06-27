@@ -1,7 +1,7 @@
 import config from "../../config";
 import { StyleSheet } from "react-native";
 
-const mainPageStyles = StyleSheet.create({
+const navigatorStyles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
@@ -14,4 +14,4 @@ const mainPageStyles = StyleSheet.create({
   },
 });
 
-export default mainPageStyles;
+export default navigatorStyles;

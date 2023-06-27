@@ -1,7 +1,8 @@
-import { IAuthContext, IAuthState, IProps } from "./AuthContext.types";
+import { IAuthContext, IAuthState } from "./AuthContext.types";
 import { createContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IProps } from "../../config.types";
 
 const defaultAuthContext: IAuthContext = {
   authState: {

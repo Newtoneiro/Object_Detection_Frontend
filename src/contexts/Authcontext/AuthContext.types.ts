@@ -9,7 +9,3 @@ export interface IAuthContext {
   isAuthenticated: () => boolean;
   logout: () => void;
 }
-
-export interface IProps {
-  children: string | JSX.Element | JSX.Element[] | "() => JSX.Element";
-}

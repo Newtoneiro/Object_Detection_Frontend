@@ -1,11 +1,11 @@
 import { AuthContext } from "../../contexts/Authcontext/AuthContext";
+import LoginPage from "../LoginPage/LoginPage";
 import Navigator from "../Navigator/Navigator";
-import { Text } from "react-native";
 import { useContext } from "react";
 
 const AuthGate = () => {
   const AuthCon = useContext(AuthContext);
-  return AuthCon.isAuthenticated() ? <Navigator /> : <Text>No</Text>;
+  return AuthCon.isAuthenticated() ? <Navigator /> : <LoginPage />;
 };
 
 export default AuthGate;

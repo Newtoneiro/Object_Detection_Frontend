@@ -11,6 +11,8 @@ const defaultUserInputs = {
 
 const defaultLoginContext: ILoginContext = {
   userInputs: defaultUserInputs,
+  isLoginMode: false,
+  switchLoginMode: () => {},
   setEmail: (_) => {},
   setPassword: (_) => {},
   setConfirmPassword: (_) => {},
@@ -19,7 +21,12 @@ const defaultLoginContext: ILoginContext = {
 const LoginContext = createContext<ILoginContext>(defaultLoginContext);
 
 const LoginProvider = ({ children }: IProps) => {
+  const [isLoginMode, setIsLoginMode] = useState<Boolean>(true);
   const [userInputs, setUserInputs] = useState<IUserInputs>(defaultUserInputs);
+
+  const switchLoginMode = () => {
+    setIsLoginMode((prev) => !prev);
+  };
 
   const setEmail = (text: string) => {
     setUserInputs((userInputs) => {
@@ -53,7 +60,14 @@ const LoginProvider = ({ children }: IProps) => {
 
   return (
     <LoginContext.Provider
-      value={{ userInputs, setEmail, setPassword, setConfirmPassword }}
+      value={{
+        userInputs,
+        isLoginMode,
+        switchLoginMode,
+        setEmail,
+        setPassword,
+        setConfirmPassword,
+      }}
     >
       {children}
     </LoginContext.Provider>

@@ -1,6 +1,6 @@
 import { Button, Text } from "react-native";
 
-import { Props } from "./LandingPage.types";
+import { Props } from "../Navigator/Navigator.types";
 
 export default function LandingPage({ navigation }: Props) {
   return (

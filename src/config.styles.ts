@@ -1,10 +1,10 @@
 const stylesConfig = {
   colors: {
-    default_color_1: "#082D0F",
-    default_color_2: "#9DC5BB",
-    default_color_3: "#17B890",
-    default_color_4: "#5E807F",
-    default_background: "#DEE5E5",
+    default_color_1: "#606c38",
+    default_color_2: "#283618",
+    default_color_3: "#dda15e",
+    default_color_4: "#bc6c25",
+    default_background: "#f1f1f1",
   },
 };
 

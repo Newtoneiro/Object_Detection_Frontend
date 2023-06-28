@@ -1,0 +1,62 @@
+import { StyleSheet } from "react-native";
+import stylesConfig from "../../config.styles";
+
+export const welcomePageStyles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: "100%",
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    backgroundColor: stylesConfig.colors.default_background,
+    paddingVertical: 20,
+  },
+  title: {
+    width: "100%",
+    fontSize: 27,
+    color: stylesConfig.colors.default_color_2,
+    fontWeight: "600",
+    textAlign: "left",
+  },
+  text: {
+    width: "100%",
+    fontSize: 20,
+    color: stylesConfig.colors.default_color_1,
+    fontWeight: "600",
+    textAlign: "justify",
+    marginBottom: 60,
+  },
+  backgroundImage: {
+    padding: 20,
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  button: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
+    marginTop: 10,
+    height: 50,
+    borderRadius: 2,
+    backgroundColor: stylesConfig.colors.default_color_3,
+    elevation: 10,
+  },
+  buttonText: {
+    alignContent: "center",
+    width: "100%",
+    fontSize: 27,
+    color: stylesConfig.colors.default_background,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+});

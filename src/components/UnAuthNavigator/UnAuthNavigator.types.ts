@@ -1,12 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
-  LandingPage: undefined;
-  CameraPage: undefined;
+  WelcomePage: undefined;
+  LoginPage: undefined;
 };
 
-export type Props = NativeStackScreenProps<
+export type UnAuthProps = NativeStackScreenProps<
   RootStackParamList,
-  "LandingPage",
-  "CameraPage"
+  "WelcomePage",
+  "LoginPage"
 >;

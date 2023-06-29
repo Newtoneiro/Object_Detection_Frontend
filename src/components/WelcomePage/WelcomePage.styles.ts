@@ -10,7 +10,7 @@ export const welcomePageStyles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-end",
-    backgroundColor: stylesConfig.colors.default_background,
+    backgroundColor: stylesConfig.colors.default_background_dark,
     paddingVertical: 20,
   },
   title: {
@@ -22,6 +22,8 @@ export const welcomePageStyles = StyleSheet.create({
   },
   text: {
     width: "100%",
+    fontFamily: stylesConfig.fontFamily.default,
+    letterSpacing: 2,
     fontSize: 20,
     color: stylesConfig.colors.default_color_1,
     fontWeight: "600",

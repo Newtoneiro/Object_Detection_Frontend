@@ -1,5 +1,5 @@
-import CameraPage from "../CameraPage/CameraPage";
-import LandingPage from "../LandingPage/LandingPage";
+import CameraPage from "../../pages/CameraPage/CameraPage";
+import LandingPage from "../../pages/LandingPage/LandingPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { RootStackParamList } from "./Navigator.types";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

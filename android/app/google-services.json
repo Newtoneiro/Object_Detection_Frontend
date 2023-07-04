@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "294566798229",
+    "project_id": "object-detection-e6da6",
+    "storage_bucket": "object-detection-e6da6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294566798229:android:12c5b6734cec5f0d3acc9c",
+        "android_client_info": {
+          "package_name": "com.blatosek.objectDetection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294566798229-q2c5bncf791gqc25i3v748sijfnd6t2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKIxWhfipfpM2jO6a0mdrcH-FOrX5trLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294566798229-8048q1pbgem0bp7i0ijfo4grqetigkl3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

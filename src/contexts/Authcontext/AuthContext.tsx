@@ -1,17 +1,29 @@
-import { IAuthContext, IAuthState } from "./AuthContext.types";
+import {
+  IAuthContext,
+  IAuthState,
+  IRegisterData,
+  IUserInfo,
+} from "./AuthContext.types";
 import { createContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IProps } from "../../config.types";
+import auth from "@react-native-firebase/auth";
+
+const defaultUserInfo: IUserInfo = {
+  email: "",
+  uid: "",
+};
 
 const defaultAuthContext: IAuthContext = {
   authState: {
     expiresAt: null,
-    userInfo: {},
+    userInfo: defaultUserInfo,
   },
   setAuthInfo: (authState: IAuthState) => {},
   isAuthenticated: () => false,
   logout: () => {},
+  register: (_) => {},
 };
 
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
@@ -19,7 +31,7 @@ const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 const AuthProvider = ({ children }: IProps) => {
   const [authState, setAuthState] = useState<IAuthState>({
     expiresAt: null,
-    userInfo: {},
+    userInfo: defaultUserInfo,
   });
 
   useEffect(() => {
@@ -45,7 +57,6 @@ const AuthProvider = ({ children }: IProps) => {
   };
 
   const isAuthenticated = () => {
-    return false;
     if (!authState || !authState.expiresAt) {
       return false;
     }
@@ -61,6 +72,26 @@ const AuthProvider = ({ children }: IProps) => {
     });
   };
 
+  const register = async ({ email, password }: IRegisterData) => {
+    const response = await auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const newUserInfo: IUserInfo = {
+          email: userCredential.user.email,
+          uid: userCredential.user.uid,
+        };
+        const authInfo: IAuthState = {
+          expiresAt: String(new Date().getTime() + 86400000), // 24h
+          userInfo: newUserInfo,
+        };
+        console.log(authInfo);
+        setAuthInfo(authInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -68,6 +99,7 @@ const AuthProvider = ({ children }: IProps) => {
         setAuthInfo,
         isAuthenticated,
         logout,
+        register,
       }}
     >
       {children}

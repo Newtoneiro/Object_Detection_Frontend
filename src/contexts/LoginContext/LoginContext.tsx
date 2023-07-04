@@ -1,6 +1,7 @@
 import { ILoginContext, IUserInputs } from "./LoginContext.types";
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
+import { AuthContext } from "../Authcontext/AuthContext";
 import { IProps } from "../../config.types";
 
 const defaultUserInputs = {
@@ -16,6 +17,7 @@ const defaultLoginContext: ILoginContext = {
   setEmail: (_) => {},
   setPassword: (_) => {},
   setConfirmPassword: (_) => {},
+  handleSubmitData: () => {},
 };
 
 const LoginContext = createContext<ILoginContext>(defaultLoginContext);
@@ -23,6 +25,8 @@ const LoginContext = createContext<ILoginContext>(defaultLoginContext);
 const LoginProvider = ({ children }: IProps) => {
   const [isLoginMode, setIsLoginMode] = useState<Boolean>(true);
   const [userInputs, setUserInputs] = useState<IUserInputs>(defaultUserInputs);
+
+  const AuthCon = useContext(AuthContext);
 
   const switchLoginMode = () => {
     setIsLoginMode((prev) => !prev);
@@ -58,6 +62,15 @@ const LoginProvider = ({ children }: IProps) => {
     });
   };
 
+  const handleSubmitData = () => {
+    if (!isLoginMode) {
+      AuthCon.register({
+        email: userInputs.email,
+        password: userInputs.password,
+      });
+    }
+  };
+
   return (
     <LoginContext.Provider
       value={{
@@ -67,6 +80,7 @@ const LoginProvider = ({ children }: IProps) => {
         setEmail,
         setPassword,
         setConfirmPassword,
+        handleSubmitData,
       }}
     >
       {children}

@@ -3,7 +3,6 @@ import { Pressable, Text, View } from "react-native";
 import Background from "../../components/Background/Background";
 import { LinearGradient } from "expo-linear-gradient";
 import { WelcomePageProps } from "./WelcomePage.types";
-import { loginPageStyles } from "../LoginPage/LoginPage.styles";
 import stylesConfig from "../../config.styles";
 import { welcomePageStyles } from "./WelcomePage.styles";
 
@@ -18,6 +17,7 @@ export default function WelcomePage({ navigation }: WelcomePageProps) {
           non laborum tempor ex. Dolore proident est sunt in nisi nisi laborum
           in.
         </Text>
+        <Pressable onPress={() => navigation.navigate("LoginPage")}></Pressable>
         <LinearGradient
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -25,10 +25,13 @@ export default function WelcomePage({ navigation }: WelcomePageProps) {
             stylesConfig.colors.default_color_1,
             stylesConfig.colors.default_color_2,
           ]}
-          style={loginPageStyles.button}
+          style={welcomePageStyles.button}
         >
-          <Pressable onPress={() => navigation.navigate("LoginPage")}>
-            <Text style={loginPageStyles.buttonText}>Jump in!</Text>
+          <Pressable
+            onPress={() => navigation.navigate("LoginPage")}
+            style={welcomePageStyles.pressable}
+          >
+            <Text style={welcomePageStyles.buttonText}>Jump in!</Text>
           </Pressable>
         </LinearGradient>
       </View>

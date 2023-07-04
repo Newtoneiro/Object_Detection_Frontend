@@ -84,7 +84,10 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
             ]}
             style={loginPageStyles.button}
           >
-            <Pressable>
+            <Pressable
+              onPress={() => LoginCon.handleSubmitData()}
+              style={loginPageStyles.button_pressable}
+            >
               <Text style={loginPageStyles.buttonText}>
                 {LoginCon.isLoginMode ? "Sign in" : "Sign up"}
               </Text>

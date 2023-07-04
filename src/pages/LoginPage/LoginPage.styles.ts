@@ -99,6 +99,13 @@ export const loginPageStyles = StyleSheet.create({
     borderBottomColor: stylesConfig.colors.default_color_1,
     borderBottomWidth: 1,
   },
+  button_pressable: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   buttonText: {
     alignContent: "center",
     width: "100%",

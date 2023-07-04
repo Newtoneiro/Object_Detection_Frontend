@@ -2,9 +2,10 @@ export interface ILoginContext {
   userInputs: IUserInputs;
   isLoginMode: Boolean;
   switchLoginMode: () => void;
-  setEmail: (string) => void;
-  setPassword: (string) => void;
-  setConfirmPassword: (string) => void;
+  setEmail: (text: string) => void;
+  setPassword: (text: string) => void;
+  setConfirmPassword: (text: string) => void;
+  handleSubmitData: () => void;
 }
 
 export interface IUserInputs {

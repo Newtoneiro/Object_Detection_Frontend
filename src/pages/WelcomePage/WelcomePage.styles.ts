@@ -31,4 +31,28 @@ export const welcomePageStyles = StyleSheet.create({
     textAlign: "justify",
     marginBottom: 60,
   },
+  button: {
+    width: "100%",
+    marginTop: 10,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: stylesConfig.colors.default_color_1,
+    borderBottomColor: stylesConfig.colors.default_color_1,
+    borderBottomWidth: 1,
+  },
+  pressable: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    alignContent: "center",
+    width: "100%",
+    fontFamily: stylesConfig.fontFamily.default,
+    fontSize: stylesConfig.fontSize.small,
+    color: stylesConfig.colors.default_font,
+    textAlign: "center",
+  },
 });

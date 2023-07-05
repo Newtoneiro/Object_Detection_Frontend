@@ -54,10 +54,15 @@ export const loginPageStyles = StyleSheet.create({
     textAlign: "center",
     marginLeft: "2%",
   },
-  gap: {
+  alertMessage: {
+    textAlign: "center",
     width: "100%",
-    height: 30,
-    minHeight: 30,
+    height: 20,
+    minHeight: 20,
+    maxHeight: 20,
+    fontFamily: stylesConfig.fontFamily.default,
+    fontSize: stylesConfig.fontSize.small,
+    color: stylesConfig.colors.red_alert,
   },
   inputContainer: {
     minWidth: "100%",
@@ -76,6 +81,9 @@ export const loginPageStyles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: stylesConfig.colors.default_background_light,
+  },
+  inputContainerAlert: {
+    borderColor: stylesConfig.colors.red_alert,
   },
   textInput: {
     width: "100%",

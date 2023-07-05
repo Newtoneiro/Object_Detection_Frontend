@@ -1,8 +1,13 @@
-import { ILoginContext, IUserInputs } from "./LoginContext.types";
+import {
+  ILoginContext,
+  IUserInputs,
+  IUserInputsAlert,
+} from "./LoginContext.types";
 import { createContext, useContext, useState } from "react";
 
 import { AuthContext } from "../Authcontext/AuthContext";
 import { IProps } from "../../config.types";
+import { validateEmail } from "./LoginContext.utils";
 
 const defaultUserInputs = {
   email: "",
@@ -10,8 +15,18 @@ const defaultUserInputs = {
   confirmPassword: "",
 };
 
+const defaultUserInputsAlert = {
+  cause: "",
+  inputsIssue: {
+    email: false,
+    password: false,
+    confirmPassword: false,
+  },
+};
+
 const defaultLoginContext: ILoginContext = {
   userInputs: defaultUserInputs,
+  userInputsAlert: defaultUserInputsAlert,
   isLoginMode: false,
   switchLoginMode: () => {},
   setEmail: (_) => {},
@@ -25,10 +40,14 @@ const LoginContext = createContext<ILoginContext>(defaultLoginContext);
 const LoginProvider = ({ children }: IProps) => {
   const [isLoginMode, setIsLoginMode] = useState<Boolean>(true);
   const [userInputs, setUserInputs] = useState<IUserInputs>(defaultUserInputs);
+  const [userInputsAlert, setUserInputsAlert] = useState<IUserInputsAlert>(
+    defaultUserInputsAlert
+  );
 
   const AuthCon = useContext(AuthContext);
 
   const switchLoginMode = () => {
+    clearUserInputs();
     setIsLoginMode((prev) => !prev);
   };
 
@@ -62,19 +81,125 @@ const LoginProvider = ({ children }: IProps) => {
     });
   };
 
+  const clearUserInputs = () => {
+    setUserInputsAlert(defaultUserInputsAlert);
+    setUserInputs(defaultUserInputs);
+  };
+
   const handleSubmitData = () => {
-    if (!isLoginMode) {
-      AuthCon.register({
-        email: userInputs.email,
-        password: userInputs.password,
-      });
+    if (isLoginMode) {
+      if (verifyLogin()) {
+        AuthCon.login({
+          email: userInputs.email,
+          password: userInputs.password,
+        })?.then((status) => {
+          clearUserInputs();
+          setIsLoginMode(true);
+          if (!status.success) {
+            setUserInputsAlert({
+              cause: status.message,
+              inputsIssue: {
+                email: false,
+                password: false,
+                confirmPassword: false,
+              },
+            });
+          }
+        });
+      }
+    } else {
+      if (verifyRegister()) {
+        AuthCon.register({
+          email: userInputs.email,
+          password: userInputs.password,
+        })?.then((status) => {
+          clearUserInputs();
+          setIsLoginMode(true);
+          if (!status.success) {
+            setUserInputsAlert({
+              cause: status.message,
+              inputsIssue: {
+                email: false,
+                password: false,
+                confirmPassword: false,
+              },
+            });
+          }
+        });
+      }
     }
+  };
+
+  const verifyLogin = () => {
+    if (userInputs.email == "") {
+      setUserInputsAlert({
+        cause: "Please enter email.",
+        inputsIssue: { email: true, password: false, confirmPassword: false },
+      });
+      return false;
+    }
+    if (!validateEmail(userInputs.email)) {
+      setUserInputsAlert({
+        cause: "Invalid email.",
+        inputsIssue: {
+          email: true,
+          password: false,
+          confirmPassword: false,
+        },
+      });
+      return false;
+    }
+    if (userInputs.password == "") {
+      setUserInputsAlert({
+        cause: "Please enter password.",
+        inputsIssue: {
+          email: false,
+          password: true,
+          confirmPassword: false,
+        },
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const verifyRegister = () => {
+    if (!verifyLogin()) {
+      return false;
+    }
+    if (userInputs.confirmPassword == "") {
+      setUserInputsAlert({
+        cause: "Please reenter password.",
+        inputsIssue: {
+          email: false,
+          password: false,
+          confirmPassword: true,
+        },
+      });
+      return false;
+    }
+    if (userInputs.password != userInputs.confirmPassword) {
+      setUserInputsAlert({
+        cause: "Passwords don't match.",
+        inputsIssue: { email: false, password: true, confirmPassword: true },
+      });
+      return false;
+    }
+    if (userInputs.password.length < 6) {
+      setUserInputsAlert({
+        cause: "Password should be at least 6 characters.",
+        inputsIssue: { email: false, password: true, confirmPassword: true },
+      });
+      return false;
+    }
+    return true;
   };
 
   return (
     <LoginContext.Provider
       value={{
         userInputs,
+        userInputsAlert,
         isLoginMode,
         switchLoginMode,
         setEmail,

@@ -36,8 +36,19 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
               ? "Please sign in to continue."
               : "Please sign up to continue."}
           </Text>
-          <View style={loginPageStyles.gap}></View>
-          <View style={loginPageStyles.inputContainer}>
+          <Text style={loginPageStyles.alertMessage}>
+            {LoginCon.userInputsAlert.cause}
+          </Text>
+          <View
+            style={
+              LoginCon.userInputsAlert.inputsIssue.email
+                ? {
+                    ...loginPageStyles.inputContainer,
+                    ...loginPageStyles.inputContainerAlert,
+                  }
+                : loginPageStyles.inputContainer
+            }
+          >
             <FontAwesome
               style={loginPageStyles.icon}
               name="envelope"
@@ -51,7 +62,16 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
               onChangeText={(text) => LoginCon.setEmail(text)}
             />
           </View>
-          <View style={loginPageStyles.inputContainer}>
+          <View
+            style={
+              LoginCon.userInputsAlert.inputsIssue.password
+                ? {
+                    ...loginPageStyles.inputContainer,
+                    ...loginPageStyles.inputContainerAlert,
+                  }
+                : loginPageStyles.inputContainer
+            }
+          >
             <FontAwesome style={loginPageStyles.icon} name="lock" size={30} />
             <TextInput
               style={loginPageStyles.textInput}
@@ -63,7 +83,16 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
             />
           </View>
           {!LoginCon.isLoginMode && (
-            <View style={loginPageStyles.inputContainer}>
+            <View
+              style={
+                LoginCon.userInputsAlert.inputsIssue.confirmPassword
+                  ? {
+                      ...loginPageStyles.inputContainer,
+                      ...loginPageStyles.inputContainerAlert,
+                    }
+                  : loginPageStyles.inputContainer
+              }
+            >
               <FontAwesome style={loginPageStyles.icon} name="lock" size={30} />
               <TextInput
                 style={loginPageStyles.textInput}

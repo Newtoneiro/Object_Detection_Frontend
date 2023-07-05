@@ -1,5 +1,6 @@
 import {
   IAuthContext,
+  IAuthResponse,
   IAuthState,
   IRegisterData,
   IUserInfo,
@@ -10,20 +11,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IProps } from "../../config.types";
 import auth from "@react-native-firebase/auth";
 
-const defaultUserInfo: IUserInfo = {
-  email: "",
-  uid: "",
-};
-
 const defaultAuthContext: IAuthContext = {
   authState: {
     expiresAt: null,
-    userInfo: defaultUserInfo,
+    userInfo: {},
   },
   setAuthInfo: (authState: IAuthState) => {},
   isAuthenticated: () => false,
   logout: () => {},
-  register: (_) => {},
+  register: (_) => null,
+  login: (_) => null,
 };
 
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
@@ -31,7 +28,7 @@ const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 const AuthProvider = ({ children }: IProps) => {
   const [authState, setAuthState] = useState<IAuthState>({
     expiresAt: null,
-    userInfo: defaultUserInfo,
+    userInfo: {},
   });
 
   useEffect(() => {
@@ -90,6 +87,36 @@ const AuthProvider = ({ children }: IProps) => {
       .catch((error) => {
         console.log(error);
       });
+    if (response != undefined) {
+      return { success: true, message: "Register successfull." };
+    } else {
+      return { success: false, message: "Something went wrong." };
+    }
+  };
+
+  const login = async ({ email, password }: IRegisterData) => {
+    const response = await auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const newUserInfo: IUserInfo = {
+          email: userCredential.user.email,
+          uid: userCredential.user.uid,
+        };
+        const authInfo: IAuthState = {
+          expiresAt: String(new Date().getTime() + 86400000), // 24h
+          userInfo: newUserInfo,
+        };
+        console.log(authInfo);
+        setAuthInfo(authInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    if (response != undefined) {
+      return { success: true, message: "Login successfull." };
+    } else {
+      return { success: false, message: "Something went wrong." };
+    }
   };
 
   return (
@@ -100,6 +127,7 @@ const AuthProvider = ({ children }: IProps) => {
         isAuthenticated,
         logout,
         register,
+        login,
       }}
     >
       {children}

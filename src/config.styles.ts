@@ -6,6 +6,7 @@ const stylesConfig = {
     default_background_light: "#2B2B36",
     default_font: "#fdfdfd",
     default_font_subtitle: "#ABABAB",
+    red_alert: "#ed4545",
     black: "#000000",
   },
   fontFamily: {

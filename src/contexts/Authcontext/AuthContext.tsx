@@ -1,7 +1,7 @@
 import {
   IAuthContext,
-  IAuthResponse,
   IAuthState,
+  IFirebaseError,
   IRegisterData,
   IUserInfo,
 } from "./AuthContext.types";
@@ -70,52 +70,66 @@ const AuthProvider = ({ children }: IProps) => {
   };
 
   const register = async ({ email, password }: IRegisterData) => {
-    const response = await auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const newUserInfo: IUserInfo = {
-          email: userCredential.user.email,
-          uid: userCredential.user.uid,
-        };
-        const authInfo: IAuthState = {
-          expiresAt: String(new Date().getTime() + 86400000), // 24h
-          userInfo: newUserInfo,
-        };
-        console.log(authInfo);
-        setAuthInfo(authInfo);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    if (response != undefined) {
+    try {
+      await auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const newUserInfo: IUserInfo = {
+            email: userCredential.user.email,
+            uid: userCredential.user.uid,
+          };
+          const authInfo: IAuthState = {
+            expiresAt: String(new Date().getTime() + 86400000), // 24h
+            userInfo: newUserInfo,
+          };
+          setAuthInfo(authInfo);
+        });
+
       return { success: true, message: "Register successfull." };
-    } else {
-      return { success: false, message: "Something went wrong." };
+    } catch (error: IFirebaseError | any) {
+      let message = "Something went wrong.";
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          message = "This email is already in use.";
+          break;
+      }
+
+      return { success: false, message: message };
     }
   };
 
   const login = async ({ email, password }: IRegisterData) => {
-    const response = await auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const newUserInfo: IUserInfo = {
-          email: userCredential.user.email,
-          uid: userCredential.user.uid,
-        };
-        const authInfo: IAuthState = {
-          expiresAt: String(new Date().getTime() + 86400000), // 24h
-          userInfo: newUserInfo,
-        };
-        console.log(authInfo);
-        setAuthInfo(authInfo);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    if (response != undefined) {
+    try {
+      await auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const newUserInfo: IUserInfo = {
+            email: userCredential.user.email,
+            uid: userCredential.user.uid,
+          };
+          const authInfo: IAuthState = {
+            expiresAt: String(new Date().getTime() + 86400000), // 24h
+            userInfo: newUserInfo,
+          };
+          setAuthInfo(authInfo);
+        });
       return { success: true, message: "Login successfull." };
-    } else {
-      return { success: false, message: "Something went wrong." };
+    } catch (error: IFirebaseError | any) {
+      let message = "Something went wrong.";
+      console.log(error.code);
+      switch (error.code) {
+        case "auth/user-not-found":
+          message = "No such user exists.";
+          break;
+        case "auth/user-disabled":
+          message = "This user has been disabled.";
+          break;
+        case "auth/wrong-password":
+          message = "The password is incorrect.";
+          break;
+      }
+
+      return { success: false, message: message };
     }
   };
 

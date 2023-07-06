@@ -26,3 +26,9 @@ export interface IRegisterData {
   email: string;
   password: string;
 }
+
+export interface IFirebaseError {
+  code: string;
+  message: string;
+  name: string;
+}

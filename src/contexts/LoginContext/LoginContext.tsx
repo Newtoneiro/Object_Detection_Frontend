@@ -93,8 +93,6 @@ const LoginProvider = ({ children }: IProps) => {
           email: userInputs.email,
           password: userInputs.password,
         })?.then((status) => {
-          clearUserInputs();
-          setIsLoginMode(true);
           if (!status.success) {
             setUserInputsAlert({
               cause: status.message,
@@ -104,6 +102,9 @@ const LoginProvider = ({ children }: IProps) => {
                 confirmPassword: false,
               },
             });
+          } else {
+            clearUserInputs();
+            setIsLoginMode(true);
           }
         });
       }
@@ -113,8 +114,6 @@ const LoginProvider = ({ children }: IProps) => {
           email: userInputs.email,
           password: userInputs.password,
         })?.then((status) => {
-          clearUserInputs();
-          setIsLoginMode(true);
           if (!status.success) {
             setUserInputsAlert({
               cause: status.message,
@@ -124,6 +123,9 @@ const LoginProvider = ({ children }: IProps) => {
                 confirmPassword: false,
               },
             });
+          } else {
+            clearUserInputs();
+            setIsLoginMode(true);
           }
         });
       }

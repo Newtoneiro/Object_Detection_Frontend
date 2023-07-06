@@ -16,7 +16,16 @@ const Background = ({ children }: IProps) => {
           stylesConfig.colors.default_color_1,
           stylesConfig.colors.default_color_2,
         ]}
-        style={backgroundStyles.decorativeBall}
+        style={backgroundStyles.decorativeBall1}
+      />
+      <LinearGradient
+        start={{ x: 0.3, y: 0.6 }}
+        end={{ x: 0.7, y: 0.2 }}
+        colors={[
+          stylesConfig.colors.default_color_1,
+          stylesConfig.colors.default_color_2,
+        ]}
+        style={backgroundStyles.decorativeBall2}
       />
       <View style={backgroundStyles.header}>
         <Image

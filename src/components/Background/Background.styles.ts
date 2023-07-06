@@ -16,12 +16,20 @@ export const backgroundStyles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: stylesConfig.colors.default_background_dark,
   },
-  decorativeBall: {
+  decorativeBall1: {
     position: "absolute",
     top: -50,
     left: -70,
     width: 210,
     height: 210,
+    borderRadius: 110,
+  },
+  decorativeBall2: {
+    position: "absolute",
+    bottom: 20,
+    right: -40,
+    width: 100,
+    height: 100,
     borderRadius: 110,
   },
   header: {

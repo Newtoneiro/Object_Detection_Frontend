@@ -10,7 +10,7 @@ export default function WelcomePage({ navigation }: WelcomePageProps) {
   return (
     <Background>
       <View style={welcomePageStyles.container}>
-        <Text style={welcomePageStyles.title}>Object Detection</Text>
+        <Text style={welcomePageStyles.title}>Welcome.</Text>
         <Text style={welcomePageStyles.text}>
           Cupidatat ea amet reprehenderit laboris. Duis pariatur commodo non
           velit qui fugiat mollit. Irure laboris proident aliquip ex laboris et

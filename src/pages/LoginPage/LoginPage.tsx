@@ -124,11 +124,13 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
           </LinearGradient>
           <Text style={loginPageStyles.socialMediaTitle}>Or Login with</Text>
           <View style={loginPageStyles.socialMedia}>
-            <FontAwesome
-              style={loginPageStyles.socialMediaIcon}
-              name="google"
-              size={30}
-            />
+            <Pressable onPress={() => LoginCon.loginGoogle()}>
+              <FontAwesome
+                style={loginPageStyles.socialMediaIcon}
+                name="google"
+                size={30}
+              />
+            </Pressable>
             <FontAwesome
               style={loginPageStyles.socialMediaIcon}
               name="facebook"

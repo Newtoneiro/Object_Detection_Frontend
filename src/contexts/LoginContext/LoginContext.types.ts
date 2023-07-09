@@ -7,6 +7,7 @@ export interface ILoginContext {
   setPassword: (text: string) => void;
   setConfirmPassword: (text: string) => void;
   handleSubmitData: () => void;
+  loginGoogle: () => void;
 }
 
 export interface IUserInputs {

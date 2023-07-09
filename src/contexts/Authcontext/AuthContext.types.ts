@@ -20,6 +20,7 @@ export interface IAuthContext {
   logout: () => void;
   register: (user: IRegisterData) => Promise<IAuthResponse> | null;
   login: (user: IRegisterData) => Promise<IAuthResponse> | null;
+  loginGoogle: () => Promise<IAuthResponse> | null;
 }
 
 export interface IRegisterData {

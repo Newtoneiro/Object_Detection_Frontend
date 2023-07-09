@@ -5,11 +5,12 @@ import {
   IRegisterData,
   IUserInfo,
 } from "./AuthContext.types";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { createContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { IProps } from "../../config.types";
-import auth from "@react-native-firebase/auth";
 
 const defaultAuthContext: IAuthContext = {
   authState: {
@@ -21,6 +22,7 @@ const defaultAuthContext: IAuthContext = {
   logout: () => {},
   register: (_) => null,
   login: (_) => null,
+  loginGoogle: () => null,
 };
 
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
@@ -42,6 +44,20 @@ const AuthProvider = ({ children }: IProps) => {
 
     getSavedAuthState();
   }, []);
+
+  const setUserCredentials = (
+    userCredential: FirebaseAuthTypes.UserCredential
+  ) => {
+    const newUserInfo: IUserInfo = {
+      email: userCredential.user.email,
+      uid: userCredential.user.uid,
+    };
+    const authInfo: IAuthState = {
+      expiresAt: String(new Date().getTime() + 86400000), // 24h
+      userInfo: newUserInfo,
+    };
+    setAuthInfo(authInfo);
+  };
 
   const setAuthInfo = (authState: IAuthState) => {
     AsyncStorage.setItem("userInfo", JSON.stringify(authState.userInfo));
@@ -73,16 +89,8 @@ const AuthProvider = ({ children }: IProps) => {
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const newUserInfo: IUserInfo = {
-            email: userCredential.user.email,
-            uid: userCredential.user.uid,
-          };
-          const authInfo: IAuthState = {
-            expiresAt: String(new Date().getTime() + 86400000), // 24h
-            userInfo: newUserInfo,
-          };
-          setAuthInfo(authInfo);
+        .then((userCredentials) => {
+          setUserCredentials(userCredentials);
         });
 
       return { success: true, message: "Register successfull." };
@@ -102,16 +110,8 @@ const AuthProvider = ({ children }: IProps) => {
     try {
       await auth()
         .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const newUserInfo: IUserInfo = {
-            email: userCredential.user.email,
-            uid: userCredential.user.uid,
-          };
-          const authInfo: IAuthState = {
-            expiresAt: String(new Date().getTime() + 86400000), // 24h
-            userInfo: newUserInfo,
-          };
-          setAuthInfo(authInfo);
+        .then((userCredentials) => {
+          setUserCredentials(userCredentials);
         });
       return { success: true, message: "Login successfull." };
     } catch (error: IFirebaseError | any) {
@@ -133,6 +133,29 @@ const AuthProvider = ({ children }: IProps) => {
     }
   };
 
+  const loginGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+    } catch (error: any) {
+      return { success: false, message: "Service not available." };
+    }
+
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    await auth()
+      .signInWithCredential(googleCredential)
+      .then((userCredentials) => {
+        setUserCredentials(userCredentials);
+      });
+    return { success: true, message: "Login successfull." };
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -142,6 +165,7 @@ const AuthProvider = ({ children }: IProps) => {
         logout,
         register,
         login,
+        loginGoogle,
       }}
     >
       {children}

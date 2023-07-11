@@ -46,7 +46,7 @@ const LoginProvider = ({ children }: IProps) => {
   const [userInputsAlert, setUserInputsAlert] = useState<IUserInputsAlert>(
     defaultUserInputsAlert
   );
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<Boolean>(false);
 
   const AuthCon = useContext(AuthContext);
 
@@ -90,11 +90,11 @@ const LoginProvider = ({ children }: IProps) => {
     setUserInputs(defaultUserInputs);
   };
 
-  const handleSubmitData = () => {
+  const handleSubmitData = async () => {
     setLoading(true);
     if (isLoginMode) {
       if (verifyLogin()) {
-        AuthCon.login({
+        await AuthCon.login({
           email: userInputs.email,
           password: userInputs.password,
         })?.then((status) => {
@@ -115,7 +115,7 @@ const LoginProvider = ({ children }: IProps) => {
       }
     } else {
       if (verifyRegister()) {
-        AuthCon.register({
+        await AuthCon.register({
           email: userInputs.email,
           password: userInputs.password,
         })?.then((status) => {
@@ -203,15 +203,15 @@ const LoginProvider = ({ children }: IProps) => {
     return true;
   };
 
-  const loginGoogle = () => {
+  const loginGoogle = async () => {
     setLoading(true);
-    AuthCon.loginGoogle();
+    await AuthCon.loginGoogle();
     setLoading(false);
   };
 
-  const loginAnonymous = () => {
+  const loginAnonymous = async () => {
     setLoading(true);
-    AuthCon.loginAnonymous();
+    await AuthCon.loginAnonymous();
     setLoading(false);
   };
 

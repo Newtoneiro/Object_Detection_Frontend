@@ -23,6 +23,7 @@ const defaultAuthContext: IAuthContext = {
   register: (_) => null,
   login: (_) => null,
   loginGoogle: () => null,
+  loginAnonymous: () => null,
 };
 
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
@@ -141,19 +142,37 @@ const AuthProvider = ({ children }: IProps) => {
     } catch (error: any) {
       return { success: false, message: "Service not available." };
     }
+    try {
+      const { idToken } = await GoogleSignin.signIn();
 
-    const { idToken } = await GoogleSignin.signIn();
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      // Sign-in the user with the credential
+      await auth()
+        .signInWithCredential(googleCredential)
+        .then((userCredentials) => {
+          setUserCredentials(userCredentials);
+        });
 
-    // Sign-in the user with the credential
-    await auth()
-      .signInWithCredential(googleCredential)
-      .then((userCredentials) => {
-        setUserCredentials(userCredentials);
-      });
-    return { success: true, message: "Login successfull." };
+      return { success: true, message: "Login successfull." };
+    } catch (error: any) {
+      return { success: true, message: "Something went wrong." };
+    }
+  };
+
+  const loginAnonymous = async () => {
+    try {
+      await auth()
+        .signInAnonymously()
+        .then((userCredentials) => {
+          setUserCredentials(userCredentials);
+        });
+
+      return { success: true, message: "Login successfull." };
+    } catch (error: IFirebaseError | any) {
+      return { success: false, message: "Something went wrong." };
+    }
   };
 
   return (
@@ -166,6 +185,7 @@ const AuthProvider = ({ children }: IProps) => {
         register,
         login,
         loginGoogle,
+        loginAnonymous,
       }}
     >
       {children}

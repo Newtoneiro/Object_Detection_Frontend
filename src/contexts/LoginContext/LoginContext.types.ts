@@ -8,6 +8,7 @@ export interface ILoginContext {
   setConfirmPassword: (text: string) => void;
   handleSubmitData: () => void;
   loginGoogle: () => void;
+  loginAnonymous: () => void;
 }
 
 export interface IUserInputs {

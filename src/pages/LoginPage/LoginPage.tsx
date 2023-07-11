@@ -5,6 +5,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
 import { LoginContext } from "../../contexts/LoginContext/LoginContext";
 import { LoginPageProps } from "./LoginPage.types";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { loginPageStyles } from "./LoginPage.styles";
 import stylesConfig from "../../config.styles";
 import { useContext } from "react";
@@ -131,16 +132,13 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
                 size={30}
               />
             </Pressable>
-            <FontAwesome
-              style={loginPageStyles.socialMediaIcon}
-              name="facebook"
-              size={30}
-            />
-            <FontAwesome
-              style={loginPageStyles.socialMediaIcon}
-              name="linkedin"
-              size={30}
-            />
+            <Pressable onPress={() => LoginCon.loginAnonymous()}>
+              <MaterialCommunityIcons
+                style={loginPageStyles.socialMediaIcon}
+                name="incognito"
+                size={30}
+              />
+            </Pressable>
           </View>
         </View>
         <Pressable

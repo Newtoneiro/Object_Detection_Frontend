@@ -34,6 +34,7 @@ const defaultLoginContext: ILoginContext = {
   setConfirmPassword: (_) => {},
   handleSubmitData: () => {},
   loginGoogle: () => {},
+  loginAnonymous: () => {},
 };
 
 const LoginContext = createContext<ILoginContext>(defaultLoginContext);
@@ -202,6 +203,10 @@ const LoginProvider = ({ children }: IProps) => {
     AuthCon.loginGoogle();
   };
 
+  const loginAnonymous = () => {
+    AuthCon.loginAnonymous();
+  };
+
   return (
     <LoginContext.Provider
       value={{
@@ -214,6 +219,7 @@ const LoginProvider = ({ children }: IProps) => {
         setConfirmPassword,
         handleSubmitData,
         loginGoogle,
+        loginAnonymous,
       }}
     >
       {children}

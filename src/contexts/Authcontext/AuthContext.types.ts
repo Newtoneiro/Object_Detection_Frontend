@@ -1,6 +1,7 @@
 export interface IUserInfo {
   email: string | null;
   uid: string | null;
+  isAnonymous: boolean;
 }
 
 export interface IAuthState {

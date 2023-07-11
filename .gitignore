@@ -1,5 +1,4 @@
 node_modules/
-.env
 .expo/
 dist/
 npm-debug.*
@@ -10,6 +9,11 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+.env
+
+# firebase config
+# google-services.json
+# GoogleService-Info.plist
 
 # macOS
 .DS_Store

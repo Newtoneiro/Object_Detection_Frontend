@@ -3,6 +3,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import Background from "../../components/Background/Background";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
+import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import { LoginContext } from "../../contexts/LoginContext/LoginContext";
 import { LoginPageProps } from "./LoginPage.types";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -15,6 +16,7 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
 
   return (
     <Background>
+      {LoginCon.loading && <LoadingOverlay />}
       <View style={loginPageStyles.container}>
         <View style={loginPageStyles.header}>
           <Pressable
@@ -123,21 +125,36 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
               </Text>
             </Pressable>
           </LinearGradient>
-          <Text style={loginPageStyles.socialMediaTitle}>Or Login with</Text>
+          <View style={loginPageStyles.socialMediaFooter}>
+            <View style={loginPageStyles.socialMediaLine}></View>
+            <Text style={loginPageStyles.socialMediaTitle}>Or</Text>
+          </View>
           <View style={loginPageStyles.socialMedia}>
-            <Pressable onPress={() => LoginCon.loginGoogle()}>
+            <Pressable
+              onPress={() => LoginCon.loginGoogle()}
+              style={loginPageStyles.socialMediaContainer}
+            >
               <FontAwesome
                 style={loginPageStyles.socialMediaIcon}
                 name="google"
                 size={30}
               />
+              <Text style={loginPageStyles.socialMediaText}>
+                Sign in with Google
+              </Text>
             </Pressable>
-            <Pressable onPress={() => LoginCon.loginAnonymous()}>
+            <Pressable
+              onPress={() => LoginCon.loginAnonymous()}
+              style={loginPageStyles.socialMediaContainer}
+            >
               <MaterialCommunityIcons
                 style={loginPageStyles.socialMediaIcon}
                 name="incognito"
                 size={30}
               />
+              <Text style={loginPageStyles.socialMediaText}>
+                Sign in anonymously
+              </Text>
             </Pressable>
           </View>
         </View>

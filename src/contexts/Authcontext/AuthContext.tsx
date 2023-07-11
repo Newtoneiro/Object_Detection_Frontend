@@ -52,6 +52,7 @@ const AuthProvider = ({ children }: IProps) => {
     const newUserInfo: IUserInfo = {
       email: userCredential.user.email,
       uid: userCredential.user.uid,
+      isAnonymous: userCredential.user.isAnonymous,
     };
     const authInfo: IAuthState = {
       expiresAt: String(new Date().getTime() + 86400000), // 24h

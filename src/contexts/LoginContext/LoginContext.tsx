@@ -28,6 +28,7 @@ const defaultLoginContext: ILoginContext = {
   userInputs: defaultUserInputs,
   userInputsAlert: defaultUserInputsAlert,
   isLoginMode: false,
+  loading: false,
   switchLoginMode: () => {},
   setEmail: (_) => {},
   setPassword: (_) => {},
@@ -45,6 +46,7 @@ const LoginProvider = ({ children }: IProps) => {
   const [userInputsAlert, setUserInputsAlert] = useState<IUserInputsAlert>(
     defaultUserInputsAlert
   );
+  const [loading, setLoading] = useState<boolean>(false);
 
   const AuthCon = useContext(AuthContext);
 
@@ -89,6 +91,7 @@ const LoginProvider = ({ children }: IProps) => {
   };
 
   const handleSubmitData = () => {
+    setLoading(true);
     if (isLoginMode) {
       if (verifyLogin()) {
         AuthCon.login({
@@ -132,6 +135,7 @@ const LoginProvider = ({ children }: IProps) => {
         });
       }
     }
+    setLoading(false);
   };
 
   const verifyLogin = () => {
@@ -200,11 +204,15 @@ const LoginProvider = ({ children }: IProps) => {
   };
 
   const loginGoogle = () => {
+    setLoading(true);
     AuthCon.loginGoogle();
+    setLoading(false);
   };
 
   const loginAnonymous = () => {
+    setLoading(true);
     AuthCon.loginAnonymous();
+    setLoading(false);
   };
 
   return (
@@ -213,6 +221,7 @@ const LoginProvider = ({ children }: IProps) => {
         userInputs,
         userInputsAlert,
         isLoginMode,
+        loading,
         switchLoginMode,
         setEmail,
         setPassword,

@@ -22,7 +22,7 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
           <FontAwesome
             style={forgotPasswordPageStyles.titleImage}
             name="unlock"
-            size={60}
+            size={stylesConfig.fontSize.title_icon}
           />
           <Text style={forgotPasswordPageStyles.formTitle}>
             Forgot password?
@@ -42,7 +42,16 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
           >
             {ForgotPasswordCon.response.message}
           </Text>
-          <View style={forgotPasswordPageStyles.inputContainer}>
+          <View
+            style={
+              ForgotPasswordCon.response.success
+                ? forgotPasswordPageStyles.inputContainer
+                : {
+                    ...forgotPasswordPageStyles.inputContainer,
+                    ...forgotPasswordPageStyles.inputContainerAlert,
+                  }
+            }
+          >
             <TextInput
               style={forgotPasswordPageStyles.textInput}
               placeholder="Email"
@@ -66,7 +75,7 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
               <FontAwesome
                 style={forgotPasswordPageStyles.footerIcon}
                 name="arrow-left"
-                size={24}
+                size={stylesConfig.fontSize.big_regular}
               />
               <Text style={forgotPasswordPageStyles.footerText}>
                 Back to login

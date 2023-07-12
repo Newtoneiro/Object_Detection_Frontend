@@ -1,5 +1,6 @@
 import {
   ILoginContext,
+  IShowPasswordsState,
   IUserInputs,
   IUserInputsAlert,
 } from "./LoginContext.types";
@@ -24,12 +25,20 @@ const defaultUserInputsAlert = {
   },
 };
 
+const defaultShowPasswordsState: IShowPasswordsState = {
+  password: false,
+  confirmPassword: false,
+};
+
 const defaultLoginContext: ILoginContext = {
   userInputs: defaultUserInputs,
   userInputsAlert: defaultUserInputsAlert,
   isLoginMode: false,
   loading: true,
+  showPasswordsState: defaultShowPasswordsState,
   switchLoginMode: () => {},
+  switchPasswordVisibility: () => {},
+  switchConfirmPasswordVisibility: () => {},
   setEmail: (_) => {},
   setPassword: (_) => {},
   setConfirmPassword: (_) => {},
@@ -46,6 +55,8 @@ const LoginProvider = ({ children }: IProps) => {
   const [userInputsAlert, setUserInputsAlert] = useState<IUserInputsAlert>(
     defaultUserInputsAlert
   );
+  const [showPasswordsState, setShowPasswordsState] =
+    useState<IShowPasswordsState>(defaultShowPasswordsState);
   const [loading, setLoading] = useState<Boolean>(false);
 
   const AuthCon = useContext(AuthContext);
@@ -53,6 +64,18 @@ const LoginProvider = ({ children }: IProps) => {
   const switchLoginMode = () => {
     clearUserInputs();
     setIsLoginMode((prev) => !prev);
+  };
+
+  const switchPasswordVisibility = () => {
+    setShowPasswordsState((prev) => {
+      return { ...prev, password: !prev.password };
+    });
+  };
+
+  const switchConfirmPasswordVisibility = () => {
+    setShowPasswordsState((prev) => {
+      return { ...prev, confirmPassword: !prev.confirmPassword };
+    });
   };
 
   const setEmail = (text: string) => {
@@ -86,6 +109,7 @@ const LoginProvider = ({ children }: IProps) => {
   };
 
   const clearUserInputs = () => {
+    setShowPasswordsState(defaultShowPasswordsState);
     setUserInputsAlert(defaultUserInputsAlert);
     setUserInputs(defaultUserInputs);
   };
@@ -222,7 +246,10 @@ const LoginProvider = ({ children }: IProps) => {
         userInputsAlert,
         isLoginMode,
         loading,
+        showPasswordsState,
         switchLoginMode,
+        switchPasswordVisibility,
+        switchConfirmPasswordVisibility,
         setEmail,
         setPassword,
         setConfirmPassword,

@@ -44,7 +44,7 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
             <FontAwesome
               style={loginPageStyles.icon}
               name="envelope"
-              size={24}
+              size={stylesConfig.fontSize.big_regular}
             />
             <TextInput
               style={loginPageStyles.textInput}
@@ -64,15 +64,28 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
                 : loginPageStyles.inputContainer
             }
           >
-            <FontAwesome style={loginPageStyles.icon} name="lock" size={30} />
+            <FontAwesome
+              style={loginPageStyles.icon}
+              name="lock"
+              size={stylesConfig.fontSize.subtitle}
+            />
             <TextInput
               style={loginPageStyles.textInput}
-              secureTextEntry={true}
+              secureTextEntry={!LoginCon.showPasswordsState.password}
               placeholder="Password"
               placeholderTextColor={stylesConfig.colors.default_font_subtitle}
               value={LoginCon.userInputs.password}
               onChangeText={(text) => LoginCon.setPassword(text)}
             />
+            <Pressable onPress={() => LoginCon.switchPasswordVisibility()}>
+              <FontAwesome
+                style={loginPageStyles.showPasswordIcon}
+                name={
+                  LoginCon.showPasswordsState.password ? "eye-slash" : "eye"
+                }
+                size={stylesConfig.fontSize.regular}
+              />
+            </Pressable>
           </View>
           {!LoginCon.isLoginMode && (
             <View
@@ -85,15 +98,32 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
                   : loginPageStyles.inputContainer
               }
             >
-              <FontAwesome style={loginPageStyles.icon} name="lock" size={30} />
+              <FontAwesome
+                style={loginPageStyles.icon}
+                name="lock"
+                size={stylesConfig.fontSize.subtitle}
+              />
               <TextInput
                 style={loginPageStyles.textInput}
-                secureTextEntry={true}
+                secureTextEntry={!LoginCon.showPasswordsState.confirmPassword}
                 placeholder="Confirm password"
                 placeholderTextColor={stylesConfig.colors.default_font_subtitle}
                 value={LoginCon.userInputs.confirmPassword}
                 onChangeText={(text) => LoginCon.setConfirmPassword(text)}
               />
+              <Pressable
+                onPress={() => LoginCon.switchConfirmPasswordVisibility()}
+              >
+                <FontAwesome
+                  style={loginPageStyles.showPasswordIcon}
+                  name={
+                    LoginCon.showPasswordsState.confirmPassword
+                      ? "eye-slash"
+                      : "eye"
+                  }
+                  size={stylesConfig.fontSize.regular}
+                />
+              </Pressable>
             </View>
           )}
           {LoginCon.isLoginMode && (
@@ -123,7 +153,7 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
             <FontAwesome
               style={loginPageStyles.socialMediaIcon}
               name="google"
-              size={30}
+              size={stylesConfig.fontSize.subtitle}
             />
             <Text style={loginPageStyles.socialMediaText}>
               Sign in with Google
@@ -136,7 +166,7 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
             <MaterialCommunityIcons
               style={loginPageStyles.socialMediaIcon}
               name="incognito"
-              size={30}
+              size={stylesConfig.fontSize.subtitle}
             />
             <Text style={loginPageStyles.socialMediaText}>
               Sign in anonymously

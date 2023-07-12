@@ -39,7 +39,7 @@ const Background = ({ children, handlePressFunction }: IBackgroundProps) => {
             <FontAwesome
               style={backgroundStyles.returnIcon}
               name="arrow-left"
-              size={24}
+              size={stylesConfig.fontSize.big_regular}
             />
           </Pressable>
         )}

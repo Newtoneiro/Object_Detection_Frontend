@@ -15,9 +15,11 @@ const stylesConfig = {
     title: "Poppins_600SemiBold",
   },
   fontSize: {
+    title_icon: 60,
     huge_title: 40,
     title: 34,
     subtitle: 26,
+    big_regular: 22,
     regular: 15,
     small: 13,
   },

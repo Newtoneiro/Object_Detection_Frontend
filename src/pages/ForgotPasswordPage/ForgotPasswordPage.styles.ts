@@ -72,6 +72,9 @@ export const forgotPasswordPageStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: stylesConfig.colors.default_background_light,
   },
+  inputContainerAlert: {
+    borderColor: stylesConfig.colors.red_alert,
+  },
   textInput: {
     width: "100%",
     fontFamily: stylesConfig.fontFamily.default,

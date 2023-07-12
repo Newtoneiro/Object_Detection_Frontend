@@ -11,7 +11,8 @@ export const loginPageStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
 
-    padding: "8%",
+    paddingHorizontal: "12%",
+    paddingVertical: "8%",
   },
   form: {
     width: "100%",
@@ -54,7 +55,7 @@ export const loginPageStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
 
     marginVertical: "1%",
     gap: 5,
@@ -73,8 +74,14 @@ export const loginPageStyles = StyleSheet.create({
     width: 40,
     color: stylesConfig.colors.default_font,
   },
+  showPasswordIcon: {
+    alignSelf: "center",
+    alignItems: "center",
+    width: 20,
+    color: stylesConfig.colors.default_font,
+  },
   textInput: {
-    width: "100%",
+    flex: 1,
     fontFamily: stylesConfig.fontFamily.default,
     fontSize: stylesConfig.fontSize.regular,
     color: stylesConfig.colors.default_font,

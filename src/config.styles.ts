@@ -7,6 +7,7 @@ const stylesConfig = {
     default_font: "#fdfdfd",
     default_font_subtitle: "#ababab",
     red_alert: "#ed4545",
+    green_alert: "#19bd4d",
     black: "#000000",
   },
   fontFamily: {
@@ -14,11 +15,11 @@ const stylesConfig = {
     title: "Poppins_600SemiBold",
   },
   fontSize: {
-    huge_title: 45,
-    title: 36,
-    subtitle: 32,
-    regular: 22,
-    small: 14,
+    huge_title: 40,
+    title: 34,
+    subtitle: 26,
+    regular: 15,
+    small: 13,
   },
 };
 

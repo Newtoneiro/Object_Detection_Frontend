@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import stylesConfig from "../../config.styles";
 
-export const loginPageStyles = StyleSheet.create({
+export const forgotPasswordPageStyles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
@@ -14,9 +14,11 @@ export const loginPageStyles = StyleSheet.create({
   pressable: {
     width: 40,
     height: 40,
+    zIndex: 1000,
   },
   header: {
-    top: 30,
+    position: "absolute",
+    top: 50,
     width: "100%",
     display: "flex",
     flexDirection: "row",
@@ -24,8 +26,12 @@ export const loginPageStyles = StyleSheet.create({
     justifyContent: "flex-start",
     padding: 15,
     paddingHorizontal: 30,
+    zIndex: 1000,
   },
   returnIcon: {
+    color: stylesConfig.colors.default_font,
+  },
+  titleImage: {
     color: stylesConfig.colors.default_font,
   },
   form: {
@@ -91,24 +97,6 @@ export const loginPageStyles = StyleSheet.create({
     fontSize: stylesConfig.fontSize.regular,
     color: stylesConfig.colors.default_font,
   },
-  icon: {
-    alignSelf: "center",
-    alignItems: "center",
-    width: 40,
-    color: stylesConfig.colors.default_font,
-  },
-  forgotPasswordFooter: {
-    width: "100%",
-    display: "flex",
-    alignContent: "center",
-    justifyContent: "center",
-  },
-  forgotPasswordText: {
-    textAlign: "right",
-    fontFamily: stylesConfig.fontFamily.default,
-    fontSize: stylesConfig.fontSize.small,
-    color: stylesConfig.colors.default_font_subtitle,
-  },
   button: {
     display: "flex",
     alignItems: "center",
@@ -138,25 +126,23 @@ export const loginPageStyles = StyleSheet.create({
   },
   footer: {
     display: "flex",
+    flexDirection: "row",
+    gap: 10,
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
-    flexDirection: "row",
-    gap: 5,
+    height: 50,
+    backgroundColor: stylesConfig.colors.default_background_dark,
+    paddingHorizontal: 10,
+  },
+  footerIcon: {
+    color: stylesConfig.colors.default_font_subtitle,
   },
   footerText: {
-    fontSize: stylesConfig.fontSize.small,
-    fontFamily: stylesConfig.fontFamily.default,
     color: stylesConfig.colors.default_font_subtitle,
-    textAlign: "center",
-  },
-  footerTextBold: {
-    fontSize: stylesConfig.fontSize.small,
     fontFamily: stylesConfig.fontFamily.default,
-    color: stylesConfig.colors.default_font,
-    textAlign: "center",
+    fontSize: stylesConfig.fontSize.small,
   },
-  socialMediaFooter: {
+  lineboxFooter: {
     position: "relative",
     width: "100%",
     height: 50,
@@ -164,54 +150,10 @@ export const loginPageStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  socialMediaLine: {
+  lineboxFooterLine: {
     position: "absolute",
     width: "70%",
     height: 1,
     backgroundColor: stylesConfig.colors.default_font_subtitle,
-  },
-  socialMediaTitle: {
-    width: 50,
-    fontSize: stylesConfig.fontSize.small,
-    fontFamily: stylesConfig.fontFamily.default,
-    color: stylesConfig.colors.default_font_subtitle,
-    backgroundColor: stylesConfig.colors.default_background_dark,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  socialMedia: {
-    width: "100%",
-    height: 110,
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-  socialMediaContainer: {
-    width: "85%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 30,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: stylesConfig.colors.default_font_subtitle,
-    borderRadius: 12,
-    padding: 5,
-  },
-  socialMediaText: {
-    fontSize: stylesConfig.fontSize.small,
-    fontFamily: stylesConfig.fontFamily.default,
-    color: stylesConfig.colors.default_font,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  socialMediaIcon: {
-    display: "flex",
-    textAlign: "center",
-    textAlignVertical: "center",
-    color: stylesConfig.colors.default_font,
-    backgroundColor: stylesConfig.colors.default_background_dark,
   },
 });

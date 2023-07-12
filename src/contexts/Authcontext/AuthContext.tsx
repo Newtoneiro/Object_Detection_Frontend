@@ -24,6 +24,7 @@ const defaultAuthContext: IAuthContext = {
   login: (_) => null,
   loginGoogle: () => null,
   loginAnonymous: () => null,
+  resetPassword: (_) => null,
 };
 
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
@@ -176,6 +177,23 @@ const AuthProvider = ({ children }: IProps) => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      await auth().sendPasswordResetEmail(email);
+
+      return { success: true, message: "Email sent." };
+    } catch (error: IFirebaseError | any) {
+      let message: string = "Something went wrong.";
+      console.log(error);
+      switch (error.code) {
+        case "auth/user-not-found":
+          message = "No such user exists.";
+          break;
+      }
+      return { success: false, message: message };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -187,6 +205,7 @@ const AuthProvider = ({ children }: IProps) => {
         login,
         loginGoogle,
         loginAnonymous,
+        resetPassword,
       }}
     >
       {children}

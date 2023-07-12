@@ -1,3 +1,4 @@
+import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPage";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { UnAuthRootStackParamList } from "./UnAuthNavigator.types";
@@ -19,6 +20,10 @@ export default function UnAuthNavigator() {
       >
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
+        <Stack.Screen
+          name="ForgotPasswordPage"
+          component={ForgotPasswordPage}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

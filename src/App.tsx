@@ -2,6 +2,7 @@ import "expo-dev-client";
 
 import AuthGate from "./components/AuthGate/AuthGate";
 import { AuthProvider } from "./contexts/Authcontext/AuthContext";
+import { ForgotPasswordProvider } from "./contexts/ForgotPasswordContext/ForgotPasswordContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { LoginProvider } from "./contexts/LoginContext/LoginContext";
 import { Montserrat_500Medium } from "@expo-google-fonts/montserrat";
@@ -22,7 +23,9 @@ const App = () => {
     fontsLoaded && (
       <AuthProvider>
         <LoginProvider>
-          <AuthGate />
+          <ForgotPasswordProvider>
+            <AuthGate />
+          </ForgotPasswordProvider>
         </LoginProvider>
       </AuthProvider>
     )

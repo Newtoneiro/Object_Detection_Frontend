@@ -107,6 +107,16 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
               />
             </View>
           )}
+          {LoginCon.isLoginMode && (
+            <Pressable
+              style={loginPageStyles.forgotPasswordFooter}
+              onPress={() => navigation.navigate("ForgotPasswordPage")}
+            >
+              <Text style={loginPageStyles.forgotPasswordText}>
+                Forgot password?
+              </Text>
+            </Pressable>
+          )}
           <LinearGradient
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}

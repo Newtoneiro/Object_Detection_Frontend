@@ -23,6 +23,7 @@ export interface IAuthContext {
   login: (user: IRegisterData) => Promise<IAuthResponse> | null;
   loginGoogle: () => Promise<IAuthResponse> | null;
   loginAnonymous: () => Promise<IAuthResponse> | null;
+  resetPassword: (email: string) => Promise<IAuthResponse> | null;
 }
 
 export interface IRegisterData {

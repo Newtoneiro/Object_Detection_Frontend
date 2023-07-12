@@ -7,7 +7,7 @@ import { createContext, useContext, useState } from "react";
 
 import { AuthContext } from "../Authcontext/AuthContext";
 import { IProps } from "../../config.types";
-import { validateEmail } from "./LoginContext.utils";
+import { validateEmail } from "../Authcontext/AuthContext.utils";
 
 const defaultUserInputs = {
   email: "",
@@ -28,7 +28,7 @@ const defaultLoginContext: ILoginContext = {
   userInputs: defaultUserInputs,
   userInputsAlert: defaultUserInputsAlert,
   isLoginMode: false,
-  loading: false,
+  loading: true,
   switchLoginMode: () => {},
   setEmail: (_) => {},
   setPassword: (_) => {},

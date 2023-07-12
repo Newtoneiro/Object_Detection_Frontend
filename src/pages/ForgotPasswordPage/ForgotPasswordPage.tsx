@@ -1,11 +1,12 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 
-import Background from "../../components/Background/Background";
+import Background from "../../components/Utils/Background/Background";
+import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import { FontAwesome } from "@expo/vector-icons";
 import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext/ForgotPasswordContext";
 import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
-import { LinearGradient } from "expo-linear-gradient";
-import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
+import GradientButton from "../../components/Utils/GradientButton/GradientButton";
+import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
 import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
 import stylesConfig from "../../config.styles";
 import { useContext } from "react";
@@ -14,21 +15,9 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
   const ForgotPasswordCon = useContext(ForgotPasswordContext);
 
   return (
-    <Background>
+    <Background handlePressFunction={() => navigation.navigate("LoginPage")}>
       {ForgotPasswordCon.loading && <LoadingOverlay />}
       <View style={forgotPasswordPageStyles.container}>
-        <View style={forgotPasswordPageStyles.header}>
-          <Pressable
-            onPress={() => navigation.navigate("LoginPage")}
-            style={forgotPasswordPageStyles.pressable}
-          >
-            <FontAwesome
-              style={forgotPasswordPageStyles.returnIcon}
-              name="arrow-left"
-              size={24}
-            />
-          </Pressable>
-        </View>
         <View style={forgotPasswordPageStyles.form}>
           <FontAwesome
             style={forgotPasswordPageStyles.titleImage}
@@ -46,7 +35,7 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
               ForgotPasswordCon.response.success
                 ? {
                     ...forgotPasswordPageStyles.alertMessage,
-                    color: stylesConfig.colors.green_alert,
+                    ...forgotPasswordPageStyles.alertMessageGreen,
                   }
                 : forgotPasswordPageStyles.alertMessage
             }
@@ -62,26 +51,14 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
               onChangeText={(text) => ForgotPasswordCon.setEmail(text)}
             />
           </View>
-          <LinearGradient
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            colors={[
-              stylesConfig.colors.default_color_1,
-              stylesConfig.colors.default_color_2,
-            ]}
-            style={forgotPasswordPageStyles.button}
+          <GradientButton
+            handlePressFunction={ForgotPasswordCon.handleSubmitData}
           >
-            <Pressable
-              onPress={() => ForgotPasswordCon.handleSubmitData()}
-              style={forgotPasswordPageStyles.button_pressable}
-            >
-              <Text style={forgotPasswordPageStyles.buttonText}>
-                Reset password
-              </Text>
-            </Pressable>
-          </LinearGradient>
-          <View style={forgotPasswordPageStyles.lineboxFooter}>
-            <View style={forgotPasswordPageStyles.lineboxFooterLine}></View>
+            <Text style={forgotPasswordPageStyles.buttonText}>
+              Reset password
+            </Text>
+          </GradientButton>
+          <CrossedFooter>
             <Pressable
               onPress={() => navigation.navigate("LoginPage")}
               style={forgotPasswordPageStyles.footer}
@@ -95,7 +72,7 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
                 Back to login
               </Text>
             </Pressable>
-          </View>
+          </CrossedFooter>
         </View>
       </View>
     </Background>

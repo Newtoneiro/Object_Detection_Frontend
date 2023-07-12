@@ -1,7 +1,7 @@
 import { ActivityIndicator, View } from "react-native";
 
 import { loadingOverlayStyles } from "./LoadingOverlay.styles";
-import stylesConfig from "../../config.styles";
+import stylesConfig from "../../../config.styles";
 
 const LoadingOverlay = () => {
   return (

@@ -1,12 +1,14 @@
 import { Image, Pressable, SafeAreaView, View } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
-import { IProps } from "../../config.types";
+import { IBackgroundProps } from "./Background.types";
 import { LinearGradient } from "expo-linear-gradient";
 import { backgroundStyles } from "./Background.styles";
-import stylesConfig from "../../config.styles";
+import stylesConfig from "../../../config.styles";
 
-const Background = ({ children }: IProps) => {
+const logo = "../../../../assets/logo.png";
+
+const Background = ({ children, handlePressFunction }: IBackgroundProps) => {
   return (
     <SafeAreaView style={backgroundStyles.container}>
       <LinearGradient
@@ -28,10 +30,19 @@ const Background = ({ children }: IProps) => {
         style={backgroundStyles.decorativeBall2}
       />
       <View style={backgroundStyles.header}>
-        <Image
-          style={backgroundStyles.logo}
-          source={require("../../../assets/logo.png")}
-        />
+        <Image style={backgroundStyles.logo} source={require(logo)} />
+        {handlePressFunction && (
+          <Pressable
+            onPress={() => handlePressFunction()}
+            style={backgroundStyles.pressable}
+          >
+            <FontAwesome
+              style={backgroundStyles.returnIcon}
+              name="arrow-left"
+              size={24}
+            />
+          </Pressable>
+        )}
       </View>
       {children}
     </SafeAreaView>

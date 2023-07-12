@@ -38,7 +38,7 @@ const ForgotPasswordProvider = ({ children }: IProps) => {
     setLoading(true);
 
     if (!validateEmail(email)) {
-      setResponse({ success: true, message: "Please provide a valid email." });
+      setResponse({ success: false, message: "Please provide a valid email." });
     } else {
       await AuthCon.resetPassword(email)?.then((response) => {
         setResponse({ success: response.success, message: response.message });

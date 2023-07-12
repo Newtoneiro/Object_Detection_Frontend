@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import stylesConfig from "../../config.styles";
+import stylesConfig from "../../../config.styles";
 
 export const backgroundStyles = StyleSheet.create({
   container: {
@@ -33,21 +33,28 @@ export const backgroundStyles = StyleSheet.create({
     borderRadius: 110,
   },
   header: {
-    position: "absolute",
-    top: 50,
-    right: 30,
     width: "100%",
     maxHeight: 80,
+    height: 80,
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
-    padding: 30,
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    marginTop: 40,
+    paddingHorizontal: 30,
   },
   logo: {
-    position: "absolute",
+    position: "relative",
     width: 105,
     resizeMode: "contain",
     tintColor: stylesConfig.colors.default_font,
+  },
+  pressable: {
+    width: 40,
+    height: 40,
+    zIndex: 1000,
+  },
+  returnIcon: {
+    color: stylesConfig.colors.default_font,
   },
 });

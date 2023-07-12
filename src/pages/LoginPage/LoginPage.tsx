@@ -1,9 +1,10 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 
-import Background from "../../components/Background/Background";
+import Background from "../../components/Utils/Background/Background";
+import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { LinearGradient } from "expo-linear-gradient";
-import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
+import GradientButton from "../../components/Utils/GradientButton/GradientButton";
+import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
 import { LoginContext } from "../../contexts/LoginContext/LoginContext";
 import { LoginPageProps } from "./LoginPage.types";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -15,21 +16,9 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
   const LoginCon = useContext(LoginContext);
 
   return (
-    <Background>
+    <Background handlePressFunction={() => navigation.navigate("WelcomePage")}>
       {LoginCon.loading && <LoadingOverlay />}
       <View style={loginPageStyles.container}>
-        <View style={loginPageStyles.header}>
-          <Pressable
-            onPress={() => navigation.navigate("WelcomePage")}
-            style={loginPageStyles.pressable}
-          >
-            <FontAwesome
-              style={loginPageStyles.returnIcon}
-              name="arrow-left"
-              size={24}
-            />
-          </Pressable>
-        </View>
         <View style={loginPageStyles.form}>
           <Text style={loginPageStyles.formTitle}>
             {LoginCon.isLoginMode ? "Sign in." : "Sign up."}
@@ -117,56 +106,42 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
               </Text>
             </Pressable>
           )}
-          <LinearGradient
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            colors={[
-              stylesConfig.colors.default_color_1,
-              stylesConfig.colors.default_color_2,
-            ]}
-            style={loginPageStyles.button}
+        </View>
+        <GradientButton handlePressFunction={LoginCon.handleSubmitData}>
+          <Text style={loginPageStyles.buttonText}>
+            {LoginCon.isLoginMode ? "Sign in" : "Sign up"}
+          </Text>
+        </GradientButton>
+        <CrossedFooter>
+          <Text style={loginPageStyles.socialMediaTitle}>Or</Text>
+        </CrossedFooter>
+        <View style={loginPageStyles.socialMedia}>
+          <Pressable
+            onPress={() => LoginCon.loginGoogle()}
+            style={loginPageStyles.socialMediaContainer}
           >
-            <Pressable
-              onPress={() => LoginCon.handleSubmitData()}
-              style={loginPageStyles.button_pressable}
-            >
-              <Text style={loginPageStyles.buttonText}>
-                {LoginCon.isLoginMode ? "Sign in" : "Sign up"}
-              </Text>
-            </Pressable>
-          </LinearGradient>
-          <View style={loginPageStyles.socialMediaFooter}>
-            <View style={loginPageStyles.socialMediaLine}></View>
-            <Text style={loginPageStyles.socialMediaTitle}>Or</Text>
-          </View>
-          <View style={loginPageStyles.socialMedia}>
-            <Pressable
-              onPress={() => LoginCon.loginGoogle()}
-              style={loginPageStyles.socialMediaContainer}
-            >
-              <FontAwesome
-                style={loginPageStyles.socialMediaIcon}
-                name="google"
-                size={30}
-              />
-              <Text style={loginPageStyles.socialMediaText}>
-                Sign in with Google
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() => LoginCon.loginAnonymous()}
-              style={loginPageStyles.socialMediaContainer}
-            >
-              <MaterialCommunityIcons
-                style={loginPageStyles.socialMediaIcon}
-                name="incognito"
-                size={30}
-              />
-              <Text style={loginPageStyles.socialMediaText}>
-                Sign in anonymously
-              </Text>
-            </Pressable>
-          </View>
+            <FontAwesome
+              style={loginPageStyles.socialMediaIcon}
+              name="google"
+              size={30}
+            />
+            <Text style={loginPageStyles.socialMediaText}>
+              Sign in with Google
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => LoginCon.loginAnonymous()}
+            style={loginPageStyles.socialMediaContainer}
+          >
+            <MaterialCommunityIcons
+              style={loginPageStyles.socialMediaIcon}
+              name="incognito"
+              size={30}
+            />
+            <Text style={loginPageStyles.socialMediaText}>
+              Sign in anonymously
+            </Text>
+          </Pressable>
         </View>
         <Pressable
           style={loginPageStyles.footer}

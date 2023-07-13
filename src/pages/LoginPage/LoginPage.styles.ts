@@ -92,9 +92,8 @@ export const loginPageStyles = StyleSheet.create({
 
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    gap: 30,
+    justifyContent: "space-evenly",
 
     padding: "2%",
     borderWidth: 1,

@@ -21,11 +21,7 @@ const UserInput = ({ value, changeValue, options }: IUserInputProps) => {
       }
     >
       {options.icon && (
-        <FontAwesome
-          style={userInputStyles.icon}
-          name={options.icon}
-          size={stylesConfig.fontSize.big_regular}
-        />
+        <FontAwesome style={userInputStyles.icon} name={options.icon} />
       )}
       <TextInput
         secureTextEntry={!visible}
@@ -40,7 +36,6 @@ const UserInput = ({ value, changeValue, options }: IUserInputProps) => {
           <FontAwesome
             style={userInputStyles.visibilityIcon}
             name={visible ? "eye-slash" : "eye"}
-            size={stylesConfig.fontSize.regular}
           />
         </Pressable>
       )}

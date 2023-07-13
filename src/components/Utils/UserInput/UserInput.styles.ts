@@ -12,12 +12,12 @@ export const userInputStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-
-    marginVertical: "1%",
     gap: 5,
-    paddingHorizontal: 15,
-    borderRadius: 12,
+
+    paddingVertical: "1%",
+    paddingHorizontal: "5%",
     borderWidth: 1,
+    borderRadius: 12,
     borderColor: stylesConfig.colors.default_background_light,
     overflow: "scroll",
   },
@@ -25,14 +25,14 @@ export const userInputStyles = StyleSheet.create({
     borderColor: stylesConfig.colors.red_alert,
   },
   icon: {
-    alignSelf: "center",
-    alignItems: "center",
     width: 40,
+    fontSize: stylesConfig.fontSize.subtitle,
     color: stylesConfig.colors.default_font,
   },
   visibilityIcon: {
     alignSelf: "center",
     alignItems: "center",
+    fontSize: stylesConfig.fontSize.regular,
     width: 20,
     color: stylesConfig.colors.default_font,
   },

@@ -54,33 +54,6 @@ export const forgotPasswordPageStyles = StyleSheet.create({
   alertMessageGreen: {
     color: stylesConfig.colors.green_alert,
   },
-  inputContainer: {
-    minWidth: "100%",
-    maxWidth: "100%",
-    maxHeight: 50,
-    height: 50,
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 5,
-
-    overflow: "scroll",
-    marginVertical: 3,
-    paddingHorizontal: 15,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: stylesConfig.colors.default_background_light,
-  },
-  inputContainerAlert: {
-    borderColor: stylesConfig.colors.red_alert,
-  },
-  textInput: {
-    width: "100%",
-    fontFamily: stylesConfig.fontFamily.default,
-    fontSize: stylesConfig.fontSize.regular,
-    color: stylesConfig.colors.default_font,
-  },
   buttonText: {
     alignContent: "center",
     width: "100%",

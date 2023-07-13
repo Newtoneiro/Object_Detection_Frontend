@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
@@ -7,6 +7,7 @@ import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext/Forg
 import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
 import GradientButton from "../../components/Utils/GradientButton/GradientButton";
 import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
+import UserInput from "../../components/Utils/UserInput/UserInput";
 import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
 import stylesConfig from "../../config.styles";
 import { useContext } from "react";
@@ -42,24 +43,16 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
           >
             {ForgotPasswordCon.response.message}
           </Text>
-          <View
-            style={
-              ForgotPasswordCon.response.success
-                ? forgotPasswordPageStyles.inputContainer
-                : {
-                    ...forgotPasswordPageStyles.inputContainer,
-                    ...forgotPasswordPageStyles.inputContainerAlert,
-                  }
-            }
-          >
-            <TextInput
-              style={forgotPasswordPageStyles.textInput}
-              placeholder="Email"
-              placeholderTextColor={stylesConfig.colors.default_font_subtitle}
-              value={ForgotPasswordCon.email}
-              onChangeText={(text) => ForgotPasswordCon.setEmail(text)}
-            />
-          </View>
+          <UserInput
+            value={ForgotPasswordCon.email}
+            changeValue={ForgotPasswordCon.setEmail}
+            options={{
+              isSecret: false,
+              isAlert: !ForgotPasswordCon.response.success,
+              icon: null,
+              placeholder: "Email",
+            }}
+          />
           <GradientButton
             handlePressFunction={ForgotPasswordCon.handleSubmitData}
           >

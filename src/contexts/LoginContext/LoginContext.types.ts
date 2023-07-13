@@ -3,10 +3,7 @@ export interface ILoginContext {
   userInputsAlert: IUserInputsAlert;
   isLoginMode: Boolean;
   loading: Boolean;
-  showPasswordsState: IShowPasswordsState;
   switchLoginMode: () => void;
-  switchPasswordVisibility: () => void;
-  switchConfirmPasswordVisibility: () => void;
   setEmail: (text: string) => void;
   setPassword: (text: string) => void;
   setConfirmPassword: (text: string) => void;
@@ -28,9 +25,4 @@ export interface IUserInputsAlert {
     password: boolean;
     confirmPassword: boolean;
   };
-}
-
-export interface IShowPasswordsState {
-  password: boolean;
-  confirmPassword: boolean;
 }

@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
@@ -8,6 +8,7 @@ import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay
 import { LoginContext } from "../../contexts/LoginContext/LoginContext";
 import { LoginPageProps } from "./LoginPage.types";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import UserInput from "../../components/Utils/UserInput/UserInput";
 import { loginPageStyles } from "./LoginPage.styles";
 import stylesConfig from "../../config.styles";
 import { useContext } from "react";
@@ -31,100 +32,37 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
           <Text style={loginPageStyles.alertMessage}>
             {LoginCon.userInputsAlert.cause}
           </Text>
-          <View
-            style={
-              LoginCon.userInputsAlert.inputsIssue.email
-                ? {
-                    ...loginPageStyles.inputContainer,
-                    ...loginPageStyles.inputContainerAlert,
-                  }
-                : loginPageStyles.inputContainer
-            }
-          >
-            <FontAwesome
-              style={loginPageStyles.icon}
-              name="envelope"
-              size={stylesConfig.fontSize.big_regular}
-            />
-            <TextInput
-              style={loginPageStyles.textInput}
-              placeholder="Email"
-              placeholderTextColor={stylesConfig.colors.default_font_subtitle}
-              value={LoginCon.userInputs.email}
-              onChangeText={(text) => LoginCon.setEmail(text)}
-            />
-          </View>
-          <View
-            style={
-              LoginCon.userInputsAlert.inputsIssue.password
-                ? {
-                    ...loginPageStyles.inputContainer,
-                    ...loginPageStyles.inputContainerAlert,
-                  }
-                : loginPageStyles.inputContainer
-            }
-          >
-            <FontAwesome
-              style={loginPageStyles.icon}
-              name="lock"
-              size={stylesConfig.fontSize.subtitle}
-            />
-            <TextInput
-              style={loginPageStyles.textInput}
-              secureTextEntry={!LoginCon.showPasswordsState.password}
-              placeholder="Password"
-              placeholderTextColor={stylesConfig.colors.default_font_subtitle}
-              value={LoginCon.userInputs.password}
-              onChangeText={(text) => LoginCon.setPassword(text)}
-            />
-            <Pressable onPress={() => LoginCon.switchPasswordVisibility()}>
-              <FontAwesome
-                style={loginPageStyles.showPasswordIcon}
-                name={
-                  LoginCon.showPasswordsState.password ? "eye-slash" : "eye"
-                }
-                size={stylesConfig.fontSize.regular}
-              />
-            </Pressable>
-          </View>
+          <UserInput
+            value={LoginCon.userInputs.email}
+            changeValue={LoginCon.setEmail}
+            options={{
+              isSecret: false,
+              isAlert: LoginCon.userInputsAlert.inputsIssue.email,
+              icon: "envelope",
+              placeholder: "Email",
+            }}
+          />
+          <UserInput
+            value={LoginCon.userInputs.password}
+            changeValue={LoginCon.setPassword}
+            options={{
+              isSecret: true,
+              isAlert: LoginCon.userInputsAlert.inputsIssue.password,
+              icon: "lock",
+              placeholder: "Password",
+            }}
+          />
           {!LoginCon.isLoginMode && (
-            <View
-              style={
-                LoginCon.userInputsAlert.inputsIssue.confirmPassword
-                  ? {
-                      ...loginPageStyles.inputContainer,
-                      ...loginPageStyles.inputContainerAlert,
-                    }
-                  : loginPageStyles.inputContainer
-              }
-            >
-              <FontAwesome
-                style={loginPageStyles.icon}
-                name="lock"
-                size={stylesConfig.fontSize.subtitle}
-              />
-              <TextInput
-                style={loginPageStyles.textInput}
-                secureTextEntry={!LoginCon.showPasswordsState.confirmPassword}
-                placeholder="Confirm password"
-                placeholderTextColor={stylesConfig.colors.default_font_subtitle}
-                value={LoginCon.userInputs.confirmPassword}
-                onChangeText={(text) => LoginCon.setConfirmPassword(text)}
-              />
-              <Pressable
-                onPress={() => LoginCon.switchConfirmPasswordVisibility()}
-              >
-                <FontAwesome
-                  style={loginPageStyles.showPasswordIcon}
-                  name={
-                    LoginCon.showPasswordsState.confirmPassword
-                      ? "eye-slash"
-                      : "eye"
-                  }
-                  size={stylesConfig.fontSize.regular}
-                />
-              </Pressable>
-            </View>
+            <UserInput
+              value={LoginCon.userInputs.confirmPassword}
+              changeValue={LoginCon.setConfirmPassword}
+              options={{
+                isSecret: true,
+                isAlert: LoginCon.userInputsAlert.inputsIssue.confirmPassword,
+                icon: "lock",
+                placeholder: "Confirm Password",
+              }}
+            />
           )}
           {LoginCon.isLoginMode && (
             <Pressable

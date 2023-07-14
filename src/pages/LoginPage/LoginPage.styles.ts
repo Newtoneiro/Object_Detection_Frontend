@@ -36,16 +36,6 @@ export const loginPageStyles = StyleSheet.create({
     fontFamily: stylesConfig.fontFamily.default,
     color: stylesConfig.colors.default_font_subtitle,
   },
-  alertMessage: {
-    textAlign: "center",
-    width: "100%",
-    height: 20,
-    minHeight: 20,
-    maxHeight: 20,
-    fontFamily: stylesConfig.fontFamily.default,
-    fontSize: stylesConfig.fontSize.small,
-    color: stylesConfig.colors.red_alert,
-  },
   forgotPasswordFooter: {
     width: "100%",
 

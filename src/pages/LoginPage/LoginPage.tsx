@@ -1,5 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
+import AlertField from "../../components/Utils/AlertField/AlertField";
 import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -29,9 +30,7 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
               ? "Please sign in to continue."
               : "Please sign up to continue."}
           </Text>
-          <Text style={loginPageStyles.alertMessage}>
-            {LoginCon.userInputsAlert.cause}
-          </Text>
+          <AlertField success={false} text={LoginCon.userInputsAlert.cause} />
           <UserInput
             value={LoginCon.userInputs.email}
             changeValue={LoginCon.setEmail}

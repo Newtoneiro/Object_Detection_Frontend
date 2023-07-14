@@ -1,30 +1,27 @@
-import { Camera, CameraType } from "expo-camera";
 import { Text, TouchableOpacity, View } from "react-native";
-import { useEffect, useState } from "react";
 
+import { AuthContext } from "../../contexts/AuthContext/AuthContext";
+import { Camera } from "expo-camera";
+import { CameraContext } from "../../contexts/CameraContext/CameraContext";
 import { cameraPageStyles } from "./CameraPage.styles";
+import { useContext } from "react";
 
 export default function CameraPage() {
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-
-  useEffect(() => {
-    requestPermission();
-  }, []);
-
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  }
-
-  console.log(permission);
+  const AuthCon = useContext(AuthContext);
+  const CameraCon = useContext(CameraContext);
 
   return (
-    <Camera style={cameraPageStyles.container} type={type}>
+    <Camera
+      style={{ ...cameraPageStyles.container }}
+      type={CameraCon.type}
+      ratio="16:9"
+    >
       <View>
-        <TouchableOpacity onPress={toggleCameraType}>
+        <TouchableOpacity onPress={CameraCon.toggleCameraType}>
           <Text style={cameraPageStyles.text}>Flip Camera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => AuthCon.logout()}>
+          <Text style={cameraPageStyles.text}>LogOut</Text>
         </TouchableOpacity>
       </View>
     </Camera>

@@ -1,5 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
+import AlertField from "../../components/Utils/AlertField/AlertField";
 import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import { FontAwesome } from "@expo/vector-icons";
@@ -31,18 +32,10 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
           <Text style={forgotPasswordPageStyles.formSubTitle}>
             No worries, we'll send you reset instructions.
           </Text>
-          <Text
-            style={
-              ForgotPasswordCon.response.success
-                ? {
-                    ...forgotPasswordPageStyles.alertMessage,
-                    ...forgotPasswordPageStyles.alertMessageGreen,
-                  }
-                : forgotPasswordPageStyles.alertMessage
-            }
-          >
-            {ForgotPasswordCon.response.message}
-          </Text>
+          <AlertField
+            success={ForgotPasswordCon.response.success}
+            text={ForgotPasswordCon.response.message}
+          />
           <UserInput
             value={ForgotPasswordCon.email}
             changeValue={ForgotPasswordCon.setEmail}

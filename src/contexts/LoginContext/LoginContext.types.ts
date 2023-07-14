@@ -19,7 +19,7 @@ export interface IUserInputs {
 }
 
 export interface IUserInputsAlert {
-  cause: string | null;
+  cause: string;
   inputsIssue: {
     email: boolean;
     password: boolean;

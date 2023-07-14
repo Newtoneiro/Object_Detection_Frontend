@@ -1,4 +1,4 @@
-import { AuthContext } from "../../contexts/Authcontext/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 import Navigator from "../Navigator/Navigator";
 import UnAuthNavigator from "../UnAuthNavigator/UnAuthNavigator";
 import { useContext } from "react";

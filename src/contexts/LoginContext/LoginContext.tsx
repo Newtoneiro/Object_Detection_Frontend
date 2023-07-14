@@ -5,9 +5,9 @@ import {
 } from "./LoginContext.types";
 import { createContext, useContext, useState } from "react";
 
-import { AuthContext } from "../Authcontext/AuthContext";
+import { AuthContext } from "../AuthContext/AuthContext";
 import { IProps } from "../../config.types";
-import { validateEmail } from "../Authcontext/AuthContext.utils";
+import { validateEmail } from "../AuthContext/AuthContext.utils";
 
 const defaultUserInputs = {
   email: "",

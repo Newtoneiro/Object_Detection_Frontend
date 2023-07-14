@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 
 import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 import { Camera } from "expo-camera";
@@ -9,14 +9,20 @@ import { useContext } from "react";
 export default function CameraPage() {
   const AuthCon = useContext(AuthContext);
   const CameraCon = useContext(CameraContext);
+  console.log(CameraCon.cameraDimensions);
 
   return (
-    <Camera
-      style={{ ...cameraPageStyles.container }}
-      type={CameraCon.type}
-      ratio="16:9"
-    >
-      <View>
+    <View style={cameraPageStyles.container}>
+      <Camera
+        style={{
+          ...cameraPageStyles.camera,
+          width: CameraCon.cameraDimensions.width,
+          height: CameraCon.cameraDimensions.height,
+          transform: [{ translateX: -CameraCon.cameraDimensions.width / 2 }],
+        }}
+        type={CameraCon.type}
+      ></Camera>
+      <View style={cameraPageStyles.header}>
         <TouchableOpacity onPress={CameraCon.toggleCameraType}>
           <Text style={cameraPageStyles.text}>Flip Camera</Text>
         </TouchableOpacity>
@@ -24,6 +30,12 @@ export default function CameraPage() {
           <Text style={cameraPageStyles.text}>LogOut</Text>
         </TouchableOpacity>
       </View>
-    </Camera>
+      <View style={cameraPageStyles.bottomPanel}>
+        <Pressable
+          onPress={() => console.log("photo")}
+          style={cameraPageStyles.bottomPanelCaptureButton}
+        ></Pressable>
+      </View>
+    </View>
   );
 }

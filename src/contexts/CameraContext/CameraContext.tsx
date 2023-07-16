@@ -4,9 +4,10 @@ import {
   ICameraDimensions,
   Ratio,
 } from "./CameraContext.types";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 
 import { IProps } from "../../config.types";
+import config from "../../config";
 import { useWindowDimensions } from "react-native";
 
 const defaultCameraDimensions: ICameraDimensions = {
@@ -19,7 +20,10 @@ const defaultCameraContext: ICameraContext = {
   type: CameraType.back,
   permission: null,
   cameraDimensions: defaultCameraDimensions,
+  cameraRef: null,
   toggleCameraType: () => {},
+  capturePhoto: () => {},
+  setCameraRef: (_) => {},
 };
 
 const CameraContext = createContext<ICameraContext>(defaultCameraContext);
@@ -30,6 +34,7 @@ const CameraProvider = ({ children }: IProps) => {
     defaultCameraDimensions
   );
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [cameraRef, setCameraRef] = useState<Camera | null>(null);
   const { height } = useWindowDimensions();
 
   useEffect(() => {
@@ -70,9 +75,44 @@ const CameraProvider = ({ children }: IProps) => {
     );
   };
 
+  const capturePhoto = async () => {
+    if (!cameraRef) {
+      return;
+    }
+    cameraRef
+      .takePictureAsync({ quality: 0.7, base64: true })
+      .then(async (photo) => {
+        const source = photo.base64;
+        if (!source) {
+          return;
+        }
+
+        await cameraRef.pausePreview();
+        fetch(config.api_path + "/capturePhoto", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ file: source }),
+        }).then(async (response) => {
+          const test = await response.json();
+          console.log(test.response);
+        });
+      });
+  };
+
   return (
     <CameraContext.Provider
-      value={{ type, permission, cameraDimensions, toggleCameraType }}
+      value={{
+        type,
+        permission,
+        cameraDimensions,
+        cameraRef,
+        toggleCameraType,
+        capturePhoto,
+        setCameraRef,
+      }}
     >
       {children}
     </CameraContext.Provider>

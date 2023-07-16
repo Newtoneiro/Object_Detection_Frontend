@@ -9,11 +9,13 @@ import { useContext } from "react";
 export default function CameraPage() {
   const AuthCon = useContext(AuthContext);
   const CameraCon = useContext(CameraContext);
-  console.log(CameraCon.cameraDimensions);
 
   return (
     <View style={cameraPageStyles.container}>
       <Camera
+        ref={(ref) => {
+          CameraCon.setCameraRef(ref);
+        }}
         style={{
           ...cameraPageStyles.camera,
           width: CameraCon.cameraDimensions.width,
@@ -32,7 +34,7 @@ export default function CameraPage() {
       </View>
       <View style={cameraPageStyles.bottomPanel}>
         <Pressable
-          onPress={() => console.log("photo")}
+          onPress={() => CameraCon.capturePhoto()}
           style={cameraPageStyles.bottomPanelCaptureButton}
         ></Pressable>
       </View>

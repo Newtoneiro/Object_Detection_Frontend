@@ -39,7 +39,7 @@ export const cameraPageStyles = StyleSheet.create({
     left: 0,
 
     width: "100%",
-    height: 200,
+    height: "20%",
 
     display: "flex",
     alignItems: "center",
@@ -49,6 +49,7 @@ export const cameraPageStyles = StyleSheet.create({
     width: 80,
     height: 80,
 
+    backgroundColor: stylesConfig.colors.default_font,
     borderRadius: 50,
     borderWidth: 3,
     borderColor: stylesConfig.colors.black,

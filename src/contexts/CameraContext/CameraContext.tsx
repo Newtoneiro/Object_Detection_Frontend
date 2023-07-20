@@ -2,9 +2,10 @@ import { Camera, CameraType } from "expo-camera";
 import {
   ICameraContext,
   ICameraDimensions,
+  IPrediction,
   Ratio,
 } from "./CameraContext.types";
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { IProps } from "../../config.types";
 import config from "../../config";
@@ -13,7 +14,7 @@ import { useWindowDimensions } from "react-native";
 const defaultCameraDimensions: ICameraDimensions = {
   width: 0,
   height: 0,
-  ratio: "16:9",
+  ratio: "4:3",
 };
 
 const defaultCameraContext: ICameraContext = {
@@ -21,9 +22,13 @@ const defaultCameraContext: ICameraContext = {
   permission: null,
   cameraDimensions: defaultCameraDimensions,
   cameraRef: null,
+  capturedPhoto: null,
+  loading: true,
+  predictions: [],
   toggleCameraType: () => {},
   capturePhoto: () => {},
   setCameraRef: (_) => {},
+  resetCamera: () => {},
 };
 
 const CameraContext = createContext<ICameraContext>(defaultCameraContext);
@@ -35,6 +40,9 @@ const CameraProvider = ({ children }: IProps) => {
   );
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [cameraRef, setCameraRef] = useState<Camera | null>(null);
+  const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [predictions, setPredictions] = useState<IPrediction[]>([]);
   const { height } = useWindowDimensions();
 
   useEffect(() => {
@@ -76,18 +84,25 @@ const CameraProvider = ({ children }: IProps) => {
   };
 
   const capturePhoto = async () => {
+    setLoading(true);
     if (!cameraRef) {
       return;
     }
     cameraRef
-      .takePictureAsync({ quality: 0.7, base64: true })
+      .takePictureAsync({
+        quality: 0.7,
+        base64: true,
+        skipProcessing: true,
+      })
       .then(async (photo) => {
-        const source = photo.base64;
+        await cameraRef.pausePreview();
+        setCapturedPhoto(photo.uri);
+        let source = photo.base64;
+
         if (!source) {
           return;
         }
 
-        await cameraRef.pausePreview();
         fetch(config.api_path + "/capturePhoto", {
           method: "POST",
           headers: {
@@ -97,9 +112,28 @@ const CameraProvider = ({ children }: IProps) => {
           body: JSON.stringify({ file: source }),
         }).then(async (response) => {
           const test = await response.json();
-          console.log(test.response);
+          const new_predictions: IPrediction[] = [];
+          await test.result_boxes.forEach((element) => {
+            new_predictions.push({
+              x: Number(element.x),
+              y: Number(element.y),
+              width: Number(element.w),
+              height: Number(element.h),
+            });
+          });
+          setPredictions(new_predictions);
         });
+      })
+      .catch((error) => {
+        console.log(error);
       });
+    setLoading(false);
+  };
+
+  const resetCamera = () => {
+    setLoading(true);
+    setCapturedPhoto(null);
+    setLoading(false);
   };
 
   return (
@@ -109,9 +143,13 @@ const CameraProvider = ({ children }: IProps) => {
         permission,
         cameraDimensions,
         cameraRef,
+        capturedPhoto,
+        loading,
+        predictions,
         toggleCameraType,
         capturePhoto,
         setCameraRef,
+        resetCamera,
       }}
     >
       {children}

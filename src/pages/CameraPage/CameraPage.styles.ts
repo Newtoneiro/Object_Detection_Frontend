@@ -9,6 +9,11 @@ export const cameraPageStyles = StyleSheet.create({
 
     flex: 1,
   },
+  capturedPhoto: {
+    position: "relative",
+    width: "100%",
+    height: "100%",
+  },
   camera: {
     position: "absolute",
     top: 0,

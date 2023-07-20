@@ -10,6 +10,6 @@ export const loadingOverlayStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(0, 0, 0, 0.8)",
-    zIndex: 1000,
+    zIndex: 100000,
   },
 });

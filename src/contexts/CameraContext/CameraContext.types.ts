@@ -21,10 +21,27 @@ export interface ICameraDimensions {
 }
 
 export interface IPrediction {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  name: string;
+  class: number;
+  confidence: number;
+  box: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+}
+
+export interface IPredictionResponse {
+  name: string;
+  class: number;
+  confidence: number;
+  box: {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+  };
 }
 
 export type Ratio = "4:3" | "16:9";

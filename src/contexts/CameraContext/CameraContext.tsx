@@ -3,6 +3,7 @@ import {
   ICameraContext,
   ICameraDimensions,
   IPrediction,
+  IPredictionResponse,
   Ratio,
 } from "./CameraContext.types";
 import { createContext, useEffect, useState } from "react";
@@ -43,37 +44,34 @@ const CameraProvider = ({ children }: IProps) => {
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [predictions, setPredictions] = useState<IPrediction[]>([]);
-  const { height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     requestPermission();
     calculateCameraDimensions();
   }, []);
 
-  const calculateWidthFromHeight = (ratio: Ratio, height: number): number => {
-    let width = 0;
+  const calculateHeightFromWidth = (ratio: Ratio, width: number): number => {
+    let height = 0;
     switch (ratio) {
       case "4:3":
-        width = (3 / 4) * height;
+        height = (4 / 3) * width;
         break;
       case "16:9":
-        width = (9 / 16) * height;
+        height = (16 / 9) * width;
         break;
       default:
-        width = 0;
+        height = 0;
         break;
     }
 
-    return width;
+    return height;
   };
 
   const calculateCameraDimensions = () => {
-    const actualWidth = calculateWidthFromHeight(
-      cameraDimensions.ratio,
-      height
-    );
+    const height = calculateHeightFromWidth(cameraDimensions.ratio, width);
     setCameraDimensions((prev) => {
-      return { ...prev, width: actualWidth, height: height };
+      return { ...prev, width: width, height: height };
     });
   };
 
@@ -85,54 +83,65 @@ const CameraProvider = ({ children }: IProps) => {
 
   const capturePhoto = async () => {
     setLoading(true);
-    if (!cameraRef) {
-      return;
-    }
-    cameraRef
-      .takePictureAsync({
-        quality: 0.7,
-        base64: true,
-        skipProcessing: true,
-      })
-      .then(async (photo) => {
-        await cameraRef.pausePreview();
-        setCapturedPhoto(photo.uri);
-        let source = photo.base64;
+    try {
+      if (!cameraRef) {
+        return;
+      }
+      cameraRef
+        .takePictureAsync({
+          quality: 0.7,
+          base64: true,
+          skipProcessing: true,
+        })
+        .then(async (photo) => {
+          await cameraRef.pausePreview();
+          setCapturedPhoto(photo.uri);
+          let source = photo.base64;
 
-        if (!source) {
-          return;
-        }
+          if (!source) {
+            return;
+          }
 
-        fetch(config.api_path + "/capturePhoto", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ file: source }),
-        }).then(async (response) => {
-          const test = await response.json();
-          const new_predictions: IPrediction[] = [];
-          await test.result_boxes.forEach((element) => {
-            new_predictions.push({
-              x: Number(element.x),
-              y: Number(element.y),
-              width: Number(element.w),
-              height: Number(element.h),
+          fetch(config.api_path + "/capturePhoto", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({ file: source }),
+          }).then(async (response) => {
+            const test = await response.json();
+            const new_predictions: IPrediction[] = [];
+            await test.forEach((element: IPredictionResponse) => {
+              new_predictions.push({
+                ...element,
+                box: {
+                  x:
+                    ((element.box.x1 + element.box.x2) / 2) *
+                    cameraDimensions.width,
+                  y:
+                    ((element.box.y1 + element.box.y2) / 2) *
+                    cameraDimensions.height,
+                  width:
+                    (element.box.x2 - element.box.x1) * cameraDimensions.width,
+                  height:
+                    (element.box.y2 - element.box.y1) * cameraDimensions.height,
+                },
+              });
             });
+            setPredictions(new_predictions);
+            setLoading(false);
           });
-          setPredictions(new_predictions);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const resetCamera = () => {
     setLoading(true);
     setCapturedPhoto(null);
+    setPredictions([]);
     setLoading(false);
   };
 

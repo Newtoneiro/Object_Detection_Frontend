@@ -14,42 +14,6 @@ export default function CameraPage() {
 
   return (
     <View style={cameraPageStyles.container}>
-      {CameraCon.loading && <LoadingOverlay />}
-      {CameraCon.capturedPhoto ? (
-        <View style={cameraPageStyles.capturedPhoto}>
-          <Image
-            style={cameraPageStyles.container}
-            source={{
-              uri: CameraCon.capturedPhoto,
-            }}
-          />
-          {CameraCon.predictions.map((prediction, i) => {
-            console.log(prediction);
-            return (
-              <DetectedRectangle
-                key={i}
-                init_x={prediction.x}
-                init_y={prediction.y}
-                init_width={prediction.width}
-                init_height={prediction.height}
-              />
-            );
-          })}
-        </View>
-      ) : (
-        <Camera
-          ref={(ref) => {
-            CameraCon.setCameraRef(ref);
-          }}
-          style={{
-            ...cameraPageStyles.camera,
-            width: CameraCon.cameraDimensions.width,
-            height: CameraCon.cameraDimensions.height,
-            transform: [{ translateX: -CameraCon.cameraDimensions.width / 2 }],
-          }}
-          type={CameraCon.type}
-        ></Camera>
-      )}
       <View style={cameraPageStyles.header}>
         <TouchableOpacity onPress={() => CameraCon.toggleCameraType()}>
           <Text style={cameraPageStyles.text}>Flip Camera</Text>
@@ -63,14 +27,50 @@ export default function CameraPage() {
           <Text style={cameraPageStyles.text}>LogOut</Text>
         </TouchableOpacity>
       </View>
-      {!CameraCon.capturedPhoto && (
-        <View style={cameraPageStyles.bottomPanel}>
-          <Pressable
-            onPress={() => CameraCon.capturePhoto()}
-            style={cameraPageStyles.bottomPanelCaptureButton}
-          ></Pressable>
-        </View>
-      )}
+      {CameraCon.loading && <LoadingOverlay />}
+      <View
+        style={{
+          ...cameraPageStyles.cameraBox,
+          width: CameraCon.cameraDimensions.width,
+          height: CameraCon.cameraDimensions.height,
+        }}
+      >
+        {CameraCon.capturedPhoto ? (
+          <>
+            <Image
+              style={cameraPageStyles.camera}
+              source={{
+                uri: CameraCon.capturedPhoto,
+              }}
+            />
+            {CameraCon.predictions.map((prediction, i) => {
+              return (
+                <DetectedRectangle
+                  key={i}
+                  name={prediction.name}
+                  class={prediction.class}
+                  confidence={prediction.confidence}
+                  box={prediction.box}
+                />
+              );
+            })}
+          </>
+        ) : (
+          <Camera
+            ref={(ref) => {
+              CameraCon.setCameraRef(ref);
+            }}
+            style={cameraPageStyles.camera}
+            type={CameraCon.type}
+          ></Camera>
+        )}
+      </View>
+      <View style={cameraPageStyles.bottomPanel}>
+        <Pressable
+          onPress={() => CameraCon.capturePhoto()}
+          style={cameraPageStyles.bottomPanelCaptureButton}
+        ></Pressable>
+      </View>
     </View>
   );
 }

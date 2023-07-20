@@ -1,28 +1,31 @@
-import { IDetectedRectangleProps } from "./DetectedRectangle.types";
-import { View } from "react-native";
+import { Text, View } from "react-native";
+
+import { IPrediction } from "../../../contexts/CameraContext/CameraContext.types";
 import { detectedRectangleStyles } from "./DetectedRectangle.styles";
 import { useState } from "react";
 
-const DetectedRectangle = ({
-  init_x,
-  init_y,
-  init_width,
-  init_height,
-}: IDetectedRectangleProps) => {
-  const [x, setX] = useState<number>(init_x);
-  const [y, setY] = useState<number>(init_y);
-  const [width, setWidth] = useState<number>(init_width);
-  const [height, setHeight] = useState<number>(init_height);
+const DetectedRectangle = ({ name, confidence, box }: IPrediction) => {
+  const [x, setX] = useState<number>(box.x);
+  const [y, setY] = useState<number>(box.y);
+  const [width, setWidth] = useState<number>(box.width);
+  const [height, setHeight] = useState<number>(box.height);
+
   return (
     <View
       style={{
         ...detectedRectangleStyles.container,
-        top: `${y * 100}%`,
-        right: `${x * 100}%`,
-        width: 100,
-        height: 100,
+        left: x,
+        top: y,
+        width: width,
+        height: height,
+        transform: [{ translateX: -width / 2 }, { translateY: -height / 2 }],
       }}
-    ></View>
+    >
+      <View style={detectedRectangleStyles.label}>
+        <Text>{name}</Text>
+        <Text>{confidence.toFixed(2)}</Text>
+      </View>
+    </View>
   );
 };
 

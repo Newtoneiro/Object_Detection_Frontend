@@ -7,44 +7,35 @@ export const cameraPageStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
 
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "column",
+
     flex: 1,
-  },
-  capturedPhoto: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-  },
-  camera: {
-    position: "absolute",
-    top: 0,
-    left: "50%",
+    paddingVertical: 20,
   },
   header: {
-    position: "absolute",
-    top: 0,
-    left: 0,
     width: "100%",
-    height: 100,
-
+    height: 50,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-
-    zIndex: 1000,
   },
+  cameraBox: {
+    position: "relative",
+    width: "100%",
+  },
+  camera: { width: "100%", height: "100%" },
   text: {
     width: 100,
     backgroundColor: "white",
     textAlign: "center",
   },
   bottomPanel: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-
     width: "100%",
-    height: "20%",
+    height: 100,
 
     display: "flex",
     alignItems: "center",

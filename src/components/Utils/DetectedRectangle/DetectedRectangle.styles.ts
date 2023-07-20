@@ -8,4 +8,18 @@ export const detectedRectangleStyles = StyleSheet.create({
     borderWidth: 2,
     zIndex: 10000,
   },
+  label: {
+    position: "absolute",
+    bottom: "100%",
+    left: -2,
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+
+    backgroundColor: stylesConfig.colors.red_alert,
+    color: stylesConfig.colors.default_font,
+    gap: 10,
+  },
 });

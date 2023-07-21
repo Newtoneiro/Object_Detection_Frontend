@@ -2,7 +2,6 @@ export interface ILoginContext {
   userInputs: IUserInputs;
   userInputsAlert: IUserInputsAlert;
   isLoginMode: Boolean;
-  loading: Boolean;
   switchLoginMode: () => void;
   setEmail: (text: string) => void;
   setPassword: (text: string) => void;

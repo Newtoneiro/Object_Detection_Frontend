@@ -18,7 +18,6 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
 
   return (
     <Background handlePressFunction={() => navigation.navigate("LoginPage")}>
-      {ForgotPasswordCon.loading && <LoadingOverlay />}
       <View style={forgotPasswordPageStyles.container}>
         <View style={forgotPasswordPageStyles.form}>
           <FontAwesome

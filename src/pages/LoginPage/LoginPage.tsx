@@ -19,7 +19,6 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
 
   return (
     <Background handlePressFunction={() => navigation.navigate("WelcomePage")}>
-      {LoginCon.loading && <LoadingOverlay />}
       <View style={loginPageStyles.container}>
         <View style={loginPageStyles.form}>
           <Text style={loginPageStyles.formTitle}>

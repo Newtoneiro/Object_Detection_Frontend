@@ -27,7 +27,6 @@ export default function CameraPage() {
           <Text style={cameraPageStyles.text}>LogOut</Text>
         </TouchableOpacity>
       </View>
-      {CameraCon.loading && <LoadingOverlay />}
       <View
         style={{
           ...cameraPageStyles.cameraBox,
@@ -61,13 +60,13 @@ export default function CameraPage() {
               CameraCon.setCameraRef(ref);
             }}
             style={cameraPageStyles.camera}
-            type={CameraCon.type}
+            type={CameraCon.cameraOptions.type}
           ></Camera>
         )}
       </View>
       <View style={cameraPageStyles.bottomPanel}>
         <Pressable
-          onPress={() => CameraCon.capturePhoto()}
+          onPress={() => CameraCon.handleButtonClick()}
           style={cameraPageStyles.bottomPanelCaptureButton}
         ></Pressable>
       </View>

@@ -106,7 +106,7 @@ const CameraProvider = ({ children }: IProps) => {
         setCapturedPhoto(photo.uri);
 
         let source = photo.base64;
-        const response = await fetch(config.api_path + "/capturePhoto", {
+        const response = await fetch(config.api_path + "/objectDetection" + "/capturePhoto", {
           method: "POST",
           headers: {
             Accept: "application/json",

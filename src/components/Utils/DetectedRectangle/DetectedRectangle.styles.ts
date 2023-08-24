@@ -6,7 +6,7 @@ export const detectedRectangleStyles = StyleSheet.create({
     position: "absolute",
     borderColor: stylesConfig.colors.red_alert,
     borderWidth: 2,
-    zIndex: 10000,
+    zIndex: 5000,
   },
   label: {
     position: "absolute",

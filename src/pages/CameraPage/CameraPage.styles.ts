@@ -9,45 +9,46 @@ export const cameraPageStyles = StyleSheet.create({
 
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     flexDirection: "column",
 
     flex: 1,
+
+    backgroundColor: stylesConfig.colors.default_background_dark,
+  },
+  camera: { width: "100%", height: "100%" },
+  bottomPanel: {
+    flex: 1,
+    width: "100%",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "column",
+
     paddingVertical: 20,
   },
-  header: {
-    width: "100%",
-    height: 50,
+  cameraButtons: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-  },
-  cameraBox: {
-    position: "relative",
-    width: "100%",
-  },
-  camera: { width: "100%", height: "100%" },
-  text: {
-    width: 100,
-    backgroundColor: "white",
-    textAlign: "center",
-  },
-  bottomPanel: {
-    width: "100%",
-    height: 100,
 
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    paddingHorizontal: 10,
+
+    width: "100%",
+  },
+  cameraButton: {
+    color: stylesConfig.colors.default_font,
+    textAlign: "center",
   },
   bottomPanelCaptureButton: {
     width: 80,
     height: 80,
 
-    backgroundColor: stylesConfig.colors.default_font,
+    backgroundColor: stylesConfig.colors.default_background_dark,
     borderRadius: 50,
-    borderWidth: 3,
-    borderColor: stylesConfig.colors.black,
+    borderWidth: 2,
+    borderColor: stylesConfig.colors.default_font,
   },
 });

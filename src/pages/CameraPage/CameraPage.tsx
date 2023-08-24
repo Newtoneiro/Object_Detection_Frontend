@@ -4,8 +4,9 @@ import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 import { Camera } from "expo-camera";
 import { CameraContext } from "../../contexts/CameraContext/CameraContext";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
-import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
+import { MaterialIcons } from "@expo/vector-icons";
 import { cameraPageStyles } from "./CameraPage.styles";
+import stylesConfig from "../../config.styles";
 import { useContext } from "react";
 
 export default function CameraPage() {
@@ -14,22 +15,8 @@ export default function CameraPage() {
 
   return (
     <View style={cameraPageStyles.container}>
-      <View style={cameraPageStyles.header}>
-        <TouchableOpacity onPress={() => CameraCon.toggleCameraType()}>
-          <Text style={cameraPageStyles.text}>Flip Camera</Text>
-        </TouchableOpacity>
-        {CameraCon.capturedPhoto && (
-          <TouchableOpacity onPress={() => CameraCon.resetCamera()}>
-            <Text style={cameraPageStyles.text}>Back</Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity onPress={() => AuthCon.logout()}>
-          <Text style={cameraPageStyles.text}>LogOut</Text>
-        </TouchableOpacity>
-      </View>
       <View
         style={{
-          ...cameraPageStyles.cameraBox,
           width: CameraCon.cameraDimensions.width,
           height: CameraCon.cameraDimensions.height,
         }}
@@ -65,6 +52,31 @@ export default function CameraPage() {
         )}
       </View>
       <View style={cameraPageStyles.bottomPanel}>
+        <View style={cameraPageStyles.cameraButtons}>
+          <TouchableOpacity onPress={() => CameraCon.toggleCameraType()}>
+            <MaterialIcons
+              style={cameraPageStyles.cameraButton}
+              name="flip"
+              size={stylesConfig.fontSize.title}
+            />
+          </TouchableOpacity>
+          {CameraCon.capturedPhoto && (
+            <TouchableOpacity onPress={() => CameraCon.resetCamera()}>
+              <MaterialIcons
+                style={cameraPageStyles.cameraButton}
+                name="keyboard-return"
+                size={stylesConfig.fontSize.title}
+              />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity onPress={() => AuthCon.logout()}>
+            <MaterialIcons
+              style={cameraPageStyles.cameraButton}
+              name="logout"
+              size={stylesConfig.fontSize.title}
+            />
+          </TouchableOpacity>
+        </View>
         <Pressable
           onPress={() => CameraCon.handleButtonClick()}
           style={cameraPageStyles.bottomPanelCaptureButton}

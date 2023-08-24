@@ -106,14 +106,23 @@ const CameraProvider = ({ children }: IProps) => {
         setCapturedPhoto(photo.uri);
 
         let source = photo.base64;
-        const response = await fetch(config.api_path + "/objectDetection" + "/capturePhoto", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ file: source, save: cameraOptions.savePhoto }),
-        });
+        const response = await fetch(
+          config.api_path + "/objectDetection" + "/capturePhoto",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              file: source,
+              doSave: cameraOptions.savePhoto,
+            }),
+          }
+        );
+        if (response.status !== 200) {
+          throw "Bad request.";
+        }
         const response_json = await response.json();
 
         const new_predictions: IPrediction[] = [];
@@ -136,6 +145,7 @@ const CameraProvider = ({ children }: IProps) => {
         setPredictions(new_predictions);
       })
       .catch((error: any) => {
+        setCapturedPhoto(null);
         ErrorCon.displayError(
           `Something went terribly wrong. ${error}`,
           "error"

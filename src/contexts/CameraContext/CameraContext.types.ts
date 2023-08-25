@@ -7,6 +7,7 @@ export interface ICameraContext {
   capturedPhoto: string | null;
   predictions: IPrediction[];
   cameraOptions: ICameraOptions;
+  setCameraOptions: (_: ICameraOptions) => void;
   toggleCameraType: () => void;
   handleButtonClick: () => void;
   setCameraRef: (_: Camera | null) => void;
@@ -49,6 +50,8 @@ export interface ICameraOptions {
   savePhoto: boolean;
 }
 
-export type Ratio = "4:3" | "16:9";
+export const possibleRatios = ["4:3", "16:9"];
+export type Ratio = (typeof possibleRatios)[number];
 
-export type Quality = "0.1" | "0.5" | "0.7" | "1.0";
+export const possibleQualities = ["0.1", "0.5", "0.7", "1.0"];
+export type Quality = (typeof possibleQualities)[number];

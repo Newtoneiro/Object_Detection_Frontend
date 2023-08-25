@@ -19,7 +19,9 @@ export const detectedRectangleStyles = StyleSheet.create({
     flexDirection: "row",
 
     backgroundColor: stylesConfig.colors.red_alert,
-    color: stylesConfig.colors.default_font,
     gap: 10,
+  },
+  text: {
+    color: stylesConfig.colors.default_font,
   },
 });

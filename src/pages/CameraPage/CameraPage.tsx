@@ -1,20 +1,66 @@
-import { Image, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, TouchableOpacity, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 import { Camera } from "expo-camera";
 import { CameraContext } from "../../contexts/CameraContext/CameraContext";
+import { CameraPageProps } from "./CameraPage.types";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
+import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
 import { MaterialIcons } from "@expo/vector-icons";
 import { cameraPageStyles } from "./CameraPage.styles";
 import stylesConfig from "../../config.styles";
-import { useContext } from "react";
 
-export default function CameraPage() {
+const CameraPage = ({ navigation }: CameraPageProps) => {
+  const [focused, setFocused] = useState<boolean>(false);
+
   const AuthCon = useContext(AuthContext);
   const CameraCon = useContext(CameraContext);
 
-  return (
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      setFocused(true);
+    });
+
+    navigation.addListener("blur", () => {
+      setFocused(false);
+    });
+  }, [navigation]);
+
+  return focused ? (
     <View style={cameraPageStyles.container}>
+      <View style={cameraPageStyles.topPanel}>
+        {CameraCon.capturedPhoto && (
+          <TouchableOpacity onPress={() => CameraCon.resetCamera()}>
+            <MaterialIcons
+              style={cameraPageStyles.cameraButton}
+              name="keyboard-return"
+              size={stylesConfig.fontSize.title}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={() => CameraCon.toggleCameraType()}>
+          <MaterialIcons
+            style={cameraPageStyles.cameraButton}
+            name="flip"
+            size={stylesConfig.fontSize.subtitle}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("SettingsPage")}>
+          <MaterialIcons
+            style={cameraPageStyles.cameraButton}
+            name="settings"
+            size={stylesConfig.fontSize.subtitle}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => AuthCon.logout()}>
+          <MaterialIcons
+            style={cameraPageStyles.cameraButton}
+            name="logout"
+            size={stylesConfig.fontSize.title}
+          />
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           width: CameraCon.cameraDimensions.width,
@@ -51,37 +97,16 @@ export default function CameraPage() {
           ></Camera>
         )}
       </View>
-      <View style={cameraPageStyles.bottomPanel}>
-        <View style={cameraPageStyles.cameraButtons}>
-          <TouchableOpacity onPress={() => CameraCon.toggleCameraType()}>
-            <MaterialIcons
-              style={cameraPageStyles.cameraButton}
-              name="flip"
-              size={stylesConfig.fontSize.title}
-            />
-          </TouchableOpacity>
-          {CameraCon.capturedPhoto && (
-            <TouchableOpacity onPress={() => CameraCon.resetCamera()}>
-              <MaterialIcons
-                style={cameraPageStyles.cameraButton}
-                name="keyboard-return"
-                size={stylesConfig.fontSize.title}
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity onPress={() => AuthCon.logout()}>
-            <MaterialIcons
-              style={cameraPageStyles.cameraButton}
-              name="logout"
-              size={stylesConfig.fontSize.title}
-            />
-          </TouchableOpacity>
-        </View>
-        <Pressable
-          onPress={() => CameraCon.handleButtonClick()}
-          style={cameraPageStyles.bottomPanelCaptureButton}
-        ></Pressable>
-      </View>
+      <Pressable
+        onPress={() => CameraCon.handleButtonClick()}
+        style={cameraPageStyles.bottomPanelCaptureButton}
+      >
+        <View style={cameraPageStyles.bottomPanelCaptureButtonInside}></View>
+      </Pressable>
     </View>
+  ) : (
+    <LoadingOverlay />
   );
-}
+};
+
+export default CameraPage;

@@ -34,6 +34,7 @@ const defaultCameraContext: ICameraContext = {
   capturedPhoto: null,
   predictions: [],
   cameraOptions: defaultCameraOptions,
+  setCameraOptions: (_) => {},
   toggleCameraType: () => {},
   handleButtonClick: () => {},
   setCameraRef: (_) => {},
@@ -58,6 +59,10 @@ const CameraProvider = ({ children }: IProps) => {
 
   const ErrorCon = useContext(ErrorContext);
   const LoadingCon = useContext(LoadingContext);
+
+  useEffect(() => {
+    console.log(cameraOptions);
+  }, [cameraOptions]);
 
   useEffect(() => {
     requestPermission();
@@ -176,6 +181,7 @@ const CameraProvider = ({ children }: IProps) => {
         capturedPhoto,
         predictions,
         cameraOptions,
+        setCameraOptions,
         toggleCameraType,
         handleButtonClick,
         setCameraRef,

@@ -5,7 +5,6 @@ import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import GradientButton from "../../components/Utils/GradientButton/GradientButton";
-import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
 import { LoginContext } from "../../contexts/LoginContext/LoginContext";
 import { LoginPageProps } from "./LoginPage.types";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";

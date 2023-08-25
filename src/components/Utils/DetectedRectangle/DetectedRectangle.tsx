@@ -22,8 +22,10 @@ const DetectedRectangle = ({ name, confidence, box }: IPrediction) => {
       }}
     >
       <View style={detectedRectangleStyles.label}>
-        <Text>{name}</Text>
-        <Text>{confidence.toFixed(2)}</Text>
+        <Text style={detectedRectangleStyles.text}>{name}</Text>
+        <Text style={detectedRectangleStyles.text}>
+          {confidence.toFixed(2)}
+        </Text>
       </View>
     </View>
   );

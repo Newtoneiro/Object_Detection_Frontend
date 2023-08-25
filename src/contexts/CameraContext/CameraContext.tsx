@@ -61,10 +61,6 @@ const CameraProvider = ({ children }: IProps) => {
   const LoadingCon = useContext(LoadingContext);
 
   useEffect(() => {
-    console.log(cameraOptions);
-  }, [cameraOptions]);
-
-  useEffect(() => {
     requestPermission();
   }, []);
 

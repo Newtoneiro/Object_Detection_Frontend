@@ -6,7 +6,6 @@ import { Camera } from "expo-camera";
 import { CameraContext } from "../../contexts/CameraContext/CameraContext";
 import { CameraPageProps } from "./CameraPage.types";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
-import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
 import { MaterialIcons } from "@expo/vector-icons";
 import { cameraPageStyles } from "./CameraPage.styles";
 import stylesConfig from "../../config.styles";
@@ -105,7 +104,7 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
       </Pressable>
     </View>
   ) : (
-    <LoadingOverlay />
+    <></>
   );
 };
 

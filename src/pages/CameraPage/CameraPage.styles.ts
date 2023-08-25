@@ -7,51 +7,48 @@ export const cameraPageStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
 
-    flex: 1,
-  },
-  camera: {
-    position: "absolute",
-    top: 0,
-    left: "50%",
-  },
-  header: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: 100,
-
     display: "flex",
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
+    flexDirection: "column",
 
-    zIndex: 1000,
+    flex: 1,
+
+    backgroundColor: stylesConfig.colors.default_background_dark,
   },
-  text: {
-    width: 100,
-    backgroundColor: "white",
+  topPanel: {
+    width: "100%",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+  },
+  camera: { width: "100%", height: "100%" },
+  cameraButton: {
+    color: stylesConfig.colors.default_font,
     textAlign: "center",
   },
-  bottomPanel: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-
-    width: "100%",
-    height: "20%",
-
+  bottomPanelCaptureButton: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  },
-  bottomPanelCaptureButton: {
+
     width: 80,
     height: 80,
 
-    backgroundColor: stylesConfig.colors.default_font,
+    backgroundColor: stylesConfig.colors.default_background_dark,
     borderRadius: 50,
     borderWidth: 3,
-    borderColor: stylesConfig.colors.black,
+    borderColor: stylesConfig.colors.default_font,
+  },
+  bottomPanelCaptureButtonInside: {
+    width: "100%",
+    height: "100%",
+
+    backgroundColor: stylesConfig.colors.default_font,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: stylesConfig.colors.default_background_dark,
   },
 });

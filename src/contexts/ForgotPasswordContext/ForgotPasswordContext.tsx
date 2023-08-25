@@ -6,6 +6,7 @@ import { createContext, useContext, useState } from "react";
 
 import { AuthContext } from "../AuthContext/AuthContext";
 import { IProps } from "../../config.types";
+import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
 
 const defaultResetPasswordResponse: IResetPasswordResponse = {
@@ -15,7 +16,6 @@ const defaultResetPasswordResponse: IResetPasswordResponse = {
 
 const defaultForgotPasswordContext: IForgotPasswordContext = {
   email: "",
-  loading: true,
   response: defaultResetPasswordResponse,
   setEmail: (_) => {},
   handleSubmitData: () => {},
@@ -27,16 +27,15 @@ const ForgotPasswordContext = createContext<IForgotPasswordContext>(
 
 const ForgotPasswordProvider = ({ children }: IProps) => {
   const [email, setEmail] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<IResetPasswordResponse>(
     defaultResetPasswordResponse
   );
 
   const AuthCon = useContext(AuthContext);
+  const LoadingCon = useContext(LoadingContext);
 
   const handleSubmitData = async () => {
-    setLoading(true);
-
+    LoadingCon.setLoading(true);
     if (!validateEmail(email)) {
       setResponse({ success: false, message: "Please provide a valid email." });
     } else {
@@ -47,15 +46,13 @@ const ForgotPasswordProvider = ({ children }: IProps) => {
         }
       });
     }
-
-    setLoading(false);
+    LoadingCon.setLoading(false);
   };
 
   return (
     <ForgotPasswordContext.Provider
       value={{
         email,
-        loading,
         response,
         setEmail,
         handleSubmitData,

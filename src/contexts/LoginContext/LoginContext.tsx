@@ -7,6 +7,7 @@ import { createContext, useContext, useState } from "react";
 
 import { AuthContext } from "../AuthContext/AuthContext";
 import { IProps } from "../../config.types";
+import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
 
 const defaultUserInputs = {
@@ -28,7 +29,6 @@ const defaultLoginContext: ILoginContext = {
   userInputs: defaultUserInputs,
   userInputsAlert: defaultUserInputsAlert,
   isLoginMode: false,
-  loading: true,
   switchLoginMode: () => {},
   setEmail: (_) => {},
   setPassword: (_) => {},
@@ -46,9 +46,9 @@ const LoginProvider = ({ children }: IProps) => {
   const [userInputsAlert, setUserInputsAlert] = useState<IUserInputsAlert>(
     defaultUserInputsAlert
   );
-  const [loading, setLoading] = useState<Boolean>(false);
 
   const AuthCon = useContext(AuthContext);
+  const LoadingCon = useContext(LoadingContext);
 
   const switchLoginMode = () => {
     clearUserInputs();
@@ -91,7 +91,7 @@ const LoginProvider = ({ children }: IProps) => {
   };
 
   const handleSubmitData = async () => {
-    setLoading(true);
+    LoadingCon.setLoading(true);
     if (isLoginMode) {
       if (verifyLogin()) {
         await AuthCon.login({
@@ -135,7 +135,7 @@ const LoginProvider = ({ children }: IProps) => {
         });
       }
     }
-    setLoading(false);
+    LoadingCon.setLoading(false);
   };
 
   const verifyLogin = () => {
@@ -204,15 +204,15 @@ const LoginProvider = ({ children }: IProps) => {
   };
 
   const loginGoogle = async () => {
-    setLoading(true);
+    LoadingCon.setLoading(true);
     await AuthCon.loginGoogle();
-    setLoading(false);
+    LoadingCon.setLoading(false);
   };
 
   const loginAnonymous = async () => {
-    setLoading(true);
+    LoadingCon.setLoading(true);
     await AuthCon.loginAnonymous();
-    setLoading(false);
+    LoadingCon.setLoading(false);
   };
 
   return (
@@ -221,7 +221,6 @@ const LoginProvider = ({ children }: IProps) => {
         userInputs,
         userInputsAlert,
         isLoginMode,
-        loading,
         switchLoginMode,
         setEmail,
         setPassword,

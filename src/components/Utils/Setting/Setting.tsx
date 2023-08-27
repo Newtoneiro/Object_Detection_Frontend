@@ -1,4 +1,4 @@
-import { Pressable, Switch, Text, View } from "react-native";
+import { Modal, Pressable, Switch, Text, View } from "react-native";
 
 import { ISettingsProps } from "./Setting.types";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -58,33 +58,45 @@ function Setting<T>({
           </Pressable>
         )}
       </View>
-      {toggleSetValue && (
-        <View style={settingStyles.changeValueBox}>
-          {possibleValues.map((optionValue) => {
-            return (
-              <Pressable
-                key={String(optionValue)}
-                onPress={() => {
-                  handleChangeValue(optionValue);
-                  setToggleSetValue(false);
-                }}
-                style={
-                  optionValue === value
-                    ? {
-                        ...settingStyles.changeValueOption,
-                        ...settingStyles.changeValueOptionSelected,
+      <Modal
+        style={settingStyles.changeValueModal}
+        animationType="fade"
+        visible={toggleSetValue}
+        transparent={true}
+      >
+        <View style={settingStyles.changeValueModalBackground}>
+          <View style={settingStyles.changeValueModalBox}>
+            <Text style={settingStyles.changeValueModalTitle}>{name}</Text>
+            <View style={settingStyles.changeValueModalOptions}>
+              {possibleValues.map((optionValue) => {
+                return (
+                  <Pressable
+                    key={String(optionValue)}
+                    onPress={() => {
+                      handleChangeValue(optionValue);
+                      setToggleSetValue(false);
+                    }}
+                    style={settingStyles.changeValueOption}
+                  >
+                    <MaterialIcons
+                      style={settingStyles.optionIcon}
+                      name={
+                        optionValue === value
+                          ? "radio-button-checked"
+                          : "radio-button-unchecked"
                       }
-                    : settingStyles.changeValueOption
-                }
-              >
-                <Text style={settingStyles.changeValueOptionText}>
-                  {String(optionValue)}
-                </Text>
-              </Pressable>
-            );
-          })}
+                      size={stylesConfig.fontSize.subtitle}
+                    />
+                    <Text style={settingStyles.changeValueOptionText}>
+                      {String(optionValue)}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
         </View>
-      )}
+      </Modal>
     </View>
   );
 }

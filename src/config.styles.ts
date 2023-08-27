@@ -4,7 +4,7 @@ const stylesConfig = {
     default_color_2: "#fc9d7a",
     default_background_dark: "#101010",
     default_background_light: "#2b2b36",
-    default_low_contrast: "#292929",
+    default_low_contrast: "#242424",
     default_font: "#fdfdfd",
     default_font_subtitle: "#ababab",
     red_alert: "#ed4545",

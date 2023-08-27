@@ -62,33 +62,73 @@ export const settingStyles = StyleSheet.create({
     fontFamily: stylesConfig.fontFamily.default,
     color: stylesConfig.colors.default_font_subtitle,
   },
-  changeValueBox: {
+  changeValueModal: {
     width: "100%",
-
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-    gap: 2,
-  },
-  changeValueOption: {
-    width: "100%",
+    height: "100%",
 
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
+  },
+  changeValueModalBackground: {
+    width: "100%",
+    height: "100%",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexDirection: "column",
+
+    padding: 15,
+
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+  },
+  changeValueModalBox: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    padding: 10,
+
+    backgroundColor: stylesConfig.colors.default_low_contrast,
+    borderRadius: 5,
+  },
+  changeValueModalTitle: {
+    width: "100%",
+
+    textTransform: "capitalize",
+    letterSpacing: 1,
+    fontSize: stylesConfig.fontSize.regular,
+    fontFamily: stylesConfig.fontFamily.default,
+    color: stylesConfig.colors.default_font,
+    textAlign: "left",
 
     padding: 10,
-    backgroundColor: stylesConfig.colors.default_low_contrast,
 
+    borderBottomColor: stylesConfig.colors.default_font_subtitle,
     borderBottomWidth: 1,
-    borderBottomColor: stylesConfig.colors.default_background_dark,
   },
-  changeValueOptionSelected: {
-    borderWidth: 1,
-    borderColor: stylesConfig.colors.default_color_1,
-    borderBottomColor: stylesConfig.colors.default_color_1,
+  changeValueModalOptions: {
+    width: "100%",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexDirection: "column",
+  },
+  optionIcon: {},
+  changeValueOption: {
+    width: "100%",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    gap: 20,
+
+    padding: 10,
   },
   changeValueOptionText: {
     textTransform: "capitalize",

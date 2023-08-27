@@ -9,7 +9,7 @@ export const cameraPageStyles = StyleSheet.create({
 
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
     flexDirection: "column",
 
     flex: 1,
@@ -18,18 +18,20 @@ export const cameraPageStyles = StyleSheet.create({
   },
   topPanel: {
     width: "100%",
+    height: 100,
 
     display: "flex",
     alignItems: "center",
     justifyContent: "space-evenly",
     flexDirection: "row",
   },
-  camera: { width: "100%", height: "100%" },
   cameraButton: {
     color: stylesConfig.colors.default_font,
     textAlign: "center",
   },
   bottomPanelCaptureButton: {
+    position: "absolute",
+    bottom: "5%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

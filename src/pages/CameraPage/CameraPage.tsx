@@ -69,7 +69,10 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
         {CameraCon.capturedPhoto ? (
           <>
             <Image
-              style={cameraPageStyles.camera}
+              style={{
+                width: CameraCon.cameraDimensions.width,
+                height: CameraCon.cameraDimensions.height,
+              }}
               source={{
                 uri: CameraCon.capturedPhoto,
               }}
@@ -91,8 +94,12 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
             ref={(ref) => {
               CameraCon.setCameraRef(ref);
             }}
-            style={cameraPageStyles.camera}
+            style={{
+              width: CameraCon.cameraDimensions.width,
+              height: CameraCon.cameraDimensions.height,
+            }}
             type={CameraCon.cameraOptions.type}
+            ratio={CameraCon.cameraOptions.ratio}
           ></Camera>
         )}
       </View>

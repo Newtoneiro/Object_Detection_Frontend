@@ -10,6 +10,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../AuthContext/AuthContext";
 import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
+import { AxiosError } from "axios";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
@@ -60,7 +61,6 @@ const CameraProvider = ({ children }: IProps) => {
 
   const ErrorCon = useContext(ErrorContext);
   const LoadingCon = useContext(LoadingContext);
-  const AuthCon = useContext(AuthContext);
   const AuthFetchCon = useContext(AuthFetchContext);
 
   useEffect(() => {
@@ -110,35 +110,36 @@ const CameraProvider = ({ children }: IProps) => {
         setCapturedPhoto(photo.uri);
 
         let source = photo.base64;
-        const response = await AuthFetchCon.authFetch.post(
-          "/objectDetection/capturePhoto",
-          {
+        await AuthFetchCon.authFetch
+          .post("/objectDetection/capturePhoto", {
             file: source,
             doSave: cameraOptions.savePhoto,
-          }
-        );
-        if (response.status !== 200) {
-          throw "Bad request.";
-        }
-
-        const new_predictions: IPrediction[] = [];
-        await response.data.forEach((element: IPredictionResponse) => {
-          new_predictions.push({
-            ...element,
-            box: {
-              x:
-                ((element.box.x1 + element.box.x2) / 2) *
-                cameraDimensions.width,
-              y:
-                ((element.box.y1 + element.box.y2) / 2) *
-                cameraDimensions.height,
-              width: (element.box.x2 - element.box.x1) * cameraDimensions.width,
-              height:
-                (element.box.y2 - element.box.y1) * cameraDimensions.height,
-            },
+          })
+          .then(async (response) => {
+            const new_predictions: IPrediction[] = [];
+            await response.data.forEach((element: IPredictionResponse) => {
+              new_predictions.push({
+                ...element,
+                box: {
+                  x:
+                    ((element.box.x1 + element.box.x2) / 2) *
+                    cameraDimensions.width,
+                  y:
+                    ((element.box.y1 + element.box.y2) / 2) *
+                    cameraDimensions.height,
+                  width:
+                    (element.box.x2 - element.box.x1) * cameraDimensions.width,
+                  height:
+                    (element.box.y2 - element.box.y1) * cameraDimensions.height,
+                },
+              });
+            });
+            setPredictions(new_predictions);
+          })
+          .catch(() => {
+            setCapturedPhoto(null);
+            return;
           });
-        });
-        setPredictions(new_predictions);
       })
       .catch((error: any) => {
         setCapturedPhoto(null);
@@ -150,9 +151,9 @@ const CameraProvider = ({ children }: IProps) => {
       });
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     LoadingCon.setLoading(true);
-    takePicture();
+    await takePicture();
     LoadingCon.setLoading(false);
   };
 

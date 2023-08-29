@@ -13,7 +13,6 @@ const LoadingOverlay = () => {
       {LoadingCon.loading && (
         <Modal
           style={loadingOverlayStyles.container}
-          animationType="fade"
           visible={LoadingCon.loading}
           transparent={true}
         >

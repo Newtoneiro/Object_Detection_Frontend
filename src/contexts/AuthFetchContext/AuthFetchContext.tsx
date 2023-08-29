@@ -1,5 +1,6 @@
-import React, { createContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
+import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { IAuthFetchContext } from "./AuthFetchContext.types";
 import { IProps } from "../../config.types";
 import axios from "axios";
@@ -17,16 +18,35 @@ const AuthFetchProvider = ({ children }: IProps) => {
     baseURL: config.api_path,
   });
 
+  const ErrorCon = useContext(ErrorContext);
+
   authFetch.interceptors.response.use(
     (response) => {
       return response;
     },
     (error) => {
       const code = error && error.response ? error.response.status : 0;
-      if (code === 401 || code === 403) {
-        console.log("error code", code);
+      switch (code) {
+        case 401:
+          ErrorCon.displayError(
+            `[${code}] JWT code is invalid.\nPlease reauthenticate.`,
+            "error"
+          );
+          break;
+        case 402:
+          ErrorCon.displayError(
+            `[${code}] Session expired. Please reauthenticate.`,
+            "error"
+          );
+          break;
+        case 500:
+          ErrorCon.displayError(`[${code}] Server is not responding.`, "error");
+          break;
+        default:
+          ErrorCon.displayError(`[${code}] Something went wrong.`, "error");
+          break;
       }
-      return Promise.reject(error);
+      return Promise.reject(code);
     }
   );
 

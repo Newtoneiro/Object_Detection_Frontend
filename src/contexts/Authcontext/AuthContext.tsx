@@ -6,6 +6,7 @@ import {
   IUserInfo,
 } from "./AuthContext.types";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import axios, { AxiosError } from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,7 +14,7 @@ import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { IProps } from "../../config.types";
-import axios from "axios";
+import { LoadingContext } from "../LoadingContext/LoadingContext";
 import config from "../../config";
 
 const defaultAuthContext: IAuthContext = {
@@ -39,15 +40,16 @@ const AuthProvider = ({ children }: IProps) => {
     userInfo: null,
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
   const AuthFetchCon = useContext(AuthFetchContext);
   const ErrorCon = useContext(ErrorContext);
+  const LoadingCon = useContext(LoadingContext);
 
   useEffect(() => {
     const getSavedAuthState = async () => {
       const rawUserInfo = await AsyncStorage.getItem("userInfo");
       const userInfo = rawUserInfo ? JSON.parse(rawUserInfo) : {};
       const token = await AsyncStorage.getItem("token");
-
       setAuthState({ token, userInfo });
     };
 
@@ -56,31 +58,33 @@ const AuthProvider = ({ children }: IProps) => {
 
   useEffect(() => {
     const verifyToken = async () => {
+      LoadingCon.setLoading(true);
       if (authState.token) {
-        axios
+        await axios
           .post(config.api_path + "/auth" + "/verifyToken", {
             token: authState.token,
           })
           .then((response) => {
             if (response.status === 200) {
               setIsAuthenticated(true);
+              AuthFetchCon.authFetch.defaults.headers.common[
+                "X-Access-Tokens"
+              ] = authState.token;
             } else {
               setIsAuthenticated(false);
-              setAuthState({ token: null, userInfo: null });
             }
           })
-          .catch((e: any) => {
+          .catch((error: any) => {
             ErrorCon.displayError(
-              "We've encountered some troubles logging in.",
+              "We've encountered some troubles logging in. \n" + error,
               "error"
             );
             setIsAuthenticated(false);
-            setAuthState({ token: null, userInfo: null });
           });
       } else {
         setIsAuthenticated(false);
-        setAuthState({ token: null, userInfo: null });
       }
+      LoadingCon.setLoading(false);
     };
 
     verifyToken();
@@ -108,8 +112,6 @@ const AuthProvider = ({ children }: IProps) => {
     auth()
       .currentUser?.getIdToken()
       .then(function (token) {
-        AuthFetchCon.authFetch.defaults.headers.common["X-Access-Tokens"] =
-          token;
         setUserCredentials(userCredentials, token);
       });
   };
@@ -124,10 +126,14 @@ const AuthProvider = ({ children }: IProps) => {
   const logout = () => {
     AsyncStorage.removeItem("userInfo");
     AsyncStorage.removeItem("token");
+
+    setIsAuthenticated(false);
     setAuthState({
       token: null,
       userInfo: null,
     });
+
+    AuthFetchCon.authFetch.defaults.headers.common["X-Access-Tokens"] = "";
   };
 
   const register = async ({ email, password }: IRegisterData) => {

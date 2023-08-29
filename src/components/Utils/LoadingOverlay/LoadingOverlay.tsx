@@ -1,4 +1,4 @@
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, Modal, View } from "react-native";
 
 import { LoadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 import { loadingOverlayStyles } from "./LoadingOverlay.styles";
@@ -11,12 +11,19 @@ const LoadingOverlay = () => {
   return (
     <>
       {LoadingCon.loading && (
-        <View style={loadingOverlayStyles.container}>
-          <ActivityIndicator
-            size="large"
-            color={stylesConfig.colors.default_color_1}
-          />
-        </View>
+        <Modal
+          style={loadingOverlayStyles.container}
+          animationType="fade"
+          visible={LoadingCon.loading}
+          transparent={true}
+        >
+          <View style={loadingOverlayStyles.containerBackground}>
+            <ActivityIndicator
+              size="large"
+              color={stylesConfig.colors.default_color_1}
+            />
+          </View>
+        </Modal>
       )}
     </>
   );

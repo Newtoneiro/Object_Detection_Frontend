@@ -6,19 +6,23 @@ import {
   IUserInfo,
 } from "./AuthContext.types";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
+import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { IProps } from "../../config.types";
+import axios from "axios";
+import config from "../../config";
 
 const defaultAuthContext: IAuthContext = {
   authState: {
-    expiresAt: null,
-    userInfo: {},
+    token: null,
+    userInfo: null,
   },
-  setAuthInfo: (authState: IAuthState) => {},
-  isAuthenticated: () => false,
+  isAuthenticated: null,
+  setAuthInfo: (_: IAuthState) => {},
   logout: () => {},
   register: (_) => null,
   login: (_) => null,
@@ -31,24 +35,60 @@ const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 
 const AuthProvider = ({ children }: IProps) => {
   const [authState, setAuthState] = useState<IAuthState>({
-    expiresAt: null,
-    userInfo: {},
+    token: null,
+    userInfo: null,
   });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const AuthFetchCon = useContext(AuthFetchContext);
+  const ErrorCon = useContext(ErrorContext);
 
   useEffect(() => {
     const getSavedAuthState = async () => {
       const rawUserInfo = await AsyncStorage.getItem("userInfo");
       const userInfo = rawUserInfo ? JSON.parse(rawUserInfo) : {};
-      const expiresAt = await AsyncStorage.getItem("expiresAt");
+      const token = await AsyncStorage.getItem("token");
 
-      setAuthState({ expiresAt, userInfo });
+      setAuthState({ token, userInfo });
     };
 
     getSavedAuthState();
   }, []);
 
-  const setUserCredentials = (
-    userCredential: FirebaseAuthTypes.UserCredential
+  useEffect(() => {
+    const verifyToken = async () => {
+      if (authState.token) {
+        axios
+          .post(config.api_path + "/auth" + "/verifyToken", {
+            token: authState.token,
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              setIsAuthenticated(true);
+            } else {
+              setIsAuthenticated(false);
+              setAuthState({ token: null, userInfo: null });
+            }
+          })
+          .catch((e: any) => {
+            ErrorCon.displayError(
+              "We've encountered some troubles logging in.",
+              "error"
+            );
+            setIsAuthenticated(false);
+            setAuthState({ token: null, userInfo: null });
+          });
+      } else {
+        setIsAuthenticated(false);
+        setAuthState({ token: null, userInfo: null });
+      }
+    };
+
+    verifyToken();
+  }, [authState.token]);
+
+  const setUserCredentials = async (
+    userCredential: FirebaseAuthTypes.UserCredential,
+    token: string | null
   ) => {
     const newUserInfo: IUserInfo = {
       email: userCredential.user.email,
@@ -56,35 +96,37 @@ const AuthProvider = ({ children }: IProps) => {
       isAnonymous: userCredential.user.isAnonymous,
     };
     const authInfo: IAuthState = {
-      expiresAt: String(new Date().getTime() + 86400000), // 24h
+      token: token,
       userInfo: newUserInfo,
     };
     setAuthInfo(authInfo);
   };
 
+  const updateUserToken = (
+    userCredentials: FirebaseAuthTypes.UserCredential
+  ) => {
+    auth()
+      .currentUser?.getIdToken()
+      .then(function (token) {
+        AuthFetchCon.authFetch.defaults.headers.common["X-Access-Tokens"] =
+          token;
+        setUserCredentials(userCredentials, token);
+      });
+  };
+
   const setAuthInfo = (authState: IAuthState) => {
     AsyncStorage.setItem("userInfo", JSON.stringify(authState.userInfo));
-    AsyncStorage.setItem(
-      "expiresAt",
-      authState.expiresAt ? authState.expiresAt : ""
-    );
+    AsyncStorage.setItem("token", authState.token || "");
 
     setAuthState(authState);
   };
 
-  const isAuthenticated = () => {
-    if (!authState || !authState.expiresAt) {
-      return false;
-    }
-    return new Date().getTime() / 1000 < Number(authState.expiresAt);
-  };
-
   const logout = () => {
     AsyncStorage.removeItem("userInfo");
-    AsyncStorage.removeItem("expiresAt");
+    AsyncStorage.removeItem("token");
     setAuthState({
-      expiresAt: null,
-      userInfo: {},
+      token: null,
+      userInfo: null,
     });
   };
 
@@ -93,7 +135,7 @@ const AuthProvider = ({ children }: IProps) => {
       await auth()
         .createUserWithEmailAndPassword(email, password)
         .then((userCredentials) => {
-          setUserCredentials(userCredentials);
+          updateUserToken(userCredentials);
         });
 
       return { success: true, message: "Register successfull." };
@@ -114,7 +156,7 @@ const AuthProvider = ({ children }: IProps) => {
       await auth()
         .signInWithEmailAndPassword(email, password)
         .then((userCredentials) => {
-          setUserCredentials(userCredentials);
+          updateUserToken(userCredentials);
         });
       return { success: true, message: "Login successfull." };
     } catch (error: IFirebaseError | any) {
@@ -154,7 +196,7 @@ const AuthProvider = ({ children }: IProps) => {
       await auth()
         .signInWithCredential(googleCredential)
         .then((userCredentials) => {
-          setUserCredentials(userCredentials);
+          updateUserToken(userCredentials);
         });
 
       return { success: true, message: "Login successfull." };
@@ -168,7 +210,7 @@ const AuthProvider = ({ children }: IProps) => {
       await auth()
         .signInAnonymously()
         .then((userCredentials) => {
-          setUserCredentials(userCredentials);
+          updateUserToken(userCredentials);
         });
 
       return { success: true, message: "Login successfull." };
@@ -198,8 +240,8 @@ const AuthProvider = ({ children }: IProps) => {
     <AuthContext.Provider
       value={{
         authState,
-        setAuthInfo,
         isAuthenticated,
+        setAuthInfo,
         logout,
         register,
         login,

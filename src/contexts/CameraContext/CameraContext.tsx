@@ -8,11 +8,12 @@ import {
 } from "./CameraContext.types";
 import { createContext, useContext, useEffect, useState } from "react";
 
+import { AuthContext } from "../AuthContext/AuthContext";
+import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { calculateHeightFromWidth } from "./CameraContext.utils";
-import config from "../../config";
 import { useWindowDimensions } from "react-native";
 
 const defaultCameraOptions: ICameraOptions = {
@@ -59,6 +60,8 @@ const CameraProvider = ({ children }: IProps) => {
 
   const ErrorCon = useContext(ErrorContext);
   const LoadingCon = useContext(LoadingContext);
+  const AuthCon = useContext(AuthContext);
+  const AuthFetchCon = useContext(AuthFetchContext);
 
   useEffect(() => {
     requestPermission();
@@ -107,27 +110,19 @@ const CameraProvider = ({ children }: IProps) => {
         setCapturedPhoto(photo.uri);
 
         let source = photo.base64;
-        const response = await fetch(
-          config.api_path + "/objectDetection" + "/capturePhoto",
+        const response = await AuthFetchCon.authFetch.post(
+          "/objectDetection/capturePhoto",
           {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({
-              file: source,
-              doSave: cameraOptions.savePhoto,
-            }),
+            file: source,
+            doSave: cameraOptions.savePhoto,
           }
         );
         if (response.status !== 200) {
           throw "Bad request.";
         }
-        const response_json = await response.json();
 
         const new_predictions: IPrediction[] = [];
-        await response_json.forEach((element: IPredictionResponse) => {
+        await response.data.forEach((element: IPredictionResponse) => {
           new_predictions.push({
             ...element,
             box: {
@@ -148,7 +143,7 @@ const CameraProvider = ({ children }: IProps) => {
       .catch((error: any) => {
         setCapturedPhoto(null);
         ErrorCon.displayError(
-          `Something went terribly wrong. ${error}`,
+          `Something went terribly wrong. \n ${error}`,
           "error"
         );
         return;

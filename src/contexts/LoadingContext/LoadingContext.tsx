@@ -13,10 +13,6 @@ const LoadingContext = createContext<ILoadingContext>(defaultLoadingContext);
 const LoadingProvider = ({ children }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
-
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
       {children}

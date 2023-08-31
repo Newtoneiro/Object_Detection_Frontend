@@ -15,7 +15,7 @@ export const errorPopupStyles = StyleSheet.create({
   },
   errorBox: {
     width: "80%",
-    height: "30%",
+    minHeight: "30%",
 
     display: "flex",
     alignItems: "center",

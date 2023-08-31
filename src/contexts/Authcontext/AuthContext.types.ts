@@ -5,8 +5,8 @@ export interface IUserInfo {
 }
 
 export interface IAuthState {
-  expiresAt: string | null;
-  userInfo: IUserInfo | {};
+  token: string | null;
+  userInfo: IUserInfo | null;
 }
 
 export interface IAuthResponse {
@@ -16,8 +16,8 @@ export interface IAuthResponse {
 
 export interface IAuthContext {
   authState: IAuthState;
+  isAuthenticated: boolean | null;
   setAuthInfo: (authState: IAuthState) => void;
-  isAuthenticated: () => boolean;
   logout: () => void;
   register: (user: IRegisterData) => Promise<IAuthResponse> | null;
   login: (user: IRegisterData) => Promise<IAuthResponse> | null;

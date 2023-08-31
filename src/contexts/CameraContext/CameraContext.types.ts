@@ -9,7 +9,7 @@ export interface ICameraContext {
   cameraOptions: ICameraOptions;
   setCameraOptions: (_: ICameraOptions) => void;
   toggleCameraType: () => void;
-  handleButtonClick: () => void;
+  handleTakePicture: () => void;
   setCameraRef: (_: Camera | null) => void;
   resetCamera: () => void;
 }

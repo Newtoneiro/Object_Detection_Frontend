@@ -5,7 +5,8 @@ import { useContext } from "react";
 
 const AuthGate = () => {
   const AuthCon = useContext(AuthContext);
-  return AuthCon.isAuthenticated() ? <Navigator /> : <UnAuthNavigator />;
+
+  return AuthCon.isAuthenticated ? <Navigator /> : <UnAuthNavigator />;
 };
 
 export default AuthGate;

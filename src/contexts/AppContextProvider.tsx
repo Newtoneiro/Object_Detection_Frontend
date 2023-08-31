@@ -1,3 +1,4 @@
+import { AuthFetchProvider } from "./AuthFetchContext/AuthFetchContext";
 import { AuthProvider } from "./AuthContext/AuthContext";
 import { CameraProvider } from "./CameraContext/CameraContext";
 import { ErrorProvider } from "./ErrorContext/ErrorContext";
@@ -10,13 +11,15 @@ const AppContextProvider = ({ children }: IProps) => {
   return (
     <ErrorProvider>
       <LoadingProvider>
-        <AuthProvider>
-          <LoginProvider>
-            <ForgotPasswordProvider>
-              <CameraProvider>{children}</CameraProvider>
-            </ForgotPasswordProvider>
-          </LoginProvider>
-        </AuthProvider>
+        <AuthFetchProvider>
+          <AuthProvider>
+            <LoginProvider>
+              <ForgotPasswordProvider>
+                <CameraProvider>{children}</CameraProvider>
+              </ForgotPasswordProvider>
+            </LoginProvider>
+          </AuthProvider>
+        </AuthFetchProvider>
       </LoadingProvider>
     </ErrorProvider>
   );

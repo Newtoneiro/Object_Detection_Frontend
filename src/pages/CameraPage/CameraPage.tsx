@@ -104,7 +104,7 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
         )}
       </View>
       <Pressable
-        onPress={() => CameraCon.handleButtonClick()}
+        onPress={() => CameraCon.handleTakePicture()}
         style={cameraPageStyles.bottomPanelCaptureButton}
       >
         <View style={cameraPageStyles.bottomPanelCaptureButtonInside}></View>

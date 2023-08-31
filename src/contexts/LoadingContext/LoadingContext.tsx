@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 import { ILoadingContext } from "./LoadingContext.types";
 import { IProps } from "../../config.types";

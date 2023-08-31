@@ -1,4 +1,5 @@
 import { Camera, CameraType } from "expo-camera";
+import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import {
   ICameraContext,
   ICameraDimensions,
@@ -8,13 +9,12 @@ import {
 } from "./CameraContext.types";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { AuthContext } from "../AuthContext/AuthContext";
 import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
-import { AxiosError } from "axios";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { calculateHeightFromWidth } from "./CameraContext.utils";
+import config from "../../config";
 import { useWindowDimensions } from "react-native";
 
 const defaultCameraOptions: ICameraOptions = {
@@ -38,7 +38,7 @@ const defaultCameraContext: ICameraContext = {
   cameraOptions: defaultCameraOptions,
   setCameraOptions: (_) => {},
   toggleCameraType: () => {},
-  handleButtonClick: () => {},
+  handleTakePicture: () => {},
   setCameraRef: (_) => {},
   resetCamera: () => {},
 };
@@ -98,7 +98,7 @@ const CameraProvider = ({ children }: IProps) => {
       return;
     }
 
-    cameraRef
+    await cameraRef
       .takePictureAsync({
         quality: Number(cameraOptions.quality),
         base64: true,
@@ -107,12 +107,18 @@ const CameraProvider = ({ children }: IProps) => {
       .then(async (photo) => {
         await cameraRef.pausePreview();
 
-        setCapturedPhoto(photo.uri);
+        // If camera is front we have to flip
+        if (cameraOptions.type === CameraType.front) {
+          photo = await manipulateAsync(
+            photo.uri,
+            [{ rotate: 180 }, { flip: FlipType.Vertical }],
+            { compress: 1, format: SaveFormat.PNG, base64: true }
+          );
+        }
 
-        let source = photo.base64;
         await AuthFetchCon.authFetch
-          .post("/objectDetection/capturePhoto", {
-            file: source,
+          .post(config.paths.object_detection + "/capturePhoto", {
+            file: photo.base64,
             doSave: cameraOptions.savePhoto,
           })
           .then(async (response) => {
@@ -134,15 +140,17 @@ const CameraProvider = ({ children }: IProps) => {
                 },
               });
             });
+
+            setCapturedPhoto(photo.uri);
             setPredictions(new_predictions);
           })
           .catch(() => {
-            setCapturedPhoto(null);
             return;
           });
       })
       .catch((error: any) => {
-        setCapturedPhoto(null);
+        cameraRef.resumePreview();
+
         ErrorCon.displayError(
           `Something went terribly wrong. \n ${error}`,
           "error"
@@ -151,7 +159,7 @@ const CameraProvider = ({ children }: IProps) => {
       });
   };
 
-  const handleButtonClick = async () => {
+  const handleTakePicture = async () => {
     LoadingCon.setLoading(true);
     await takePicture();
     LoadingCon.setLoading(false);
@@ -175,7 +183,7 @@ const CameraProvider = ({ children }: IProps) => {
         cameraOptions,
         setCameraOptions,
         toggleCameraType,
-        handleButtonClick,
+        handleTakePicture,
         setCameraRef,
         resetCamera,
       }}

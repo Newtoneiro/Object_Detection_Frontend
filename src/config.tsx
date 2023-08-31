@@ -1,5 +1,10 @@
 const config = {
-  api_path: "http://10.1.7.78:8888",
+  paths: {
+    home: "http://10.1.7.78:8888",
+    auth: "/auth",
+    object_detection: "/objectDetection",
+  },
+  timeout: 5000,
 };
 
 export default config;

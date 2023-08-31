@@ -6,7 +6,6 @@ import {
   IUserInfo,
 } from "./AuthContext.types";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import axios, { AxiosError } from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -15,6 +14,7 @@ import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
+import axios from "axios";
 import config from "../../config";
 
 const defaultAuthContext: IAuthContext = {
@@ -61,7 +61,7 @@ const AuthProvider = ({ children }: IProps) => {
       LoadingCon.setLoading(true);
       if (authState.token) {
         await axios
-          .post(config.api_path + "/auth" + "/verifyToken", {
+          .post(config.paths.home + config.paths.auth + "/verifyToken", {
             token: authState.token,
           })
           .then((response) => {
@@ -70,16 +70,60 @@ const AuthProvider = ({ children }: IProps) => {
               AuthFetchCon.authFetch.defaults.headers.common[
                 "X-Access-Tokens"
               ] = authState.token;
+
+              AuthFetchCon.authFetch.interceptors.response.clear(); // Has to be done there, because the contexts are separated
+              AuthFetchCon.authFetch.interceptors.response.use(
+                (response) => {
+                  return response;
+                },
+                (error) => {
+                  const code =
+                    error && error.response ? error.response.status : 0;
+                  switch (code) {
+                    case 401:
+                      ErrorCon.displayError(
+                        `[${code}] ${error.response.data}\nPlease reauthenticate.`,
+                        "error"
+                      );
+                      logout();
+                      break;
+                    case 0:
+                      ErrorCon.displayError(
+                        `[${code}] Server is not responding.`,
+                        "error"
+                      );
+                      break;
+                    default:
+                      ErrorCon.displayError(
+                        `[${code}] Something went wrong.`,
+                        "error"
+                      );
+                      break;
+                  }
+                  return Promise.reject(code);
+                }
+              );
             } else {
               setIsAuthenticated(false);
             }
           })
           .catch((error: any) => {
-            ErrorCon.displayError(
-              "We've encountered some troubles logging in. \n" + error,
-              "error"
-            );
-            setIsAuthenticated(false);
+            const error_type = error.response.data || "";
+            switch (error_type) {
+              case "ERR_JWT_EXPIRED":
+                ErrorCon.displayError("Session expired.", "notification");
+                break;
+              case "ERR_JWT_INVALID":
+                ErrorCon.displayError("JWT token is invalid.", "error");
+                break;
+              default:
+                ErrorCon.displayError(
+                  "Something went wrong with authentication.",
+                  "error"
+                );
+                break;
+            }
+            logout();
           });
       } else {
         setIsAuthenticated(false);
@@ -90,7 +134,7 @@ const AuthProvider = ({ children }: IProps) => {
     verifyToken();
   }, [authState.token]);
 
-  const setUserCredentials = async (
+  const setUserCredentials = (
     userCredential: FirebaseAuthTypes.UserCredential,
     token: string | null
   ) => {
@@ -106,12 +150,12 @@ const AuthProvider = ({ children }: IProps) => {
     setAuthInfo(authInfo);
   };
 
-  const updateUserToken = (
+  const updateUserToken = async (
     userCredentials: FirebaseAuthTypes.UserCredential
   ) => {
-    auth()
+    await auth()
       .currentUser?.getIdToken()
-      .then(function (token) {
+      .then((token) => {
         setUserCredentials(userCredentials, token);
       });
   };
@@ -215,8 +259,8 @@ const AuthProvider = ({ children }: IProps) => {
     try {
       await auth()
         .signInAnonymously()
-        .then((userCredentials) => {
-          updateUserToken(userCredentials);
+        .then(async (userCredentials) => {
+          await updateUserToken(userCredentials);
         });
 
       return { success: true, message: "Login successfull." };

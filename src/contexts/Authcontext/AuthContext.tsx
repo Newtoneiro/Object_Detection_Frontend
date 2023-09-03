@@ -140,8 +140,12 @@ const AuthProvider = ({ children }: IProps) => {
   ) => {
     const newUserInfo: IUserInfo = {
       email: userCredential.user.email,
+      name: userCredential.user.displayName || userCredential.user.email,
       uid: userCredential.user.uid,
+      picture: userCredential.user.photoURL || null,
       isAnonymous: userCredential.user.isAnonymous,
+      isByGoogleAuth:
+        userCredential.additionalUserInfo?.providerId === "google.com",
     };
     const authInfo: IAuthState = {
       token: token,
@@ -167,9 +171,10 @@ const AuthProvider = ({ children }: IProps) => {
     setAuthState(authState);
   };
 
-  const logout = () => {
-    AsyncStorage.removeItem("userInfo");
-    AsyncStorage.removeItem("token");
+  const logout = async () => {
+    LoadingCon.setLoading(true);
+    await AsyncStorage.removeItem("userInfo");
+    await AsyncStorage.removeItem("token");
 
     setIsAuthenticated(false);
     setAuthState({
@@ -177,7 +182,13 @@ const AuthProvider = ({ children }: IProps) => {
       userInfo: null,
     });
 
+    if (authState.userInfo?.isByGoogleAuth) {
+      await GoogleSignin.revokeAccess();
+    }
+    await auth().signOut();
+
     AuthFetchCon.authFetch.defaults.headers.common["X-Access-Tokens"] = "";
+    LoadingCon.setLoading(false);
   };
 
   const register = async ({ email, password }: IRegisterData) => {

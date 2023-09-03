@@ -1,7 +1,10 @@
 export interface IUserInfo {
   email: string | null;
+  name: string | null;
   uid: string | null;
+  picture: string | null;
   isAnonymous: boolean;
+  isByGoogleAuth: boolean;
 }
 
 export interface IAuthState {

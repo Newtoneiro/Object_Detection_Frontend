@@ -18,7 +18,7 @@ export const forgotPasswordPageStyles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
+    gap: 15,
   },
   titleImage: {
     color: stylesConfig.colors.default_font,

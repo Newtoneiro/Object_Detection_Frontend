@@ -22,7 +22,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const CameraCon = useContext(CameraContext);
 
   return (
-    <Background handlePressFunction={() => navigation.navigate("CameraPage")}>
+    <Background handlePressFunction={() => navigation.goBack()}>
       <MaterialIcons
         style={settingsPageStyles.titleImage}
         name="settings"

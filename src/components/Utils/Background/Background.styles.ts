@@ -50,12 +50,4 @@ export const backgroundStyles = StyleSheet.create({
     resizeMode: "contain",
     tintColor: stylesConfig.colors.default_font,
   },
-  pressable: {
-    width: 40,
-    height: 40,
-    zIndex: 1000,
-  },
-  returnIcon: {
-    color: stylesConfig.colors.default_font,
-  },
 });

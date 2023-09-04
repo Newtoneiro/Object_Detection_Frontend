@@ -19,6 +19,7 @@ export const dashboardPageStyles = StyleSheet.create({
     flexDirection: "column",
     gap: 10,
     paddingVertical: 20,
+    marginTop: 40,
   },
   userIconOuter: {
     borderRadius: 50,
@@ -92,8 +93,9 @@ export const dashboardPageStyles = StyleSheet.create({
     padding: 10,
   },
   widgetGridItem: {
+    position: "relative",
     width: "48%",
-    height: 120,
+    height: 180,
 
     display: "flex",
     alignItems: "center",
@@ -103,6 +105,16 @@ export const dashboardPageStyles = StyleSheet.create({
 
     backgroundColor: stylesConfig.colors.default_low_contrast,
     borderRadius: 15,
+    overflow: "hidden",
+  },
+  widgetGridItemProtected: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    zIndex: 999,
   },
   widgetGridIcon: {
     display: "flex",
@@ -132,9 +144,5 @@ export const dashboardPageStyles = StyleSheet.create({
     borderRadius: 15,
 
     elevation: 10,
-  },
-  footerButton: {
-    color: stylesConfig.colors.default_font,
-    textAlign: "center",
   },
 });

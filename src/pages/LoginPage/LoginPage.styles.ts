@@ -13,6 +13,8 @@ export const loginPageStyles = StyleSheet.create({
 
     paddingHorizontal: "12%",
     paddingVertical: "8%",
+
+    marginTop: 50,
   },
   form: {
     width: "100%",

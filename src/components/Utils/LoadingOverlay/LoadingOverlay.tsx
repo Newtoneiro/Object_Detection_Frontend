@@ -12,6 +12,7 @@ const LoadingOverlay = () => {
     <>
       {LoadingCon.loading && (
         <Modal
+          statusBarTranslucent={true}
           style={loadingOverlayStyles.container}
           visible={LoadingCon.loading}
           transparent={true}

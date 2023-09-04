@@ -1,42 +1,60 @@
 import { DashboardPageProps, GridItemProp } from "./DashboardPage.types";
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { useContext, useEffect, useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 import Background from "../../components/Utils/Background/Background";
+import { ErrorContext } from "../../contexts/ErrorContext/ErrorContext";
 import { LinearGradient } from "expo-linear-gradient";
+import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import { dashboardPageStyles } from "./DashboardPage.styles";
 import stylesConfig from "../../config.styles";
+import { useContext } from "react";
 
 export default function DashboardPage({ navigation }: DashboardPageProps) {
-  const [gridItems, setGridItems] = useState<GridItemProp[]>([]);
   const AuthCon = useContext(AuthContext);
+  const ErrorCon = useContext(ErrorContext);
 
-  useEffect(() => {
-    const cameraPageGridItem: GridItemProp = {
-      page: "CameraPage",
-      name: "Picture mode",
-      icon: "camera-alt",
-      iconColor: "#de0030",
-    };
-    setGridItems([
-      cameraPageGridItem,
-      cameraPageGridItem,
-      cameraPageGridItem,
-      cameraPageGridItem,
-      cameraPageGridItem,
-      cameraPageGridItem,
-      cameraPageGridItem,
-    ]);
-  }, []);
+  const DashboardGridItem = ({
+    page,
+    iconColor,
+    icon,
+    name,
+    isProtected = false,
+  }: GridItemProp) => {
+    return (
+      <TouchableOpacity
+        style={dashboardPageStyles.widgetGridItem}
+        onPress={() => {
+          if (!isProtected || !AuthCon.authState.userInfo?.isAnonymous) {
+            navigation.navigate(page);
+          } else {
+            ErrorCon.displayError(
+              "This function is available for registered users only.",
+              "notification"
+            );
+          }
+        }}
+      >
+        {isProtected && AuthCon.authState.userInfo?.isAnonymous && (
+          <View style={dashboardPageStyles.widgetGridItemProtected} />
+        )}
+        <View
+          style={{
+            ...dashboardPageStyles.widgetGridIcon,
+            backgroundColor: iconColor.toString() + "15",
+          }}
+        >
+          <MaterialIcons
+            style={{ color: iconColor, opacity: 1 }}
+            name={icon || "circle"}
+            size={stylesConfig.fontSize.subtitle}
+          />
+        </View>
+        <Text style={dashboardPageStyles.widgetGridItemText}>{name}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <Background handlePressFunction={null}>
@@ -89,53 +107,53 @@ export default function DashboardPage({ navigation }: DashboardPageProps) {
           style={dashboardPageStyles.widgetGrid}
           contentContainerStyle={dashboardPageStyles.widgetGridInner}
         >
-          {gridItems.map((item, index) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={dashboardPageStyles.widgetGridItem}
-                onPress={() => navigation.navigate(item.page)}
-              >
-                <View
-                  style={{
-                    ...dashboardPageStyles.widgetGridIcon,
-                    backgroundColor: item.iconColor.toString() + "15",
-                  }}
-                >
-                  <MaterialIcons
-                    style={{ color: item.iconColor, opacity: 1 }}
-                    name={item.icon || "circle"}
-                    size={stylesConfig.fontSize.subtitle}
-                  />
-                </View>
-                <Text style={dashboardPageStyles.widgetGridItemText}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+          <DashboardGridItem
+            page="CameraPage"
+            name="Picture mode"
+            icon="camera-alt"
+            iconColor="#de0030"
+          />
+          <DashboardGridItem
+            page="CameraPage"
+            name="Your stats"
+            icon="insert-chart"
+            iconColor="#a29c1d"
+            isProtected={true}
+          />
+          <DashboardGridItem
+            page="CameraPage"
+            name="Live mode"
+            icon="live-tv"
+            iconColor="#8cde18"
+            isProtected={true}
+          />
+          <DashboardGridItem
+            page="CameraPage"
+            name="Friends"
+            icon="groups"
+            iconColor="#433beb"
+            isProtected={true}
+          />
         </ScrollView>
         <View style={dashboardPageStyles.footer}>
-          <TouchableOpacity onPress={() => navigation.navigate("SettingsPage")}>
-            <MaterialIcons
-              style={dashboardPageStyles.footerButton}
-              name="settings"
-              size={stylesConfig.fontSize.subtitle}
-            />
-          </TouchableOpacity>
-          <MaterialIcons
-            style={dashboardPageStyles.footerButton}
-            name="bug-report"
+          <PressableIcon
+            handlePress={() => navigation.navigate("SettingsPage")}
+            icon="settings"
             size={stylesConfig.fontSize.subtitle}
           />
-          <MaterialIcons
-            style={dashboardPageStyles.footerButton}
-            name="bookmark-border"
+          <PressableIcon
+            handlePress={() => navigation.navigate("SettingsPage")}
+            icon="bug-report"
             size={stylesConfig.fontSize.subtitle}
           />
-          <MaterialIcons
-            style={dashboardPageStyles.footerButton}
-            name="assessment"
+          <PressableIcon
+            handlePress={() => navigation.navigate("SettingsPage")}
+            icon="assessment"
+            size={stylesConfig.fontSize.subtitle}
+          />
+          <PressableIcon
+            handlePress={() => navigation.navigate("SettingsPage")}
+            icon="local-pizza"
             size={stylesConfig.fontSize.subtitle}
           />
         </View>

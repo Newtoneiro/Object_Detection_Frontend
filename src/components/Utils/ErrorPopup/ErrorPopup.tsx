@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Modal, Text, View } from "react-native";
 
 import { ErrorContext } from "../../../contexts/ErrorContext/ErrorContext";
 import GradientButton from "../GradientButton/GradientButton";
@@ -11,15 +11,23 @@ const ErrorPopup = () => {
   return (
     <>
       {ErrorCon.isVisible && (
-        <View style={errorPopupStyles.container}>
-          <View style={errorPopupStyles.errorBox}>
-            <Text style={errorPopupStyles.title}>{ErrorCon.severity}</Text>
-            <Text style={errorPopupStyles.message}>{ErrorCon.message}</Text>
-            <GradientButton handlePressFunction={() => ErrorCon.hideError()}>
-              <Text style={errorPopupStyles.buttonText}>Ok.</Text>
-            </GradientButton>
+        <Modal
+          statusBarTranslucent={true}
+          style={errorPopupStyles.container}
+          animationType="fade"
+          visible={ErrorCon.isVisible}
+          transparent={true}
+        >
+          <View style={errorPopupStyles.containerBackground}>
+            <View style={errorPopupStyles.errorBox}>
+              <Text style={errorPopupStyles.title}>{ErrorCon.severity}</Text>
+              <Text style={errorPopupStyles.message}>{ErrorCon.message}</Text>
+              <GradientButton handlePressFunction={() => ErrorCon.hideError()}>
+                <Text style={errorPopupStyles.buttonText}>Ok.</Text>
+              </GradientButton>
+            </View>
           </View>
-        </View>
+        </Modal>
       )}
     </>
   );

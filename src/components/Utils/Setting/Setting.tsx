@@ -59,6 +59,7 @@ function Setting<T>({
         )}
       </View>
       <Modal
+        statusBarTranslucent={true}
         style={settingStyles.changeValueModal}
         animationType="fade"
         visible={toggleSetValue}

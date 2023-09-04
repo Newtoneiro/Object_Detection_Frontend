@@ -11,6 +11,7 @@ export type DashboardPageProps = NativeStackScreenProps<
 export type GridItemProp = {
   page: keyof RootStackParamList;
   name: String;
-  icon?: keyof typeof MaterialIcons.glyphMap;
+  icon: keyof typeof MaterialIcons.glyphMap;
   iconColor: ColorValue;
+  isProtected?: boolean;
 };

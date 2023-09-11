@@ -7,6 +7,7 @@ import { CameraContext } from "../../contexts/CameraContext/CameraContext";
 import { CameraPageProps } from "./CameraPage.types";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
 import { MaterialIcons } from "@expo/vector-icons";
+import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import { cameraPageStyles } from "./CameraPage.styles";
 import stylesConfig from "../../config.styles";
 
@@ -29,36 +30,36 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
   return focused ? (
     <View style={cameraPageStyles.container}>
       <View style={cameraPageStyles.topPanel}>
-        {CameraCon.capturedPhoto && (
-          <TouchableOpacity onPress={() => CameraCon.resetCamera()}>
-            <MaterialIcons
-              style={cameraPageStyles.cameraButton}
-              name="keyboard-return"
-              size={stylesConfig.fontSize.title}
+        {CameraCon.capturedPhoto ? (
+          <PressableIcon
+            handlePress={() => CameraCon.resetCamera()}
+            icon="keyboard-return"
+            size={stylesConfig.fontSize.subtitle}
+          />
+        ) : (
+          <>
+            <PressableIcon
+              handlePress={() => navigation.goBack()}
+              icon="keyboard-return"
+              size={stylesConfig.fontSize.subtitle}
             />
-          </TouchableOpacity>
+            <PressableIcon
+              handlePress={() => CameraCon.toggleCameraType()}
+              icon="flip-camera-android"
+              size={stylesConfig.fontSize.subtitle}
+            />
+            <PressableIcon
+              handlePress={() => navigation.navigate("SettingsPage")}
+              icon="settings"
+              size={stylesConfig.fontSize.subtitle}
+            />
+            <PressableIcon
+              handlePress={() => AuthCon.logout()}
+              icon="logout"
+              size={stylesConfig.fontSize.subtitle}
+            />
+          </>
         )}
-        <TouchableOpacity onPress={() => CameraCon.toggleCameraType()}>
-          <MaterialIcons
-            style={cameraPageStyles.cameraButton}
-            name="flip"
-            size={stylesConfig.fontSize.subtitle}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("SettingsPage")}>
-          <MaterialIcons
-            style={cameraPageStyles.cameraButton}
-            name="settings"
-            size={stylesConfig.fontSize.subtitle}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => AuthCon.logout()}>
-          <MaterialIcons
-            style={cameraPageStyles.cameraButton}
-            name="logout"
-            size={stylesConfig.fontSize.title}
-          />
-        </TouchableOpacity>
       </View>
       <View
         style={{

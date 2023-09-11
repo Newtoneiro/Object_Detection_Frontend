@@ -41,20 +41,13 @@ export const backgroundStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 40,
+    marginBottom: -40,
     paddingHorizontal: 30,
   },
   logo: {
     position: "relative",
-    width: 105,
+    width: 80,
     resizeMode: "contain",
     tintColor: stylesConfig.colors.default_font,
-  },
-  pressable: {
-    width: 40,
-    height: 40,
-    zIndex: 1000,
-  },
-  returnIcon: {
-    color: stylesConfig.colors.default_font,
   },
 });

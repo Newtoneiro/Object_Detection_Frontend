@@ -4,6 +4,17 @@ import stylesConfig from "../../../config.styles";
 export const errorPopupStyles = StyleSheet.create({
   container: {
     position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 100000,
+  },
+  containerBackground: {
     width: "100%",
     height: "100%",
 
@@ -11,7 +22,6 @@ export const errorPopupStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(0, 0, 0, 0.8)",
-    zIndex: 100000,
   },
   errorBox: {
     width: "80%",

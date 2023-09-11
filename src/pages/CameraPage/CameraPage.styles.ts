@@ -24,10 +24,8 @@ export const cameraPageStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     flexDirection: "row",
-  },
-  cameraButton: {
-    color: stylesConfig.colors.default_font,
-    textAlign: "center",
+
+    marginTop: 30,
   },
   bottomPanelCaptureButton: {
     position: "absolute",
@@ -39,7 +37,6 @@ export const cameraPageStyles = StyleSheet.create({
     width: 80,
     height: 80,
 
-    backgroundColor: stylesConfig.colors.default_background_dark,
     borderRadius: 50,
     borderWidth: 3,
     borderColor: stylesConfig.colors.default_font,

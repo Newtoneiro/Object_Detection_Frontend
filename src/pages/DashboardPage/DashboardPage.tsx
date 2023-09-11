@@ -121,7 +121,7 @@ export default function DashboardPage({ navigation }: DashboardPageProps) {
             isProtected={true}
           />
           <DashboardGridItem
-            page="CameraPage"
+            page="LiveCameraPage"
             name="Live mode"
             icon="live-tv"
             iconColor="#8cde18"

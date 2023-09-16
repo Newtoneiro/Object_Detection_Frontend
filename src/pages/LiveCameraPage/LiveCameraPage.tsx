@@ -13,24 +13,10 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
   const CameraCon = useContext(CameraContext);
   const LiveCameraCon = useContext(LiveCameraContext);
 
-  useEffect(() => {
-    LiveCameraCon.openLiveConnection();
-  }, []);
-
-  useEffect(
-    () =>
-      navigation.addListener("beforeRemove", () => {
-        LiveCameraCon.closeLiveConnection();
-      }),
-    [navigation]
-  );
-
   return (
     <View style={liveCameraPageStyles.container}>
       <GradientButton
-        handlePressFunction={() => {
-          LiveCameraCon.streamCameraOutput();
-        }}
+        handlePressFunction={() => { }}
       >
         <Text>Start</Text>
       </GradientButton>

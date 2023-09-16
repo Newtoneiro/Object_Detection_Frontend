@@ -1,80 +1,40 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 
-import { CameraContext } from "../CameraContext/CameraContext";
-import { ILiveCameraContext } from "./LiveCameraContext.types";
 import { IProps } from "../../config.types";
+import { CameraContext } from "../CameraContext/CameraContext";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
-import config from "../../config";
+import { ILiveCameraContext } from "./LiveCameraContext.types";
 
-const defaultLiveCameraContext: ILiveCameraContext = {
-  openLiveConnection: () => {},
-  closeLiveConnection: () => {},
-  streamCameraOutput: () => {},
-};
+import * as tf from "@tensorflow/tfjs";
+
+const defaultLiveCameraContext: ILiveCameraContext = {};
 
 const LiveCameraContext = createContext<ILiveCameraContext>(
   defaultLiveCameraContext
 );
 
 const LiveCameraProvider = ({ children }: IProps) => {
-  const [websocket, setWebsocket] = useState<WebSocket | null>(null);
-
   const CameraCon = useContext(CameraContext);
   const LoadingCon = useContext(LoadingContext);
 
   useEffect(() => {
-    if (websocket) {
-      websocket.onopen = () => {
-        console.log("opened");
-      };
+    const loadModel = async () => {
+      try {
+        await tf.ready();
+        const model = await tf.loadLayersModel(
+          "./yolov8n_saved_model/yolov8n_float32.tflite"
+        );
+        return model;
+      } catch (error) {
+        console.log("Could not load model", error);
+      }
+    };
 
-      websocket.onmessage = (e) => {
-        // a message was received
-        console.log(e.data);
-      };
-
-      websocket.onclose = () => {
-        // a message was received
-        console.log("closed");
-      };
-    }
-  }, [websocket]);
-
-  const streamCameraOutput = async () => {
-    while (true) {
-      await CameraCon.cameraRef
-        ?.takePictureAsync({
-          quality: Number(CameraCon.cameraOptions.quality),
-          base64: true,
-          skipProcessing: true,
-        })
-        .then(() => {
-          console.log("pic taken");
-        });
-    }
-  };
-
-  const openLiveConnection = async () => {
-    LoadingCon.setLoading(true);
-    setWebsocket(
-      new WebSocket(
-        config.paths.home + config.paths.object_detection + "/liveDetection"
-      )
-    );
-    LoadingCon.setLoading(false);
-  };
-
-  const closeLiveConnection = async () => {
-    LoadingCon.setLoading(true);
-    websocket?.close();
-    setWebsocket(null);
-    LoadingCon.setLoading(false);
-  };
+    loadModel();
+  }, []);
 
   return (
-    <LiveCameraContext.Provider
-      value={{ openLiveConnection, closeLiveConnection, streamCameraOutput }}
-    >
+    <LiveCameraContext.Provider value={{}}>
       {children}
     </LiveCameraContext.Provider>
   );

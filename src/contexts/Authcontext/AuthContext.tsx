@@ -82,7 +82,7 @@ const AuthProvider = ({ children }: IProps) => {
                   switch (code) {
                     case 401:
                       ErrorCon.displayError(
-                        `[${code}] ${error.response.data}\nPlease reauthenticate.`,
+                        `[${code}] ${error.response?.data}\nPlease reauthenticate.`,
                         "error"
                       );
                       logout();
@@ -108,7 +108,7 @@ const AuthProvider = ({ children }: IProps) => {
             }
           })
           .catch((error: any) => {
-            const error_type = error.response.data || "";
+            const error_type = error.response?.data || "";
             switch (error_type) {
               case "ERR_JWT_EXPIRED":
                 ErrorCon.displayError("Session expired.", "notification");

@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { CameraContext } from "../CameraContext/CameraContext";
-import { ILiveCameraContext } from "./LiveCameraContext.types";
-import { IProps } from "../../config.types";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
 import config from "../../config";
+import { IProps } from "../../config.types";
+import { CameraContext } from "../CameraContext/CameraContext";
+import { LoadingContext } from "../LoadingContext/LoadingContext";
+import { ILiveCameraContext } from "./LiveCameraContext.types";
 
 const defaultLiveCameraContext: ILiveCameraContext = {
   openLiveConnection: () => {},
@@ -29,12 +29,10 @@ const LiveCameraProvider = ({ children }: IProps) => {
       };
 
       websocket.onmessage = (e) => {
-        // a message was received
         console.log(e.data);
       };
 
       websocket.onclose = () => {
-        // a message was received
         console.log("closed");
       };
     }

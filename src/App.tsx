@@ -1,14 +1,14 @@
 import "expo-dev-client";
 
-import AppContextProvider from "./contexts/AppContextProvider";
-import AuthGate from "./components/AuthGate/AuthGate";
-import ErrorPopup from "./components/Utils/ErrorPopup/ErrorPopup";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import LoadingOverlay from "./components/Utils/LoadingOverlay/LoadingOverlay";
+import { WEB_CLIENT_ID } from "@env";
 import { Montserrat_500Medium } from "@expo-google-fonts/montserrat";
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
-import { WEB_CLIENT_ID } from "@env";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useFonts } from "expo-font";
+import AuthGate from "./components/AuthGate/AuthGate";
+import ErrorPopup from "./components/Utils/ErrorPopup/ErrorPopup";
+import LoadingOverlay from "./components/Utils/LoadingOverlay/LoadingOverlay";
+import AppContextProvider from "./contexts/AppContextProvider";
 
 const App = () => {
   GoogleSignin.configure({

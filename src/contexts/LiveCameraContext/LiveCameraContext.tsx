@@ -1,15 +1,26 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { CameraContext } from "../CameraContext/CameraContext";
-import { ILiveCameraContext } from "./LiveCameraContext.types";
+import {
+  ILiveCameraContext,
+  ILiveCameraOptions,
+} from "./LiveCameraContext.types";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import config from "../../config";
+import * as tf from "@tensorflow/tfjs-core";
+
+const defaultLiveCameraOptions: ILiveCameraOptions = {
+  resizeWidth: 200,
+  resizeHeight: 152,
+  resizeDepth: 3,
+};
 
 const defaultLiveCameraContext: ILiveCameraContext = {
+  tfLoaded: false,
+  liveCameraOptions: defaultLiveCameraOptions,
   openLiveConnection: () => {},
   closeLiveConnection: () => {},
-  streamCameraOutput: () => {},
+  handleCameraStream: (_) => {},
 };
 
 const LiveCameraContext = createContext<ILiveCameraContext>(
@@ -17,10 +28,24 @@ const LiveCameraContext = createContext<ILiveCameraContext>(
 );
 
 const LiveCameraProvider = ({ children }: IProps) => {
+  const [tfLoaded, setTfLoaded] = useState<boolean>(false);
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
+  const [liveCameraOptions, setLiveCameraOptions] =
+    useState<ILiveCameraOptions>(defaultLiveCameraOptions);
 
-  const CameraCon = useContext(CameraContext);
   const LoadingCon = useContext(LoadingContext);
+
+  useEffect(() => {
+    const tfready = async () => {
+      setTfLoaded(false);
+      LoadingCon.setLoading(true);
+      await tf.ready();
+      LoadingCon.setLoading(false);
+      setTfLoaded(true);
+    };
+
+    tfready();
+  }, []);
 
   useEffect(() => {
     if (websocket) {
@@ -40,20 +65,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
     }
   }, [websocket]);
 
-  const streamCameraOutput = async () => {
-    while (true) {
-      await CameraCon.cameraRef
-        ?.takePictureAsync({
-          quality: Number(CameraCon.cameraOptions.quality),
-          base64: true,
-          skipProcessing: true,
-        })
-        .then(() => {
-          console.log("pic taken");
-        });
-    }
-  };
-
   const openLiveConnection = async () => {
     LoadingCon.setLoading(true);
     setWebsocket(
@@ -71,9 +82,29 @@ const LiveCameraProvider = ({ children }: IProps) => {
     LoadingCon.setLoading(false);
   };
 
+  const handleCameraStream = (tensors: IterableIterator<tf.Tensor3D>) => {
+    // const loop = async () => {
+    //   const nextImageTensor = tensors.next().value;
+    //   //
+    //   // do something with tensor here
+    //   //
+    //   // if autorender is false you need the following two lines.
+    //   // updatePreview();
+    //   // gl.endFrameEXP();
+    //   requestAnimationFrame(loop);
+    // };
+    // loop();
+  };
+
   return (
     <LiveCameraContext.Provider
-      value={{ openLiveConnection, closeLiveConnection, streamCameraOutput }}
+      value={{
+        tfLoaded,
+        liveCameraOptions,
+        openLiveConnection,
+        closeLiveConnection,
+        handleCameraStream,
+      }}
     >
       {children}
     </LiveCameraContext.Provider>

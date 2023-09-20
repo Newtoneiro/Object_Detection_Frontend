@@ -1,5 +1,4 @@
 import {
-  ICameraOptions,
   Quality,
   Ratio,
   possibleQualities,

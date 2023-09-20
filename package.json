@@ -10,6 +10,7 @@
     "build-dev": "npx eas build --profile development --platform android"
   },
   "dependencies": {
+    "@babel/runtime": "^7.22.15",
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo-google-fonts/poppins": "^0.2.3",
     "@expo/config-plugins": "~6.0.0",

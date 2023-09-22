@@ -12,8 +12,8 @@ import { ErrorContext } from "../ErrorContext/ErrorContext";
 
 const defaultLiveCameraOptions: ILiveCameraOptions = {
   frameRate: 20,
-  resizeWidth: 200,
-  resizeHeight: 152,
+  resizeWidth: 640,
+  resizeHeight: 640,
   resizeDepth: 3,
 };
 
@@ -83,7 +83,14 @@ const LiveCameraProvider = ({ children }: IProps) => {
     const utilizeFrame = async () => {
       if (cameraRolling && tensor && websocket?.readyState) {
         // @ts-ignore
+        // const tensor_reshaped = tf.reshape(tensor, [
+        //   liveCameraOptions.resizeDepth,
+        //   liveCameraOptions.resizeWidth,
+        //   liveCameraOptions.resizeHeight,
+        // ]);
+        // @ts-ignore
         const shape = tensor.shape;
+        console.log(shape);
         // @ts-ignore
         const values = tensor.arraySync();
         const data = {

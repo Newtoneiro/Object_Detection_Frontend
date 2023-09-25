@@ -9,6 +9,11 @@ import { LoadingContext } from "../LoadingContext/LoadingContext";
 import config from "../../config";
 import * as tf from "@tensorflow/tfjs-core";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
+import {
+  IPrediction,
+  IPredictionResponse,
+} from "../CameraContext/CameraContext.types";
+import { CameraContext } from "../CameraContext/CameraContext";
 
 const defaultLiveCameraOptions: ILiveCameraOptions = {
   frameRate: 20,
@@ -21,6 +26,7 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   cameraRolling: false,
   tfLoaded: false,
   liveCameraOptions: defaultLiveCameraOptions,
+  predictions: [],
   switchCameraRolling: () => {},
   openLiveConnection: () => {},
   closeLiveConnection: () => {},
@@ -38,9 +44,11 @@ const LiveCameraProvider = ({ children }: IProps) => {
     useState<ILiveCameraOptions>(defaultLiveCameraOptions);
   const [tensor, setTensor] = useState<tf.Tensor3D[]>([]);
   const [cameraRolling, setCameraRolling] = useState<boolean>(false);
+  const [predictions, setPredictions] = useState<IPrediction[]>([]);
 
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
+  const CameraCon = useContext(CameraContext);
 
   // LOAD TFJS
   useEffect(() => {
@@ -66,9 +74,30 @@ const LiveCameraProvider = ({ children }: IProps) => {
         console.log("opened");
       };
 
-      websocket.onmessage = (e) => {
-        // a message was received
-        console.log(e.data);
+      websocket.onmessage = async (e) => {
+        const new_predictions: IPrediction[] = [];
+        const result = await JSON.parse(e.data);
+        await result.forEach((element: IPredictionResponse) => {
+          new_predictions.push({
+            ...element,
+            box: {
+              x:
+                ((element.box.x1 + element.box.x2) / 2) *
+                CameraCon.cameraDimensions.width,
+              y:
+                ((element.box.y1 + element.box.y2) / 2) *
+                CameraCon.cameraDimensions.height,
+              width:
+                (element.box.x2 - element.box.x1) *
+                CameraCon.cameraDimensions.width,
+              height:
+                (element.box.y2 - element.box.y1) *
+                CameraCon.cameraDimensions.height,
+            },
+          });
+        });
+
+        setPredictions(new_predictions);
       };
 
       websocket.onclose = () => {
@@ -90,7 +119,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
         // ]);
         // @ts-ignore
         const shape = tensor.shape;
-        console.log(shape);
         // @ts-ignore
         const values = tensor.arraySync();
         const data = {
@@ -154,6 +182,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
         cameraRolling,
         tfLoaded,
         liveCameraOptions,
+        predictions,
         switchCameraRolling,
         openLiveConnection,
         closeLiveConnection,

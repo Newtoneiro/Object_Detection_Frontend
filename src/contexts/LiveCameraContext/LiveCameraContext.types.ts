@@ -1,9 +1,11 @@
 import { Tensor3D } from "@tensorflow/tfjs-core";
+import { IPrediction } from "../CameraContext/CameraContext.types";
 
 export interface ILiveCameraContext {
   cameraRolling: boolean;
   tfLoaded: boolean;
   liveCameraOptions: ILiveCameraOptions;
+  predictions: IPrediction[];
   switchCameraRolling: () => void;
   openLiveConnection: () => void;
   closeLiveConnection: () => void;

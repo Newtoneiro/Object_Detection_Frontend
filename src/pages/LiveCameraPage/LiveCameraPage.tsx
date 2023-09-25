@@ -8,6 +8,7 @@ import { LiveCameraContext } from "../../contexts/LiveCameraContext/LiveCameraCo
 import { liveCameraPageStyles } from "./LiveCameraPage.styles";
 import { LiveCameraPageProps } from "./LiveCameraPage.types";
 import GradientButton from "../../components/Utils/GradientButton/GradientButton";
+import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
 
 const TensorCamera = cameraWithTensors(Camera);
 
@@ -38,24 +39,43 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
         >
           <Text>{LiveCameraCon.cameraRolling ? "Stop" : "Start"}</Text>
         </GradientButton>
-        {
-          // @ts-ignore  BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
-          <TensorCamera
-            // Standard Camera props
-            type={CameraCon.cameraOptions.type}
-            style={{
-              width: CameraCon.cameraDimensions.width,
-              height: CameraCon.cameraDimensions.height,
-            }}
-            cameraTextureHeight={CameraCon.cameraDimensions.height}
-            cameraTextureWidth={CameraCon.cameraDimensions.width}
-            resizeHeight={LiveCameraCon.liveCameraOptions.resizeHeight}
-            resizeWidth={LiveCameraCon.liveCameraOptions.resizeWidth}
-            resizeDepth={LiveCameraCon.liveCameraOptions.resizeDepth}
-            onReady={LiveCameraCon.handleCameraStream}
-            autorender={true}
-          />
-        }
+
+        <View
+          style={{
+            width: CameraCon.cameraDimensions.width,
+            height: CameraCon.cameraDimensions.height,
+          }}
+        >
+          {
+            // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
+            <TensorCamera
+              // Standard Camera props
+              type={CameraCon.cameraOptions.type}
+              style={{
+                width: CameraCon.cameraDimensions.width,
+                height: CameraCon.cameraDimensions.height,
+              }}
+              cameraTextureHeight={CameraCon.cameraDimensions.height}
+              cameraTextureWidth={CameraCon.cameraDimensions.width}
+              resizeHeight={LiveCameraCon.liveCameraOptions.resizeHeight}
+              resizeWidth={LiveCameraCon.liveCameraOptions.resizeWidth}
+              resizeDepth={LiveCameraCon.liveCameraOptions.resizeDepth}
+              onReady={LiveCameraCon.handleCameraStream}
+              autorender={true}
+            />
+          }
+          {LiveCameraCon.predictions.map((prediction, i) => {
+            return (
+              <DetectedRectangle
+                key={i}
+                name={prediction.name}
+                class={prediction.class}
+                confidence={prediction.confidence}
+                box={prediction.box}
+              />
+            );
+          })}
+        </View>
       </View>
     </View>
   ) : (

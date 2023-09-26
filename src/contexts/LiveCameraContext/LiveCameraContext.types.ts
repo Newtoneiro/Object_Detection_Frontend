@@ -5,8 +5,6 @@ export interface ILiveCameraContext {
   tfLoaded: boolean;
   liveCameraOptions: ILiveCameraOptions;
   switchCameraRolling: () => void;
-  openLiveConnection: () => void;
-  closeLiveConnection: () => void;
   handleCameraStream: (tensors: IterableIterator<Tensor3D>) => void;
 }
 

@@ -6,9 +6,13 @@ import {
 } from "./LiveCameraContext.types";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
-import config from "../../config";
+import * as tfjs from "@tensorflow/tfjs";
 import * as tf from "@tensorflow/tfjs-core";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
+import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
+
+const modelJSON = require("./model/model.json");
+// const modelWeights = require("../model/group1-shard1of4.bin");
 
 const defaultLiveCameraOptions: ILiveCameraOptions = {
   frameRate: 20,
@@ -22,8 +26,6 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   tfLoaded: false,
   liveCameraOptions: defaultLiveCameraOptions,
   switchCameraRolling: () => {},
-  openLiveConnection: () => {},
-  closeLiveConnection: () => {},
   handleCameraStream: (_) => {},
 };
 
@@ -33,14 +35,14 @@ const LiveCameraContext = createContext<ILiveCameraContext>(
 
 const LiveCameraProvider = ({ children }: IProps) => {
   const [tfLoaded, setTfLoaded] = useState<boolean>(false);
-  const [websocket, setWebsocket] = useState<WebSocket | null>(null);
   const [liveCameraOptions, setLiveCameraOptions] =
     useState<ILiveCameraOptions>(defaultLiveCameraOptions);
-  const [tensor, setTensor] = useState<tf.Tensor3D[]>([]);
   const [cameraRolling, setCameraRolling] = useState<boolean>(false);
+  const [animationFrameId, setAnimationFrameId] = useState<number>(0);
 
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
+  const AuthFetchCon = useContext(AuthFetchContext);
 
   // LOAD TFJS
   useEffect(() => {
@@ -59,92 +61,47 @@ const LiveCameraProvider = ({ children }: IProps) => {
     tfready();
   }, []);
 
-  // WEBSOCKET STUFF
+  // // LOAD MODEL
+  // useEffect(() => {
+
+  // }, []);
+
+  // Run unMount for cancelling animation if it is running to avoid leaks
   useEffect(() => {
-    if (websocket) {
-      websocket.onopen = () => {
-        console.log("opened");
-      };
-
-      websocket.onmessage = (e) => {
-        // a message was received
-        console.log(e.data);
-      };
-
-      websocket.onclose = () => {
-        // a message was received
-        console.log("closed");
-      };
-    }
-  }, [websocket]);
-
-  // CAMERA LOOP
-  useEffect(() => {
-    const utilizeFrame = async () => {
-      if (cameraRolling && tensor && websocket?.readyState) {
-        // @ts-ignore
-        // const tensor_reshaped = tf.reshape(tensor, [
-        //   liveCameraOptions.resizeDepth,
-        //   liveCameraOptions.resizeWidth,
-        //   liveCameraOptions.resizeHeight,
-        // ]);
-        // @ts-ignore
-        const shape = tensor.shape;
-        console.log(shape);
-        // @ts-ignore
-        const values = tensor.arraySync();
-        const data = {
-          shape: shape,
-          values: values,
-        };
-
-        websocket.send(new Blob([JSON.stringify(data)]));
-      }
+    return () => {
+      cancelAnimationFrame(animationFrameId);
     };
-
-    utilizeFrame();
-  }, [tensor, cameraRolling, websocket]);
-
-  const openLiveConnection = async () => {
-    LoadingCon.setLoading(true);
-    setWebsocket(
-      new WebSocket(
-        config.paths.home + config.paths.object_detection + "/liveDetection"
-      )
-    );
-    LoadingCon.setLoading(false);
-  };
-
-  const closeLiveConnection = async () => {
-    LoadingCon.setLoading(true);
-    websocket?.close();
-    setWebsocket(null);
-    LoadingCon.setLoading(false);
-  };
+  }, [animationFrameId]);
 
   const switchCameraRolling = async () => {
+    // LoadingCon.setLoading(true);
+    // if (cameraRolling) {
+    //   setCameraRolling(false);
+    // } else {
+    //   setCameraRolling(true);
+    // }
+    // LoadingCon.setLoading(false);
     LoadingCon.setLoading(true);
-    if (cameraRolling) {
-      await closeLiveConnection();
-      setCameraRolling(false);
-    } else {
-      await openLiveConnection();
-      setCameraRolling(true);
+    try {
+      const model = await tfjs.loadLayersModel(tf.io.fromMemory(modelJSON));
+    } catch (e) {
+      console.log(e);
     }
     LoadingCon.setLoading(false);
   };
 
-  const handleCameraStream = (tensors: IterableIterator<tf.Tensor3D>) => {
+  const handleCameraStream = (
+    imageAsTensors: IterableIterator<tf.Tensor3D>
+  ) => {
     const loop = async () => {
-      const tensor = tensors.next().value;
-      if (tensor && tensor.dataId.id % liveCameraOptions.frameRate === 0) {
-        setTensor(tensor);
-      }
-      // if autorender is false you need the following two lines.
-      // updatePreview();
-      // gl.endFrameEXP();
-      requestAnimationFrame(loop);
+      const imageTensor = imageAsTensors.next().value;
+      // @ts-ignore
+      tf.dispose(imageAsTensors);
+
+      setAnimationFrameId(requestAnimationFrame(loop));
     };
+
+    //loop infinitely
     loop();
   };
 
@@ -155,8 +112,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
         tfLoaded,
         liveCameraOptions,
         switchCameraRolling,
-        openLiveConnection,
-        closeLiveConnection,
         handleCameraStream,
       }}
     >

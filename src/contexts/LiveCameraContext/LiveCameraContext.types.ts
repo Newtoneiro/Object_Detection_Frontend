@@ -7,8 +7,6 @@ export interface ILiveCameraContext {
   liveCameraOptions: ILiveCameraOptions;
   predictions: IPrediction[];
   switchCameraRolling: () => void;
-  openLiveConnection: () => void;
-  closeLiveConnection: () => void;
   handleCameraStream: (tensors: IterableIterator<Tensor3D>) => void;
 }
 

@@ -22,6 +22,7 @@
     "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@tensorflow/tfjs": "^4.11.0",
     "@tensorflow/tfjs-backend-cpu": "^4.11.0",
     "@tensorflow/tfjs-backend-webgl": "^4.11.0",
     "@tensorflow/tfjs-core": "^4.11.0",

@@ -47,6 +47,7 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
           style={{
             width: CameraCon.cameraDimensions.width,
             height: CameraCon.cameraDimensions.height,
+            position: "relative",
           }}
         >
           {

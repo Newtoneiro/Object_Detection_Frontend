@@ -7,17 +7,15 @@ import {
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import * as tfjs from "@tensorflow/tfjs";
-import * as tf from "@tensorflow/tfjs-core";
+import { ObjectDetection, load } from "@tensorflow-models/coco-ssd";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
-import {
-  IPrediction,
-  IPredictionResponse,
-} from "../CameraContext/CameraContext.types";
+import { IPrediction } from "../CameraContext/CameraContext.types";
+import { CameraContext } from "../CameraContext/CameraContext";
 
 const defaultLiveCameraOptions: ILiveCameraOptions = {
   frameRate: 20,
-  resizeWidth: 224,
-  resizeHeight: 224,
+  resizeWidth: 200,
+  resizeHeight: 200,
   resizeDepth: 3,
 };
 
@@ -39,13 +37,14 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const [tfLoaded, setTfLoaded] = useState<boolean>(false);
   const [liveCameraOptions, setLiveCameraOptions] =
     useState<ILiveCameraOptions>(defaultLiveCameraOptions);
-  const [tensor, setTensor] = useState<tf.Tensor3D[]>([]);
+  const [tensor, setTensor] = useState<tfjs.Tensor3D[]>([]);
   const [cameraRolling, setCameraRolling] = useState<boolean>(false);
   const [predictions, setPredictions] = useState<IPrediction[]>([]);
-  const [model, setModel] = useState<tfjs.LayersModel | void>();
+  const [model, setModel] = useState<ObjectDetection | void>();
 
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
+  const CameraCon = useContext(CameraContext);
 
   // LOAD TFJS
   useEffect(() => {
@@ -53,7 +52,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
       setTfLoaded(false);
       LoadingCon.setLoading(true);
       try {
-        await tf.ready();
+        await tfjs.ready();
         setTfLoaded(true);
       } catch {
         ErrorCon.displayError("Couldn't load tf.");
@@ -64,14 +63,15 @@ const LiveCameraProvider = ({ children }: IProps) => {
     tfready();
   }, []);
 
-  // // LOAD MODEL
+  // LOAD MODEL
   const loadModel = async () => {
     LoadingCon.setLoading(true);
     if (!model) {
       try {
-        const downloaded_model = await tfjs.loadLayersModel(
-          "http://192.168.137.173:8888/getModelJSON/model.json"
-        );
+        // const downloaded_model = await tfjs.loadGraphModel(
+        //   "http://192.168.137.173:8888/getModelJSON/model.json"
+        // );
+        const downloaded_model = await load();
         setModel(downloaded_model);
         ErrorCon.displayError("Loaded model.", "notification");
       } catch (error) {
@@ -87,17 +87,47 @@ const LiveCameraProvider = ({ children }: IProps) => {
   useEffect(() => {
     const utilizeFrame = async () => {
       if (model && cameraRolling && tensor) {
-        const tensor_float32 = tfjs.cast(tensor, "float32");
-        const response = model.predict(
-          tf.reshape(tensor_float32, [
-            1,
-            liveCameraOptions.resizeWidth,
-            liveCameraOptions.resizeWidth,
-            liveCameraOptions.resizeDepth,
-          ])
-        );
-        console.log(response.dataSync());
-        tf.dispose([tensor]);
+        model.detect(tensor).then(async (response) => {
+          const new_predictions: IPrediction[] = [];
+          await response.forEach((element) => {
+            let box = {
+              x:
+                (element.bbox[0] * CameraCon.cameraDimensions.width) /
+                liveCameraOptions.resizeWidth,
+              y:
+                (element.bbox[1] * CameraCon.cameraDimensions.height) /
+                liveCameraOptions.resizeHeight,
+              width:
+                (element.bbox[2] * CameraCon.cameraDimensions.width) /
+                liveCameraOptions.resizeWidth,
+              height:
+                (element.bbox[3] * CameraCon.cameraDimensions.height) /
+                liveCameraOptions.resizeHeight,
+            };
+            console.log(box);
+            new_predictions.push({
+              name: element.class,
+              class: 0,
+              confidence: element.score,
+              box: {
+                x:
+                  (element.bbox[0] * CameraCon.cameraDimensions.width) /
+                  liveCameraOptions.resizeWidth,
+                y:
+                  (element.bbox[1] * CameraCon.cameraDimensions.height) /
+                  liveCameraOptions.resizeHeight,
+                width:
+                  (element.bbox[2] * CameraCon.cameraDimensions.width) /
+                  liveCameraOptions.resizeWidth,
+                height:
+                  (element.bbox[3] * CameraCon.cameraDimensions.height) /
+                  liveCameraOptions.resizeHeight,
+              },
+            });
+          });
+          setPredictions(new_predictions);
+        });
+        tfjs.dispose([tensor]);
       }
     };
 
@@ -114,7 +144,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
     LoadingCon.setLoading(false);
   };
 
-  const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
+  const handleCameraStream = (images: IterableIterator<tfjs.Tensor3D>) => {
     const loop = async () => {
       if (tfLoaded) {
         const nextImageTensor = images.next().value;

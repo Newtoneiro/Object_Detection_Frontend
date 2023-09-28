@@ -39,6 +39,9 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
         >
           <Text>{LiveCameraCon.cameraRolling ? "Stop" : "Start"}</Text>
         </GradientButton>
+        <GradientButton handlePressFunction={() => LiveCameraCon.loadModel()}>
+          <Text>Load Model</Text>
+        </GradientButton>
 
         <View
           style={{

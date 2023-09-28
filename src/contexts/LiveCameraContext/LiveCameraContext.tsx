@@ -16,8 +16,8 @@ import {
 
 const defaultLiveCameraOptions: ILiveCameraOptions = {
   frameRate: 20,
-  resizeWidth: 640,
-  resizeHeight: 640,
+  resizeWidth: 224,
+  resizeHeight: 224,
   resizeDepth: 3,
 };
 
@@ -26,6 +26,7 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   tfLoaded: false,
   liveCameraOptions: defaultLiveCameraOptions,
   predictions: [],
+  loadModel: () => {},
   switchCameraRolling: () => {},
   handleCameraStream: (_) => {},
 };
@@ -41,7 +42,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const [tensor, setTensor] = useState<tf.Tensor3D[]>([]);
   const [cameraRolling, setCameraRolling] = useState<boolean>(false);
   const [predictions, setPredictions] = useState<IPrediction[]>([]);
-  const [model, setModel] = useState<tfjs.GraphModel | void>();
+  const [model, setModel] = useState<tfjs.LayersModel | void>();
 
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
@@ -53,11 +54,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
       LoadingCon.setLoading(true);
       try {
         await tf.ready();
-        const downloaded_model = await tfjs
-          .loadGraphModel("http://192.168.137.173:8888/getModelJSON/model.json")
-          .catch((e) => console.log(e));
-        setModel(downloaded_model);
-        ErrorCon.displayError("Loaded model.", "notification");
         setTfLoaded(true);
       } catch {
         ErrorCon.displayError("Couldn't load tf.");
@@ -67,6 +63,25 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
     tfready();
   }, []);
+
+  // // LOAD MODEL
+  const loadModel = async () => {
+    LoadingCon.setLoading(true);
+    if (!model) {
+      try {
+        const downloaded_model = await tfjs.loadLayersModel(
+          "http://192.168.137.173:8888/getModelJSON/model.json"
+        );
+        setModel(downloaded_model);
+        ErrorCon.displayError("Loaded model.", "notification");
+      } catch (error) {
+        setModel();
+        console.log(error);
+        ErrorCon.displayError("Couldn't load model.", "error");
+      }
+    }
+    LoadingCon.setLoading(false);
+  };
 
   // CAMERA LOOP
   useEffect(() => {
@@ -79,8 +94,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
             liveCameraOptions.resizeWidth,
             liveCameraOptions.resizeWidth,
             liveCameraOptions.resizeDepth,
-          ]),
-          { batchSize: 1 }
+          ])
         );
         console.log(response.dataSync());
         tf.dispose([tensor]);
@@ -92,7 +106,11 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
   const switchCameraRolling = async () => {
     LoadingCon.setLoading(true);
-    setCameraRolling((prev) => !prev);
+    if (!cameraRolling && !model) {
+      ErrorCon.displayError("Must load model first.", "error");
+    } else {
+      setCameraRolling((prev) => !prev);
+    }
     LoadingCon.setLoading(false);
   };
 
@@ -119,6 +137,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
         tfLoaded,
         liveCameraOptions,
         predictions,
+        loadModel,
         switchCameraRolling,
         handleCameraStream,
       }}

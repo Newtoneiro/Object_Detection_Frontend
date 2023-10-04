@@ -9,6 +9,7 @@ export interface ILiveCameraContext {
   loadModel: () => void;
   switchCameraRolling: () => void;
   handleCameraStream: (tensors: IterableIterator<Tensor3D>) => void;
+  cameraReady: () => boolean;
 }
 
 export interface ILiveCameraOptions {

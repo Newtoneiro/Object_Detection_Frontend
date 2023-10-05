@@ -152,9 +152,21 @@ const LiveCameraProvider = ({ children }: IProps) => {
   //   utilizeFrame();
   // }, [tensor, cameraRolling, model]);
 
+  const transformBoxes = (boxes: tfjs.Tensor) => {
+    const x1 = boxes.slice([0, 0], [84, 1]);
+    const y1 = boxes.slice([0, 1], [84, 1]);
+    const width = boxes.slice([0, 2], [84, 1]);
+    const height = boxes.slice([0, 3], [84, 1]);
+
+    const x2 = tfjs.add(x1, width);
+    const y2 = tfjs.add(y1, height);
+
+    return tfjs.concat([x1, y1, x2, y2], 1);
+  };
+
   // MAKE PREDICTIONS
   const predict = async (tensor: tfjs.Tensor3D) => {
-    if (cameraReady()) {
+    if (cameraReady() && tensor.dataId.id % liveCameraOptions.frameRate == 0) {
       let tensor_reshape = tensor.reshape([
         1,
         liveCameraOptions.resizeWidth,
@@ -162,14 +174,26 @@ const LiveCameraProvider = ({ children }: IProps) => {
         liveCameraOptions.resizeDepth,
       ]);
       tensor_reshape = tfjs.cast(tensor_reshape, "float32");
-      let result = model?.predict(tensor_reshape).squeeze();
-      const selected_indices = await tfjs.image.nonMaxSuppressionAsync(
-        result,
-        [1],
-        5
-      );
-      selected_indices.print();
+      const result = model?.predict(tensor_reshape).squeeze();
+      result.print();
+      // const transformedBoxes = transformBoxes(boxes);
+      // const scores = tfjs.slice(result, [0, 4], [84, 80]);
+      // console.log(scores.shape);
+      // console.log(transformedBoxes.shape);
+
+      // const selectedIndicesTensor = tfjs.image.nonMaxSuppression(
+      //   transformedBoxes,
+      //   scores,
+      //   5
+      // );
+      // const selectedIndices = await selectedIndicesTensor.array();
+
       tfjs.dispose([tensor_reshape]);
+      tfjs.dispose([result]);
+      // tfjs.dispose([boxes]);
+      // tfjs.dispose([transformedBoxes]);
+      // tfjs.dispose([scores]);
+      // tfjs.dispose([selectedIndicesTensor]);
     }
     tfjs.dispose([tensor]);
   };
@@ -188,10 +212,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
     const loop = async () => {
       if (tfLoaded) {
         const nextImageTensor = images.next().value;
-        if (
-          nextImageTensor &&
-          nextImageTensor.dataId.id % liveCameraOptions.frameRate == 0
-        ) {
+        if (nextImageTensor) {
           predict(nextImageTensor);
         }
       }

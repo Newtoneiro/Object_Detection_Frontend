@@ -52,8 +52,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
       try {
         await tfjs.ready();
         setTfLoaded(true);
-      } catch {
-        ErrorCon.displayError("Couldn't load tf.");
+      } catch (e) {
+        ErrorCon.displayError("Couldn't load tf." + e);
       }
       LoadingCon.setLoading(false);
     };
@@ -174,26 +174,12 @@ const LiveCameraProvider = ({ children }: IProps) => {
         liveCameraOptions.resizeDepth,
       ]);
       tensor_reshape = tfjs.cast(tensor_reshape, "float32");
-      const result = model?.predict(tensor_reshape).squeeze();
-      result.print();
-      // const transformedBoxes = transformBoxes(boxes);
-      // const scores = tfjs.slice(result, [0, 4], [84, 80]);
-      // console.log(scores.shape);
-      // console.log(transformedBoxes.shape);
-
-      // const selectedIndicesTensor = tfjs.image.nonMaxSuppression(
-      //   transformedBoxes,
-      //   scores,
-      //   5
-      // );
-      // const selectedIndices = await selectedIndicesTensor.array();
+      const prediction = (
+        model?.execute(tensor_reshape) as tfjs.Tensor
+      ).squeeze();
+      prediction.print();
 
       tfjs.dispose([tensor_reshape]);
-      tfjs.dispose([result]);
-      // tfjs.dispose([boxes]);
-      // tfjs.dispose([transformedBoxes]);
-      // tfjs.dispose([scores]);
-      // tfjs.dispose([selectedIndicesTensor]);
     }
     tfjs.dispose([tensor]);
   };

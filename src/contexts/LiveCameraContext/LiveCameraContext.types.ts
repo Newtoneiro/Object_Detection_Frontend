@@ -18,3 +18,9 @@ export interface ILiveCameraOptions {
   resizeHeight: number;
   resizeDepth: number;
 }
+
+export interface IPredictionVariables {
+  scaleWidth: number;
+  scaleHeight: number;
+  flipHorizontal: boolean;
+}

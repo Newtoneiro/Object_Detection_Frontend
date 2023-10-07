@@ -3,17 +3,23 @@ import { createContext, useContext, useEffect, useState } from "react";
 import {
   ILiveCameraContext,
   ILiveCameraOptions,
+  IPredictionVariables,
 } from "./LiveCameraContext.types";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import * as tfjs from "@tensorflow/tfjs";
+import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { IPrediction } from "../CameraContext/CameraContext.types";
+import { CameraContext } from "../CameraContext/CameraContext";
+import { Platform } from "react-native";
+
+//TODO osobne opcje dla liveCamera + przerobic wyswietlanie niektorych
 
 const defaultLiveCameraOptions: ILiveCameraOptions = {
   frameRate: 20,
-  resizeWidth: 640,
-  resizeHeight: 640,
+  resizeWidth: 152,
+  resizeHeight: 200,
   resizeDepth: 3,
 };
 
@@ -38,11 +44,19 @@ const LiveCameraProvider = ({ children }: IProps) => {
     useState<ILiveCameraOptions>(defaultLiveCameraOptions);
   const [cameraRolling, setCameraRolling] = useState<boolean>(false);
   const [predictions, setPredictions] = useState<IPrediction[]>([]);
-  const [model, setModel] = useState<tfjs.GraphModel | void>();
+  const [model, setModel] = useState<cocoSsd.ObjectDetection | void>();
   const [animationFrameId, setAnimationFrameId] = useState<number>(0);
+
+  const [predictionVariables, setPredictionVariables] =
+    useState<IPredictionVariables>({
+      scaleWidth: 1,
+      scaleHeight: 1,
+      flipHorizontal: Platform.OS == "ios" ? false : true,
+    });
 
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
+  const CameraCon = useContext(CameraContext);
 
   // LOAD TFJS
   useEffect(() => {
@@ -66,9 +80,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
     LoadingCon.setLoading(true);
     if (!model) {
       try {
-        const downloaded_model = await tfjs.loadGraphModel(
-          "http://192.168.90.75:8888/getModelJSON/model.json"
-        );
+        const downloaded_model = await cocoSsd.load();
         setModel(downloaded_model);
         ErrorCon.displayError("Loaded model.", "notification");
       } catch (error) {
@@ -87,101 +99,60 @@ const LiveCameraProvider = ({ children }: IProps) => {
     };
   }, [animationFrameId]);
 
-  const cameraReady = () => {
-    return tfLoaded && model !== undefined && cameraRolling;
-  };
-
-  // CAMERA LOOP
-  // useEffect(() => {
-  //   const utilizeFrame = async () => {
-  //     if (model && cameraRolling && tensor) {
-  //       let tensor_reshape = tensor.reshape([
-  //         1,
-  //         liveCameraOptions.resizeWidth,
-  //         liveCameraOptions.resizeHeight,
-  //         liveCameraOptions.resizeDepth,
-  //       ]);
-  //       tensor_reshape = tfjs.cast(tensor_reshape, "float32");
-  //       let result = model.predict(tensor_reshape);
-  //       // .then(async (response) => {
-  //       //   const new_predictions: IPrediction[] = [];
-  //       //   await response.forEach((element) => {
-  //       //     let box = {
-  //       //       x:
-  //       //         (element.bbox[0] * CameraCon.cameraDimensions.width) /
-  //       //         liveCameraOptions.resizeWidth,
-  //       //       y:
-  //       //         (element.bbox[1] * CameraCon.cameraDimensions.height) /
-  //       //         liveCameraOptions.resizeHeight,
-  //       //       width:
-  //       //         (element.bbox[2] * CameraCon.cameraDimensions.width) /
-  //       //         liveCameraOptions.resizeWidth,
-  //       //       height:
-  //       //         (element.bbox[3] * CameraCon.cameraDimensions.height) /
-  //       //         liveCameraOptions.resizeHeight,
-  //       //     };
-  //       //     console.log(box);
-  //       //     new_predictions.push({
-  //       //       name: element.class,
-  //       //       class: 0,
-  //       //       confidence: element.score,
-  //       //       box: {
-  //       //         x:
-  //       //           (element.bbox[0] * CameraCon.cameraDimensions.width) /
-  //       //           liveCameraOptions.resizeWidth,
-  //       //         y:
-  //       //           (element.bbox[1] * CameraCon.cameraDimensions.height) /
-  //       //           liveCameraOptions.resizeHeight,
-  //       //         width:
-  //       //           (element.bbox[2] * CameraCon.cameraDimensions.width) /
-  //       //           liveCameraOptions.resizeWidth,
-  //       //         height:
-  //       //           (element.bbox[3] * CameraCon.cameraDimensions.height) /
-  //       //           liveCameraOptions.resizeHeight,
-  //       //       },
-  //       //     });
-  //       //   });
-  //       // setPredictions(new_predictions);
-  //       // });
-  //       result.print();
-  //       tfjs.dispose([tensor]);
-  //       tfjs.dispose([tensor_reshape]);
-  //     }
-  //   };
-
-  //   utilizeFrame();
-  // }, [tensor, cameraRolling, model]);
-
-  const transformBoxes = (boxes: tfjs.Tensor) => {
-    const x1 = boxes.slice([0, 0], [84, 1]);
-    const y1 = boxes.slice([0, 1], [84, 1]);
-    const width = boxes.slice([0, 2], [84, 1]);
-    const height = boxes.slice([0, 3], [84, 1]);
-
-    const x2 = tfjs.add(x1, width);
-    const y2 = tfjs.add(y1, height);
-
-    return tfjs.concat([x1, y1, x2, y2], 1);
-  };
+  // Update PredictionVariables after change of settings
+  useEffect(() => {
+    setPredictionVariables((prev) => {
+      return {
+        scaleHeight:
+          CameraCon.cameraDimensions.height / liveCameraOptions.resizeHeight,
+        scaleWidth:
+          CameraCon.cameraDimensions.width / liveCameraOptions.resizeWidth,
+        flipHorizontal: prev.flipHorizontal,
+      };
+    });
+  }, [liveCameraOptions.resizeHeight, liveCameraOptions.resizeHeight]);
 
   // MAKE PREDICTIONS
   const predict = async (tensor: tfjs.Tensor3D) => {
+    // @ts-ignore Because apparently dataId is defined as 'object'
     if (cameraReady() && tensor.dataId.id % liveCameraOptions.frameRate == 0) {
-      let tensor_reshape = tensor.reshape([
-        1,
-        liveCameraOptions.resizeWidth,
-        liveCameraOptions.resizeHeight,
-        liveCameraOptions.resizeDepth,
-      ]);
-      tensor_reshape = tfjs.cast(tensor_reshape, "float32");
-      const prediction = (
-        model?.execute(tensor_reshape) as tfjs.Tensor
-      ).squeeze();
-      prediction.print();
+      console.warn = () => {}; // Because of outdated libraries (to silence tf.nonMaxSuppression() in webgl locks the UI thread. Call tf.nonMaxSuppressionAsync() instead)
+      model?.detect(tensor).then(async (predictions) => {
+        setPredictions([]);
+        const new_predictions: IPrediction[] = [];
 
-      tfjs.dispose([tensor_reshape]);
+        await predictions.forEach((prediction) => {
+          const [x, y, width, height] = prediction.bbox;
+
+          new_predictions.push({
+            name: prediction.class,
+            class: 0,
+            confidence: prediction.score,
+            box: {
+              x:
+                (predictionVariables.flipHorizontal
+                  ? CameraCon.cameraDimensions.width -
+                    x * predictionVariables.scaleWidth -
+                    width * predictionVariables.scaleWidth
+                  : width * predictionVariables.scaleWidth) +
+                (width * predictionVariables.scaleWidth) / 2,
+              y:
+                y * predictionVariables.scaleHeight +
+                (height * predictionVariables.scaleHeight) / 2,
+              width: width * predictionVariables.scaleWidth,
+              height: height * predictionVariables.scaleHeight,
+            },
+          });
+        });
+        setPredictions(new_predictions);
+      });
     }
     tfjs.dispose([tensor]);
+  };
+
+  // Camera Functions
+  const cameraReady = () => {
+    return tfLoaded && model !== undefined && cameraRolling;
   };
 
   const switchCameraRolling = async () => {

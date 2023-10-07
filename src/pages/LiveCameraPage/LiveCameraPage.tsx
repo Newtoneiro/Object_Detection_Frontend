@@ -28,63 +28,53 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
 
   return LiveCameraCon.tfLoaded ? (
     <View style={liveCameraPageStyles.container}>
+      <GradientButton
+        handlePressFunction={() => LiveCameraCon.switchCameraRolling()}
+      >
+        <Text>{LiveCameraCon.cameraRolling ? "Stop" : "Start"}</Text>
+      </GradientButton>
+      <GradientButton handlePressFunction={() => LiveCameraCon.loadModel()}>
+        <Text>Load Model</Text>
+      </GradientButton>
       <View
         style={{
           width: CameraCon.cameraDimensions.width,
           height: CameraCon.cameraDimensions.height,
+          position: "relative",
         }}
       >
-        <GradientButton
-          handlePressFunction={() => LiveCameraCon.switchCameraRolling()}
-        >
-          <Text>{LiveCameraCon.cameraRolling ? "Stop" : "Start"}</Text>
-        </GradientButton>
-        <GradientButton handlePressFunction={() => LiveCameraCon.loadModel()}>
-          <Text>Load Model</Text>
-        </GradientButton>
-
-        <View
-          style={{
-            width: CameraCon.cameraDimensions.width,
-            height: CameraCon.cameraDimensions.height,
-            position: "relative",
-          }}
-        >
-          {LiveCameraCon.cameraReady() && (
-            <>
-              {
-                // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
-                <TensorCamera
-                  // Standard Camera props
-                  type={CameraCon.cameraOptions.type}
-                  style={{
-                    width: CameraCon.cameraDimensions.width,
-                    height: CameraCon.cameraDimensions.height,
-                  }}
-                  cameraTextureHeight={CameraCon.cameraDimensions.height}
-                  cameraTextureWidth={CameraCon.cameraDimensions.width}
-                  resizeHeight={LiveCameraCon.liveCameraOptions.resizeHeight}
-                  resizeWidth={LiveCameraCon.liveCameraOptions.resizeWidth}
-                  resizeDepth={LiveCameraCon.liveCameraOptions.resizeDepth}
-                  onReady={LiveCameraCon.handleCameraStream}
-                  autorender={true}
-                />
-              }
-
-              {LiveCameraCon.predictions.map((prediction, i) => {
-                return (
-                  <DetectedRectangle
-                    key={i}
-                    name={prediction.name}
-                    class={prediction.class}
-                    confidence={prediction.confidence}
-                    box={prediction.box}
-                  />
-                );
-              })}
-            </>
-          )}
-        </View>
+        {LiveCameraCon.predictions.map((prediction, i) => {
+          return (
+            <DetectedRectangle
+              key={i}
+              name={prediction.name}
+              class={prediction.class}
+              confidence={prediction.confidence}
+              box={prediction.box}
+            />
+          );
+        })}
+        {LiveCameraCon.cameraReady() && (
+          <>
+            {
+              // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
+              <TensorCamera
+                type={CameraCon.cameraOptions.type}
+                style={{
+                  width: CameraCon.cameraDimensions.width,
+                  height: CameraCon.cameraDimensions.height,
+                }}
+                cameraTextureHeight={CameraCon.cameraDimensions.height}
+                cameraTextureWidth={CameraCon.cameraDimensions.width}
+                resizeHeight={LiveCameraCon.liveCameraOptions.resizeHeight}
+                resizeWidth={LiveCameraCon.liveCameraOptions.resizeWidth}
+                resizeDepth={LiveCameraCon.liveCameraOptions.resizeDepth}
+                onReady={LiveCameraCon.handleCameraStream}
+                autorender={true}
+              />
+            }
+          </>
+        )}
       </View>
     </View>
   ) : (

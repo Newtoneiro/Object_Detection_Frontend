@@ -8,6 +8,7 @@ import { liveCameraPageStyles } from "./LiveCameraPage.styles";
 import { LiveCameraPageProps } from "./LiveCameraPage.types";
 import GradientButton from "../../components/Utils/GradientButton/GradientButton";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
+import AnimatedLoadingCard from "../../components/Utils/AnimatedLoadingCard/AnimatedLoadingCard";
 
 const TensorCamera = cameraWithTensors(Camera);
 
@@ -24,15 +25,12 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
     [navigation, LiveCameraCon]
   );
 
-  return LiveCameraCon.tfLoaded ? (
+  return LiveCameraCon.modelLoaded() ? (
     <View style={liveCameraPageStyles.container}>
       <GradientButton
         handlePressFunction={() => LiveCameraCon.switchCameraRolling()}
       >
         <Text>{LiveCameraCon.cameraRolling ? "Stop" : "Start"}</Text>
-      </GradientButton>
-      <GradientButton handlePressFunction={() => LiveCameraCon.loadModel()}>
-        <Text>Load Model</Text>
       </GradientButton>
       <View
         style={{
@@ -76,7 +74,7 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
       </View>
     </View>
   ) : (
-    <></>
+    <AnimatedLoadingCard />
   );
 };
 

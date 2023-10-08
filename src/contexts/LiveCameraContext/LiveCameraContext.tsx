@@ -37,7 +37,6 @@ const defaultLiveCameraDimensions: ILiveCameraDimensions = {
 
 const defaultLiveCameraContext: ILiveCameraContext = {
   cameraRolling: false,
-  tfLoaded: false,
   liveCameraOptions: defaultLiveCameraOptions,
   predictions: [],
   liveCameraDimensions: defaultLiveCameraDimensions,
@@ -45,6 +44,7 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   switchCameraRolling: () => {},
   handleCameraStream: (_) => {},
   cameraReady: () => false,
+  modelLoaded: () => false,
   setLiveCameraOptions: (_) => {},
 };
 
@@ -161,7 +161,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
           new_predictions.push({
             name: prediction.class,
-            class: 0,
+            class: 0, // class attribute does not exist on cocossd predictions
             confidence: prediction.score,
             box: {
               x:
@@ -186,9 +186,13 @@ const LiveCameraProvider = ({ children }: IProps) => {
     tfjs.dispose([tensor]);
   };
 
+  const modelLoaded = () => {
+    return tfLoaded && model !== undefined;
+  };
+
   // Camera Functions
   const cameraReady = () => {
-    return tfLoaded && model !== undefined && cameraRolling;
+    return modelLoaded() && cameraRolling;
   };
 
   const switchCameraRolling = async () => {
@@ -219,13 +223,13 @@ const LiveCameraProvider = ({ children }: IProps) => {
     <LiveCameraContext.Provider
       value={{
         cameraRolling,
-        tfLoaded,
         liveCameraOptions,
         predictions,
         liveCameraDimensions,
         loadModel,
         switchCameraRolling,
         handleCameraStream,
+        modelLoaded,
         cameraReady,
         setLiveCameraOptions,
       }}

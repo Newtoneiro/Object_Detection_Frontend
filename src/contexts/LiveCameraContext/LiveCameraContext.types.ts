@@ -8,13 +8,13 @@ import {
 
 export interface ILiveCameraContext {
   cameraRolling: boolean;
-  tfLoaded: boolean;
   liveCameraOptions: ILiveCameraOptions;
   predictions: IPrediction[];
   liveCameraDimensions: ICameraDimensions;
   loadModel: () => void;
   switchCameraRolling: () => void;
   handleCameraStream: (tensors: IterableIterator<Tensor3D>) => void;
+  modelLoaded: () => boolean;
   cameraReady: () => boolean;
   setLiveCameraOptions: (_: ILiveCameraOptions) => void;
 }

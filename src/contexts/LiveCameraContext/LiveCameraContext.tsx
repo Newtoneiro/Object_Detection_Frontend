@@ -2,25 +2,37 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import {
   ILiveCameraContext,
+  ILiveCameraDimensions,
   ILiveCameraOptions,
   IPredictionVariables,
+  RESIZE_HEIGHT,
+  RESIZE_WIDTH,
 } from "./LiveCameraContext.types";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import * as tfjs from "@tensorflow/tfjs";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
-import { IPrediction } from "../CameraContext/CameraContext.types";
-import { CameraContext } from "../CameraContext/CameraContext";
-import { Platform } from "react-native";
-
-//TODO osobne opcje dla liveCamera + przerobic wyswietlanie niektorych
+import {
+  ICameraDimensions,
+  IPrediction,
+} from "../CameraContext/CameraContext.types";
+import { Platform, useWindowDimensions } from "react-native";
+import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
+import { CameraType } from "expo-camera";
 
 const defaultLiveCameraOptions: ILiveCameraOptions = {
-  frameRate: 20,
-  resizeWidth: 152,
-  resizeHeight: 200,
+  type: CameraType.back,
+  ratio: "4:3",
+  frameRate: "20",
+  resizeWidth: RESIZE_WIDTH,
+  resizeHeight: RESIZE_HEIGHT,
   resizeDepth: 3,
+};
+
+const defaultLiveCameraDimensions: ILiveCameraDimensions = {
+  width: 0,
+  height: 0,
 };
 
 const defaultLiveCameraContext: ILiveCameraContext = {
@@ -28,10 +40,12 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   tfLoaded: false,
   liveCameraOptions: defaultLiveCameraOptions,
   predictions: [],
+  liveCameraDimensions: defaultLiveCameraDimensions,
   loadModel: () => {},
   switchCameraRolling: () => {},
   handleCameraStream: (_) => {},
   cameraReady: () => false,
+  setLiveCameraOptions: (_) => {},
 };
 
 const LiveCameraContext = createContext<ILiveCameraContext>(
@@ -39,12 +53,18 @@ const LiveCameraContext = createContext<ILiveCameraContext>(
 );
 
 const LiveCameraProvider = ({ children }: IProps) => {
-  const [tfLoaded, setTfLoaded] = useState<boolean>(false);
   const [liveCameraOptions, setLiveCameraOptions] =
     useState<ILiveCameraOptions>(defaultLiveCameraOptions);
+  const [liveCameraDimensions, setLiveCameraDimensions] =
+    useState<ICameraDimensions>(defaultLiveCameraDimensions);
+  const { width } = useWindowDimensions();
+
+  const [tfLoaded, setTfLoaded] = useState<boolean>(false);
   const [cameraRolling, setCameraRolling] = useState<boolean>(false);
-  const [predictions, setPredictions] = useState<IPrediction[]>([]);
   const [model, setModel] = useState<cocoSsd.ObjectDetection | void>();
+
+  const [predictions, setPredictions] = useState<IPrediction[]>([]);
+
   const [animationFrameId, setAnimationFrameId] = useState<number>(0);
 
   const [predictionVariables, setPredictionVariables] =
@@ -56,7 +76,19 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
-  const CameraCon = useContext(CameraContext);
+
+  // Calculate camera dimensions
+  useEffect(() => {
+    const height = calculateHeightFromWidth(liveCameraOptions.ratio, width);
+    setLiveCameraDimensions((prev) => {
+      return { ...prev, width: width, height: height };
+    });
+  }, [liveCameraOptions.ratio]);
+
+  // reload camera
+  useEffect(() => {
+    setCameraRolling(false);
+  }, [liveCameraOptions]);
 
   // LOAD TFJS
   useEffect(() => {
@@ -104,13 +136,17 @@ const LiveCameraProvider = ({ children }: IProps) => {
     setPredictionVariables((prev) => {
       return {
         scaleHeight:
-          CameraCon.cameraDimensions.height / liveCameraOptions.resizeHeight,
-        scaleWidth:
-          CameraCon.cameraDimensions.width / liveCameraOptions.resizeWidth,
+          liveCameraDimensions.height / liveCameraOptions.resizeHeight,
+        scaleWidth: liveCameraDimensions.width / liveCameraOptions.resizeWidth,
         flipHorizontal: prev.flipHorizontal,
       };
     });
-  }, [liveCameraOptions.resizeHeight, liveCameraOptions.resizeHeight]);
+  }, [
+    liveCameraDimensions.height,
+    liveCameraDimensions.width,
+    liveCameraOptions.resizeHeight,
+    liveCameraOptions.resizeHeight,
+  ]);
 
   // MAKE PREDICTIONS
   const predict = async (tensor: tfjs.Tensor3D) => {
@@ -118,10 +154,9 @@ const LiveCameraProvider = ({ children }: IProps) => {
     if (cameraReady() && tensor.dataId.id % liveCameraOptions.frameRate == 0) {
       console.warn = () => {}; // Because of outdated libraries (to silence tf.nonMaxSuppression() in webgl locks the UI thread. Call tf.nonMaxSuppressionAsync() instead)
       model?.detect(tensor).then(async (predictions) => {
-        setPredictions([]);
         const new_predictions: IPrediction[] = [];
 
-        await predictions.forEach((prediction) => {
+        predictions.forEach((prediction) => {
           const [x, y, width, height] = prediction.bbox;
 
           new_predictions.push({
@@ -131,7 +166,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
             box: {
               x:
                 (predictionVariables.flipHorizontal
-                  ? CameraCon.cameraDimensions.width -
+                  ? liveCameraDimensions.width -
                     x * predictionVariables.scaleWidth -
                     width * predictionVariables.scaleWidth
                   : width * predictionVariables.scaleWidth) +
@@ -144,6 +179,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
             },
           });
         });
+        setPredictions([]); // To reset the predictions, so they dont stack
         setPredictions(new_predictions);
       });
     }
@@ -161,6 +197,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
       ErrorCon.displayError("Must load model first.", "error");
     } else {
       setCameraRolling((prev) => !prev);
+      setPredictions([]); // reset predictions
     }
     LoadingCon.setLoading(false);
   };
@@ -185,10 +222,12 @@ const LiveCameraProvider = ({ children }: IProps) => {
         tfLoaded,
         liveCameraOptions,
         predictions,
+        liveCameraDimensions,
         loadModel,
         switchCameraRolling,
         handleCameraStream,
         cameraReady,
+        setLiveCameraOptions,
       }}
     >
       {children}

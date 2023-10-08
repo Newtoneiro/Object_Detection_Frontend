@@ -16,9 +16,15 @@ import { SettingsPageProps } from "./SettingsPage.types";
 import { settingsPageStyles } from "./SettingsPage.styles";
 import stylesConfig from "../../config.styles";
 import { useContext } from "react";
+import { LiveCameraContext } from "../../contexts/LiveCameraContext/LiveCameraContext";
+import {
+  FrameRate,
+  possibleFrameRates,
+} from "../../contexts/LiveCameraContext/LiveCameraContext.types";
 
 const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const CameraCon = useContext(CameraContext);
+  const LiveCameraCon = useContext(LiveCameraContext);
 
   return (
     <Background handlePressFunction={() => navigation.goBack()}>
@@ -33,7 +39,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         contentContainerStyle={settingsPageStyles.contentContainer}
       >
         <CrossedFooter>
-          <Text style={settingsPageStyles.settingsTitle}>Camera options</Text>
+          <Text style={settingsPageStyles.settingsTitle}>Picture Mode</Text>
         </CrossedFooter>
         <Setting<Quality>
           value={CameraCon.cameraOptions.quality}
@@ -66,6 +72,45 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           handleChangeValue={(newType: CameraType) =>
             CameraCon.setCameraOptions({
               ...CameraCon.cameraOptions,
+              type: newType,
+            })
+          }
+          icon="flip"
+        />
+        <CrossedFooter>
+          <Text style={settingsPageStyles.settingsTitle}>Live Mode</Text>
+        </CrossedFooter>
+        <Setting<FrameRate>
+          value={LiveCameraCon.liveCameraOptions.frameRate}
+          name={`predict every [${LiveCameraCon.liveCameraOptions.frameRate}] frames`}
+          possibleValues={possibleFrameRates}
+          handleChangeValue={(newFrameRate: FrameRate) =>
+            LiveCameraCon.setLiveCameraOptions({
+              ...LiveCameraCon.liveCameraOptions,
+              frameRate: newFrameRate,
+            })
+          }
+          icon="animation"
+        />
+        <Setting<Ratio>
+          value={LiveCameraCon.liveCameraOptions.ratio}
+          name="ratio"
+          possibleValues={possibleRatios}
+          handleChangeValue={(newRatio: Ratio) =>
+            LiveCameraCon.setLiveCameraOptions({
+              ...LiveCameraCon.liveCameraOptions,
+              ratio: newRatio,
+            })
+          }
+          icon="aspect-ratio"
+        />
+        <Setting<CameraType>
+          value={LiveCameraCon.liveCameraOptions.type}
+          name="camera type"
+          possibleValues={[CameraType.back, CameraType.front]}
+          handleChangeValue={(newType: CameraType) =>
+            LiveCameraCon.setLiveCameraOptions({
+              ...LiveCameraCon.liveCameraOptions,
               type: newType,
             })
           }

@@ -68,14 +68,10 @@ const CameraProvider = ({ children }: IProps) => {
   }, []);
 
   useEffect(() => {
-    const calculateCameraDimensions = () => {
-      const height = calculateHeightFromWidth(cameraOptions.ratio, width);
-      setCameraDimensions((prev) => {
-        return { ...prev, width: width, height: height };
-      });
-    };
-
-    calculateCameraDimensions();
+    const height = calculateHeightFromWidth(cameraOptions.ratio, width);
+    setCameraDimensions((prev) => {
+      return { ...prev, width: width, height: height };
+    });
   }, [cameraOptions.ratio]);
 
   const toggleCameraType = () => {

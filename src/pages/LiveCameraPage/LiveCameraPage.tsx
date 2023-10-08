@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
 import { Camera } from "expo-camera";
 import { View, Text } from "react-native";
-import { CameraContext } from "../../contexts/CameraContext/CameraContext";
 import { LiveCameraContext } from "../../contexts/LiveCameraContext/LiveCameraContext";
 import { liveCameraPageStyles } from "./LiveCameraPage.styles";
 import { LiveCameraPageProps } from "./LiveCameraPage.types";
@@ -13,14 +12,13 @@ import DetectedRectangle from "../../components/Utils/DetectedRectangle/Detected
 const TensorCamera = cameraWithTensors(Camera);
 
 const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
-  const CameraCon = useContext(CameraContext);
   const LiveCameraCon = useContext(LiveCameraContext);
 
   useEffect(
     () =>
       navigation.addListener("beforeRemove", async () => {
         if (LiveCameraCon.cameraRolling) {
-          await LiveCameraCon.switchCameraRolling();
+          LiveCameraCon.switchCameraRolling();
         }
       }),
     [navigation, LiveCameraCon]
@@ -38,8 +36,8 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
       </GradientButton>
       <View
         style={{
-          width: CameraCon.cameraDimensions.width,
-          height: CameraCon.cameraDimensions.height,
+          width: LiveCameraCon.liveCameraDimensions.width,
+          height: LiveCameraCon.liveCameraDimensions.height,
           position: "relative",
         }}
       >
@@ -59,13 +57,13 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
             {
               // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
               <TensorCamera
-                type={CameraCon.cameraOptions.type}
+                type={LiveCameraCon.liveCameraOptions.type}
                 style={{
-                  width: CameraCon.cameraDimensions.width,
-                  height: CameraCon.cameraDimensions.height,
+                  width: LiveCameraCon.liveCameraDimensions.width,
+                  height: LiveCameraCon.liveCameraDimensions.height,
                 }}
-                cameraTextureHeight={CameraCon.cameraDimensions.height}
-                cameraTextureWidth={CameraCon.cameraDimensions.width}
+                cameraTextureHeight={LiveCameraCon.liveCameraDimensions.height}
+                cameraTextureWidth={LiveCameraCon.liveCameraDimensions.width}
                 resizeHeight={LiveCameraCon.liveCameraOptions.resizeHeight}
                 resizeWidth={LiveCameraCon.liveCameraOptions.resizeWidth}
                 resizeDepth={LiveCameraCon.liveCameraOptions.resizeDepth}

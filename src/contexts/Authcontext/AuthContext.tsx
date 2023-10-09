@@ -58,7 +58,8 @@ const AuthProvider = ({ children }: IProps) => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      LoadingCon.setLoading(true);
+      LoadingCon.setDisplayLoadingCard(true);
+      LoadingCon.setLoadingCardText("Logging you in");
       if (authState.token) {
         await axios
           .post(config.paths.home + config.paths.auth + "/verifyToken", {
@@ -128,7 +129,7 @@ const AuthProvider = ({ children }: IProps) => {
       } else {
         setIsAuthenticated(false);
       }
-      LoadingCon.setLoading(false);
+      LoadingCon.setDisplayLoadingCard(false);
     };
 
     verifyToken();
@@ -172,7 +173,8 @@ const AuthProvider = ({ children }: IProps) => {
   };
 
   const logout = async () => {
-    LoadingCon.setLoading(true);
+    LoadingCon.setDisplayLoadingCard(true);
+    LoadingCon.setLoadingCardText("Signing out");
     await AsyncStorage.removeItem("userInfo");
     await AsyncStorage.removeItem("token");
 
@@ -188,7 +190,7 @@ const AuthProvider = ({ children }: IProps) => {
     await auth().signOut();
 
     AuthFetchCon.authFetch.defaults.headers.common["X-Access-Tokens"] = "";
-    LoadingCon.setLoading(false);
+    LoadingCon.setDisplayLoadingCard(false);
   };
 
   const register = async ({ email, password }: IRegisterData) => {

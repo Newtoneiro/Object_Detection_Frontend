@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "jsc",
     "name": "Object_Detection_Frontend",
     "slug": "Object_Detection_Frontend",
     "version": "1.0.0",

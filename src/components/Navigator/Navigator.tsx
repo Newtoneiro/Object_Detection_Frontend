@@ -1,5 +1,6 @@
 import CameraPage from "../../pages/CameraPage/CameraPage";
 import DashboardPage from "../../pages/DashboardPage/DashboardPage";
+import LiveCameraPage from "../../pages/LiveCameraPage/LiveCameraPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { RootStackParamList } from "./Navigator.types";
 import SettingsPage from "../../pages/SettingsPage/SettingsPage";
@@ -20,6 +21,7 @@ export default function Navigator() {
       >
         <Stack.Screen name="DashboardPage" component={DashboardPage} />
         <Stack.Screen name="CameraPage" component={CameraPage} />
+        <Stack.Screen name="LiveCameraPage" component={LiveCameraPage} />
         <Stack.Screen name="SettingsPage" component={SettingsPage} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,6 +1,5 @@
-import { Image, Pressable, SafeAreaView, StatusBar, View } from "react-native";
+import { Image, SafeAreaView, StatusBar, View } from "react-native";
 
-import { FontAwesome } from "@expo/vector-icons";
 import { IBackgroundProps } from "./Background.types";
 import { LinearGradient } from "expo-linear-gradient";
 import PressableIcon from "../PressableIcon/PressableIcon";

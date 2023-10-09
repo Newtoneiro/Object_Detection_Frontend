@@ -6,14 +6,19 @@ import { View, Text } from "react-native";
 import { LiveCameraContext } from "../../contexts/LiveCameraContext/LiveCameraContext";
 import { liveCameraPageStyles } from "./LiveCameraPage.styles";
 import { LiveCameraPageProps } from "./LiveCameraPage.types";
-import GradientButton from "../../components/Utils/GradientButton/GradientButton";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
-import AnimatedLoadingCard from "../../components/Utils/AnimatedLoadingCard/AnimatedLoadingCard";
+import CameraButton from "../../components/Utils/CameraButton/CameraButton";
+import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
+import stylesConfig from "../../config.styles";
 
 const TensorCamera = cameraWithTensors(Camera);
 
 const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
   const LiveCameraCon = useContext(LiveCameraContext);
+
+  useEffect(() => {
+    LiveCameraCon.prepareLiveCameraPage();
+  }, []);
 
   useEffect(
     () =>
@@ -27,11 +32,18 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
 
   return LiveCameraCon.modelLoaded() ? (
     <View style={liveCameraPageStyles.container}>
-      <GradientButton
-        handlePressFunction={() => LiveCameraCon.switchCameraRolling()}
-      >
-        <Text>{LiveCameraCon.cameraRolling ? "Stop" : "Start"}</Text>
-      </GradientButton>
+      <View style={liveCameraPageStyles.topPanel}>
+        <PressableIcon
+          handlePress={() => navigation.goBack()}
+          icon="keyboard-return"
+          size={stylesConfig.fontSize.subtitle}
+        />
+        <PressableIcon
+          handlePress={() => navigation.navigate("SettingsPage")}
+          icon="settings"
+          size={stylesConfig.fontSize.subtitle}
+        />
+      </View>
       <View
         style={{
           width: LiveCameraCon.liveCameraDimensions.width,
@@ -50,7 +62,7 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
             />
           );
         })}
-        {LiveCameraCon.cameraReady() && (
+        {LiveCameraCon.cameraReady() ? (
           <>
             {
               // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
@@ -70,11 +82,21 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
               />
             }
           </>
+        ) : (
+          <View style={liveCameraPageStyles.cameraPlaceholder}>
+            <Text style={liveCameraPageStyles.cameraPlaceholderText}>
+              Start the camera to view predictions.
+            </Text>
+          </View>
         )}
       </View>
+      <CameraButton
+        handlePress={LiveCameraCon.switchCameraRolling}
+        toggle={LiveCameraCon.cameraRolling}
+      />
     </View>
   ) : (
-    <AnimatedLoadingCard />
+    <></>
   );
 };
 

@@ -1,7 +1,6 @@
-import { Image, Pressable, View } from "react-native";
+import { Image, View } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
-import { AuthContext } from "../../contexts/AuthContext/AuthContext";
 import { Camera } from "expo-camera";
 import { CameraContext } from "../../contexts/CameraContext/CameraContext";
 import { CameraPageProps } from "./CameraPage.types";
@@ -9,11 +8,11 @@ import DetectedRectangle from "../../components/Utils/DetectedRectangle/Detected
 import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import { cameraPageStyles } from "./CameraPage.styles";
 import stylesConfig from "../../config.styles";
+import CameraButton from "../../components/Utils/CameraButton/CameraButton";
 
 const CameraPage = ({ navigation }: CameraPageProps) => {
   const [focused, setFocused] = useState<boolean>(false);
 
-  const AuthCon = useContext(AuthContext);
   const CameraCon = useContext(CameraContext);
 
   useEffect(() => {
@@ -50,11 +49,6 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
             <PressableIcon
               handlePress={() => navigation.navigate("SettingsPage")}
               icon="settings"
-              size={stylesConfig.fontSize.subtitle}
-            />
-            <PressableIcon
-              handlePress={() => AuthCon.logout()}
-              icon="logout"
               size={stylesConfig.fontSize.subtitle}
             />
           </>
@@ -103,12 +97,7 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
           ></Camera>
         )}
       </View>
-      <Pressable
-        onPress={() => CameraCon.handleTakePicture()}
-        style={cameraPageStyles.bottomPanelCaptureButton}
-      >
-        <View style={cameraPageStyles.bottomPanelCaptureButtonInside}></View>
-      </Pressable>
+      <CameraButton handlePress={CameraCon.handleTakePicture} />
     </View>
   ) : (
     <></>

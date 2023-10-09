@@ -40,7 +40,7 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   liveCameraOptions: defaultLiveCameraOptions,
   predictions: [],
   liveCameraDimensions: defaultLiveCameraDimensions,
-  loadModel: () => {},
+  prepareLiveCameraPage: () => {},
   switchCameraRolling: () => {},
   handleCameraStream: (_) => {},
   cameraReady: () => false,
@@ -88,40 +88,44 @@ const LiveCameraProvider = ({ children }: IProps) => {
   // reload camera
   useEffect(() => {
     setCameraRolling(false);
+    setPredictions([]);
   }, [liveCameraOptions]);
 
-  // LOAD TFJS
-  useEffect(() => {
-    const tfready = async () => {
-      setTfLoaded(false);
-      LoadingCon.setLoading(true);
+  const prepareLiveCameraPage = async () => {
+    const loadTFJS = async () => {
       try {
         await tfjs.ready();
         setTfLoaded(true);
       } catch (e) {
-        ErrorCon.displayError("Couldn't load tf." + e);
+        setTfLoaded(false);
+        throw "Couldn't load tf." + e;
       }
-      LoadingCon.setLoading(false);
     };
 
-    tfready();
-  }, []);
-
-  // LOAD MODEL
-  const loadModel = async () => {
-    LoadingCon.setLoading(true);
-    if (!model) {
+    const loadModel = async () => {
       try {
         const downloaded_model = await cocoSsd.load();
         setModel(downloaded_model);
-        ErrorCon.displayError("Loaded model.", "notification");
-      } catch (error) {
+      } catch (e) {
         setModel();
-        console.log(error);
-        ErrorCon.displayError("Couldn't load model.", "error");
+        throw "Couldn't load model." + e;
+      }
+    };
+
+    // Load TFJS
+    if (!tfLoaded || !model) {
+      LoadingCon.setDisplayLoadingCard(true);
+      try {
+        LoadingCon.setLoadingCardText("Loading TFJS");
+        await loadTFJS();
+        LoadingCon.setLoadingCardText("Loading cocoSsd model");
+        await loadModel();
+      } catch (e) {
+        ErrorCon.displayError(String(e), "error");
+      } finally {
+        LoadingCon.setDisplayLoadingCard(false);
       }
     }
-    LoadingCon.setLoading(false);
   };
 
   // Run unMount for cancelling animation if it is running to avoid leaks
@@ -226,7 +230,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
         liveCameraOptions,
         predictions,
         liveCameraDimensions,
-        loadModel,
+        prepareLiveCameraPage,
         switchCameraRolling,
         handleCameraStream,
         modelLoaded,

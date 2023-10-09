@@ -10,6 +10,7 @@ import { Montserrat_500Medium } from "@expo-google-fonts/montserrat";
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import { WEB_CLIENT_ID } from "@env";
 import { useFonts } from "expo-font";
+import AnimatedLoadingCard from "./components/Utils/AnimatedLoadingCard/AnimatedLoadingCard";
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -28,6 +29,7 @@ const App = () => {
       <AppContextProvider>
         <ErrorPopup />
         <LoadingOverlay />
+        <AnimatedLoadingCard />
         <AuthGate />
       </AppContextProvider>
     )

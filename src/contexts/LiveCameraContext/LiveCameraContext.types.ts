@@ -11,7 +11,7 @@ export interface ILiveCameraContext {
   liveCameraOptions: ILiveCameraOptions;
   predictions: IPrediction[];
   liveCameraDimensions: ICameraDimensions;
-  loadModel: () => void;
+  prepareLiveCameraPage: () => void;
   switchCameraRolling: () => void;
   handleCameraStream: (tensors: IterableIterator<Tensor3D>) => void;
   modelLoaded: () => boolean;

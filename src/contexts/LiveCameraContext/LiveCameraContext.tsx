@@ -3,10 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import {
   ILiveCameraContext,
   ILiveCameraDimensions,
-  ILiveCameraOptions,
   IPredictionVariables,
-  RESIZE_HEIGHT,
-  RESIZE_WIDTH,
 } from "./LiveCameraContext.types";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
@@ -19,16 +16,7 @@ import {
 } from "../CameraContext/CameraContext.types";
 import { Platform, useWindowDimensions } from "react-native";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
-import { CameraType } from "expo-camera";
-
-const defaultLiveCameraOptions: ILiveCameraOptions = {
-  type: CameraType.back,
-  ratio: "4:3",
-  frameRate: "20",
-  resizeWidth: RESIZE_WIDTH,
-  resizeHeight: RESIZE_HEIGHT,
-  resizeDepth: 3,
-};
+import { OptionsContext } from "../OptionsContext/OptionsContext";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -37,7 +25,6 @@ const defaultLiveCameraDimensions: ILiveCameraDimensions = {
 
 const defaultLiveCameraContext: ILiveCameraContext = {
   cameraRolling: false,
-  liveCameraOptions: defaultLiveCameraOptions,
   predictions: [],
   liveCameraDimensions: defaultLiveCameraDimensions,
   prepareLiveCameraPage: () => {},
@@ -45,7 +32,6 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   handleCameraStream: (_) => {},
   cameraReady: () => false,
   modelLoaded: () => false,
-  setLiveCameraOptions: (_) => {},
 };
 
 const LiveCameraContext = createContext<ILiveCameraContext>(
@@ -53,8 +39,6 @@ const LiveCameraContext = createContext<ILiveCameraContext>(
 );
 
 const LiveCameraProvider = ({ children }: IProps) => {
-  const [liveCameraOptions, setLiveCameraOptions] =
-    useState<ILiveCameraOptions>(defaultLiveCameraOptions);
   const [liveCameraDimensions, setLiveCameraDimensions] =
     useState<ICameraDimensions>(defaultLiveCameraDimensions);
   const { width } = useWindowDimensions();
@@ -76,20 +60,24 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
+  const OptionsCon = useContext(OptionsContext);
 
   // Calculate camera dimensions
   useEffect(() => {
-    const height = calculateHeightFromWidth(liveCameraOptions.ratio, width);
+    const height = calculateHeightFromWidth(
+      OptionsCon.liveCameraOptions.ratio,
+      width
+    );
     setLiveCameraDimensions((prev) => {
       return { ...prev, width: width, height: height };
     });
-  }, [liveCameraOptions.ratio]);
+  }, [OptionsCon.liveCameraOptions.ratio]);
 
   // reload camera
   useEffect(() => {
     setCameraRolling(false);
     setPredictions([]);
-  }, [liveCameraOptions]);
+  }, [OptionsCon.liveCameraOptions]);
 
   const prepareLiveCameraPage = async () => {
     const loadTFJS = async () => {
@@ -112,19 +100,20 @@ const LiveCameraProvider = ({ children }: IProps) => {
       }
     };
 
-    // Load TFJS
-    if (!tfLoaded || !model) {
-      LoadingCon.setDisplayLoadingCard(true);
-      try {
-        LoadingCon.setLoadingCardText("Loading TFJS");
+    LoadingCon.setDisplayLoadingCard(true);
+    try {
+      LoadingCon.setLoadingCardText("Loading TFJS");
+      if (!tfLoaded) {
         await loadTFJS();
-        LoadingCon.setLoadingCardText("Loading cocoSsd model");
-        await loadModel();
-      } catch (e) {
-        ErrorCon.displayError(String(e), "error");
-      } finally {
-        LoadingCon.setDisplayLoadingCard(false);
       }
+      LoadingCon.setLoadingCardText("Loading cocoSsd model");
+      if (!model) {
+        await loadModel();
+      }
+    } catch (e) {
+      ErrorCon.displayError(String(e), "error");
+    } finally {
+      LoadingCon.setDisplayLoadingCard(false);
     }
   };
 
@@ -140,22 +129,27 @@ const LiveCameraProvider = ({ children }: IProps) => {
     setPredictionVariables((prev) => {
       return {
         scaleHeight:
-          liveCameraDimensions.height / liveCameraOptions.resizeHeight,
-        scaleWidth: liveCameraDimensions.width / liveCameraOptions.resizeWidth,
+          liveCameraDimensions.height /
+          OptionsCon.liveCameraOptions.resizeHeight,
+        scaleWidth:
+          liveCameraDimensions.width / OptionsCon.liveCameraOptions.resizeWidth,
         flipHorizontal: prev.flipHorizontal,
       };
     });
   }, [
     liveCameraDimensions.height,
     liveCameraDimensions.width,
-    liveCameraOptions.resizeHeight,
-    liveCameraOptions.resizeHeight,
+    OptionsCon.liveCameraOptions.resizeHeight,
+    OptionsCon.liveCameraOptions.resizeHeight,
   ]);
 
   // MAKE PREDICTIONS
   const predict = async (tensor: tfjs.Tensor3D) => {
-    // @ts-ignore Because apparently dataId is defined as 'object'
-    if (cameraReady() && tensor.dataId.id % liveCameraOptions.frameRate == 0) {
+    if (
+      cameraReady() &&
+      // @ts-ignore Because apparently dataId is defined as 'object'
+      tensor.dataId.id % OptionsCon.liveCameraOptions.frameRate == 0
+    ) {
       console.warn = () => {}; // Because of outdated libraries (to silence tf.nonMaxSuppression() in webgl locks the UI thread. Call tf.nonMaxSuppressionAsync() instead)
       model?.detect(tensor).then(async (predictions) => {
         const new_predictions: IPrediction[] = [];
@@ -227,7 +221,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
     <LiveCameraContext.Provider
       value={{
         cameraRolling,
-        liveCameraOptions,
         predictions,
         liveCameraDimensions,
         prepareLiveCameraPage,
@@ -235,7 +228,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
         handleCameraStream,
         modelLoaded,
         cameraReady,
-        setLiveCameraOptions,
       }}
     >
       {children}

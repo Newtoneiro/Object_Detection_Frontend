@@ -1,18 +1,13 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-import { WEB_CLIENT_ID } from "@env";
 import { Montserrat_500Medium } from "@expo-google-fonts/montserrat";
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
-import {
-  FontAwesome,
-  MaterialIcons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { loadAsync } from "expo-font";
 
 import { IProps } from "../../config.types";
 import { ILoadingContext } from "./LoadingContext.types";
+import { ErrorContext } from "../ErrorContext/ErrorContext";
 
 const defaultLoadingContext: ILoadingContext = {
   loading: false,
@@ -32,23 +27,29 @@ const LoadingProvider = ({ children }: IProps) => {
   const [loadingCardText, setLoadingCardText] = useState<string | null>(null);
   const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
 
+  const ErrorCon = useContext(ErrorContext);
+
   // Load assets and configure Googlesignin
   useEffect(() => {
     const loadAssets = async () => {
+      if (assetsLoaded) {
+        return;
+      }
+
       setDisplayLoadingCard(true);
-      setAssetsLoaded(false);
       setLoadingCardText("Loading assets");
-      GoogleSignin.configure({
-        webClientId: WEB_CLIENT_ID,
-      });
-      await loadAsync({
-        Montserrat_500Medium,
-        Poppins_600SemiBold,
-        ...MaterialCommunityIcons.font,
-        ...FontAwesome.font,
-        ...MaterialIcons.font,
-      });
-      setAssetsLoaded(true);
+      try {
+        await loadAsync({
+          Montserrat_500Medium,
+          Poppins_600SemiBold,
+          ...FontAwesome.font,
+          ...MaterialIcons.font,
+        });
+        setAssetsLoaded(true);
+      } catch (e) {
+        ErrorCon.displayError("Couldn't load assets." + e);
+        setAssetsLoaded(false);
+      }
       setDisplayLoadingCard(false);
     };
 

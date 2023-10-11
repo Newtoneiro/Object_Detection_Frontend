@@ -47,10 +47,13 @@ const AuthProvider = ({ children }: IProps) => {
 
   useEffect(() => {
     const getSavedAuthState = async () => {
+      LoadingCon.setDisplayLoadingCard(true);
+      LoadingCon.setLoadingCardText("Fetching stored user info");
       const rawUserInfo = await AsyncStorage.getItem("userInfo");
       const userInfo = rawUserInfo ? JSON.parse(rawUserInfo) : {};
       const token = await AsyncStorage.getItem("token");
       setAuthState({ token, userInfo });
+      LoadingCon.setDisplayLoadingCard(false);
     };
 
     getSavedAuthState();

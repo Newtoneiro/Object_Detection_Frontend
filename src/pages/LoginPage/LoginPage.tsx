@@ -1,17 +1,16 @@
 import { Pressable, Text, View } from "react-native";
 
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useContext } from "react";
 import AlertField from "../../components/Utils/AlertField/AlertField";
 import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import GradientButton from "../../components/Utils/GradientButton/GradientButton";
-import { LoginContext } from "../../contexts/LoginContext/LoginContext";
-import { LoginPageProps } from "./LoginPage.types";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import UserInput from "../../components/Utils/UserInput/UserInput";
-import { loginPageStyles } from "./LoginPage.styles";
 import stylesConfig from "../../config.styles";
-import { useContext } from "react";
+import { LoginContext } from "../../contexts/LoginContext/LoginContext";
+import { loginPageStyles } from "./LoginPage.styles";
+import { LoginPageProps } from "./LoginPage.types";
 
 const LoginPage = ({ navigation }: LoginPageProps) => {
   const LoginCon = useContext(LoginContext);
@@ -98,9 +97,9 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
             onPress={() => LoginCon.loginAnonymous()}
             style={loginPageStyles.socialMediaContainer}
           >
-            <MaterialCommunityIcons
+            <FontAwesome
               style={loginPageStyles.socialMediaIcon}
-              name="incognito"
+              name="user-secret"
               size={stylesConfig.fontSize.subtitle}
             />
             <Text style={loginPageStyles.socialMediaText}>

@@ -7,23 +7,26 @@ import { IProps } from "../config.types";
 import { LiveCameraProvider } from "./LiveCameraContext/LiveCameraContext";
 import { LoadingProvider } from "./LoadingContext/LoadingContext";
 import { LoginProvider } from "./LoginContext/LoginContext";
+import { OptionsProvider } from "./OptionsContext/OptionsContext";
 
 const AppContextProvider = ({ children }: IProps) => {
   return (
     <ErrorProvider>
-      <LoadingProvider>
-        <AuthFetchProvider>
-          <AuthProvider>
-            <LoginProvider>
-              <ForgotPasswordProvider>
-                <CameraProvider>
-                  <LiveCameraProvider>{children}</LiveCameraProvider>
-                </CameraProvider>
-              </ForgotPasswordProvider>
-            </LoginProvider>
-          </AuthProvider>
-        </AuthFetchProvider>
-      </LoadingProvider>
+      <OptionsProvider>
+        <LoadingProvider>
+          <AuthFetchProvider>
+            <AuthProvider>
+              <LoginProvider>
+                <ForgotPasswordProvider>
+                  <CameraProvider>
+                    <LiveCameraProvider>{children}</LiveCameraProvider>
+                  </CameraProvider>
+                </ForgotPasswordProvider>
+              </LoginProvider>
+            </AuthProvider>
+          </AuthFetchProvider>
+        </LoadingProvider>
+      </OptionsProvider>
     </ErrorProvider>
   );
 };

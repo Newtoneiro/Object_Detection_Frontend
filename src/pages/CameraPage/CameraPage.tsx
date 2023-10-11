@@ -9,11 +9,13 @@ import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import { cameraPageStyles } from "./CameraPage.styles";
 import stylesConfig from "../../config.styles";
 import CameraButton from "../../components/Utils/CameraButton/CameraButton";
+import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
 
 const CameraPage = ({ navigation }: CameraPageProps) => {
   const [focused, setFocused] = useState<boolean>(false);
 
   const CameraCon = useContext(CameraContext);
+  const OptionsCon = useContext(OptionsContext);
 
   useEffect(() => {
     navigation.addListener("focus", () => {
@@ -92,8 +94,8 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
               width: CameraCon.cameraDimensions.width,
               height: CameraCon.cameraDimensions.height,
             }}
-            type={CameraCon.cameraOptions.type}
-            ratio={CameraCon.cameraOptions.ratio}
+            type={OptionsCon.cameraOptions.type}
+            ratio={OptionsCon.cameraOptions.ratio}
           ></Camera>
         )}
       </View>

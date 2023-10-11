@@ -3,7 +3,6 @@ import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import {
   ICameraContext,
   ICameraDimensions,
-  ICameraOptions,
   IPrediction,
   IPredictionResponse,
 } from "./CameraContext.types";
@@ -16,13 +15,8 @@ import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { calculateHeightFromWidth } from "./CameraContext.utils";
 import config from "../../config";
 import { useWindowDimensions } from "react-native";
-
-const defaultCameraOptions: ICameraOptions = {
-  ratio: "4:3",
-  quality: "0.1",
-  type: CameraType.back,
-  savePhoto: true,
-};
+import { OptionsContext } from "../OptionsContext/OptionsContext";
+import { ICameraOptions } from "../OptionsContext/OptionsContext.types";
 
 const defaultCameraDimensions: ICameraDimensions = {
   width: 0,
@@ -35,8 +29,6 @@ const defaultCameraContext: ICameraContext = {
   cameraRef: null,
   capturedPhoto: null,
   predictions: [],
-  cameraOptions: defaultCameraOptions,
-  setCameraOptions: (_) => {},
   toggleCameraType: () => {},
   handleTakePicture: () => {},
   setCameraRef: (_) => {},
@@ -55,32 +47,36 @@ const CameraProvider = ({ children }: IProps) => {
 
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const [predictions, setPredictions] = useState<IPrediction[]>([]);
-  const [cameraOptions, setCameraOptions] =
-    useState<ICameraOptions>(defaultCameraOptions);
+
   const { width } = useWindowDimensions();
 
   const ErrorCon = useContext(ErrorContext);
   const LoadingCon = useContext(LoadingContext);
   const AuthFetchCon = useContext(AuthFetchContext);
+  const OptionsCon = useContext(OptionsContext);
 
   useEffect(() => {
     requestPermission();
   }, []);
 
   useEffect(() => {
-    const height = calculateHeightFromWidth(cameraOptions.ratio, width);
+    const height = calculateHeightFromWidth(
+      OptionsCon.cameraOptions.ratio,
+      width
+    );
     setCameraDimensions((prev) => {
       return { ...prev, width: width, height: height };
     });
-  }, [cameraOptions.ratio]);
+  }, [OptionsCon.cameraOptions.ratio]);
 
   const toggleCameraType = () => {
-    setCameraOptions((prev) => {
+    // @ts-ignore
+    OptionsCon.setCameraOptions((prev: ICameraOptions) => {
       return {
         ...prev,
         type:
           prev.type === CameraType.back ? CameraType.front : CameraType.back,
-      };
+      } as ICameraOptions;
     });
   };
 
@@ -96,7 +92,7 @@ const CameraProvider = ({ children }: IProps) => {
 
     await cameraRef
       .takePictureAsync({
-        quality: Number(cameraOptions.quality),
+        quality: Number(OptionsCon.cameraOptions.quality),
         base64: true,
         skipProcessing: true,
       })
@@ -104,7 +100,7 @@ const CameraProvider = ({ children }: IProps) => {
         await cameraRef.pausePreview();
 
         // If camera is front we have to flip
-        if (cameraOptions.type === CameraType.front) {
+        if (OptionsCon.cameraOptions.type === CameraType.front) {
           photo = await manipulateAsync(
             photo.uri,
             [{ rotate: 180 }, { flip: FlipType.Vertical }],
@@ -115,7 +111,7 @@ const CameraProvider = ({ children }: IProps) => {
         await AuthFetchCon.authFetch
           .post(config.paths.object_detection + "/capturePhoto", {
             file: photo.base64,
-            doSave: cameraOptions.savePhoto,
+            doSave: OptionsCon.serverOptions.savePhoto,
           })
           .then(async (response) => {
             const new_predictions: IPrediction[] = [];
@@ -176,8 +172,6 @@ const CameraProvider = ({ children }: IProps) => {
         cameraRef,
         capturedPhoto,
         predictions,
-        cameraOptions,
-        setCameraOptions,
         toggleCameraType,
         handleTakePicture,
         setCameraRef,

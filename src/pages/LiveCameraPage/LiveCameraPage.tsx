@@ -10,11 +10,13 @@ import DetectedRectangle from "../../components/Utils/DetectedRectangle/Detected
 import CameraButton from "../../components/Utils/CameraButton/CameraButton";
 import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import stylesConfig from "../../config.styles";
+import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
 
 const TensorCamera = cameraWithTensors(Camera);
 
 const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
   const LiveCameraCon = useContext(LiveCameraContext);
+  const OptionsCon = useContext(OptionsContext);
 
   useEffect(() => {
     LiveCameraCon.prepareLiveCameraPage();
@@ -67,16 +69,16 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
             {
               // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
               <TensorCamera
-                type={LiveCameraCon.liveCameraOptions.type}
+                type={OptionsCon.liveCameraOptions.type}
                 style={{
                   width: LiveCameraCon.liveCameraDimensions.width,
                   height: LiveCameraCon.liveCameraDimensions.height,
                 }}
                 cameraTextureHeight={LiveCameraCon.liveCameraDimensions.height}
                 cameraTextureWidth={LiveCameraCon.liveCameraDimensions.width}
-                resizeHeight={LiveCameraCon.liveCameraOptions.resizeHeight}
-                resizeWidth={LiveCameraCon.liveCameraOptions.resizeWidth}
-                resizeDepth={LiveCameraCon.liveCameraOptions.resizeDepth}
+                resizeHeight={OptionsCon.liveCameraOptions.resizeHeight}
+                resizeWidth={OptionsCon.liveCameraOptions.resizeWidth}
+                resizeDepth={OptionsCon.liveCameraOptions.resizeDepth}
                 onReady={LiveCameraCon.handleCameraStream}
                 autorender={true}
               />

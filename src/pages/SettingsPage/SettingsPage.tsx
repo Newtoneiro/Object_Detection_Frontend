@@ -1,30 +1,26 @@
-import {
-  Quality,
-  Ratio,
-  possibleQualities,
-  possibleRatios,
-} from "../../contexts/CameraContext/CameraContext.types";
 import { ScrollView, Text } from "react-native";
 
-import Background from "../../components/Utils/Background/Background";
-import { CameraContext } from "../../contexts/CameraContext/CameraContext";
-import { CameraType } from "expo-camera";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import { MaterialIcons } from "@expo/vector-icons";
-import Setting from "../../components/Utils/Setting/Setting";
-import { SettingsPageProps } from "./SettingsPage.types";
-import { settingsPageStyles } from "./SettingsPage.styles";
-import stylesConfig from "../../config.styles";
+import { CameraType } from "expo-camera";
 import { useContext } from "react";
-import { LiveCameraContext } from "../../contexts/LiveCameraContext/LiveCameraContext";
+import Background from "../../components/Utils/Background/Background";
+import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
+import Setting from "../../components/Utils/Setting/Setting";
+import stylesConfig from "../../config.styles";
 import {
   FrameRate,
+  Quality,
+  Ratio,
   possibleFrameRates,
-} from "../../contexts/LiveCameraContext/LiveCameraContext.types";
+  possibleQualities,
+  possibleRatios,
+} from "../../config.types";
+import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
+import { settingsPageStyles } from "./SettingsPage.styles";
+import { SettingsPageProps } from "./SettingsPage.types";
 
 const SettingsPage = ({ navigation }: SettingsPageProps) => {
-  const CameraCon = useContext(CameraContext);
-  const LiveCameraCon = useContext(LiveCameraContext);
+  const OptionsCon = useContext(OptionsContext);
 
   return (
     <Background handlePressFunction={() => navigation.goBack()}>
@@ -42,36 +38,36 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           <Text style={settingsPageStyles.settingsTitle}>Picture Mode</Text>
         </CrossedFooter>
         <Setting<Quality>
-          value={CameraCon.cameraOptions.quality}
+          value={OptionsCon.cameraOptions.quality}
           name="quality"
           possibleValues={possibleQualities}
           handleChangeValue={(newQuality: Quality) =>
-            CameraCon.setCameraOptions({
-              ...CameraCon.cameraOptions,
+            OptionsCon.setCameraOptions({
+              ...OptionsCon.cameraOptions,
               quality: newQuality,
             })
           }
           icon="high-quality"
         />
         <Setting<Ratio>
-          value={CameraCon.cameraOptions.ratio}
+          value={OptionsCon.cameraOptions.ratio}
           name="ratio"
           possibleValues={possibleRatios}
           handleChangeValue={(newRatio: Ratio) =>
-            CameraCon.setCameraOptions({
-              ...CameraCon.cameraOptions,
+            OptionsCon.setCameraOptions({
+              ...OptionsCon.cameraOptions,
               ratio: newRatio,
             })
           }
           icon="aspect-ratio"
         />
         <Setting<CameraType>
-          value={CameraCon.cameraOptions.type}
+          value={OptionsCon.cameraOptions.type}
           name="camera type"
           possibleValues={[CameraType.back, CameraType.front]}
           handleChangeValue={(newType: CameraType) =>
-            CameraCon.setCameraOptions({
-              ...CameraCon.cameraOptions,
+            OptionsCon.setCameraOptions({
+              ...OptionsCon.cameraOptions,
               type: newType,
             })
           }
@@ -81,36 +77,36 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           <Text style={settingsPageStyles.settingsTitle}>Live Mode</Text>
         </CrossedFooter>
         <Setting<FrameRate>
-          value={LiveCameraCon.liveCameraOptions.frameRate}
-          name={`predict every [${LiveCameraCon.liveCameraOptions.frameRate}] frames`}
+          value={OptionsCon.liveCameraOptions.frameRate}
+          name={`predict every [${OptionsCon.liveCameraOptions.frameRate}] frames`}
           possibleValues={possibleFrameRates}
           handleChangeValue={(newFrameRate: FrameRate) =>
-            LiveCameraCon.setLiveCameraOptions({
-              ...LiveCameraCon.liveCameraOptions,
+            OptionsCon.setLiveCameraOptions({
+              ...OptionsCon.liveCameraOptions,
               frameRate: newFrameRate,
             })
           }
           icon="animation"
         />
         <Setting<Ratio>
-          value={LiveCameraCon.liveCameraOptions.ratio}
+          value={OptionsCon.liveCameraOptions.ratio}
           name="ratio"
           possibleValues={possibleRatios}
           handleChangeValue={(newRatio: Ratio) =>
-            LiveCameraCon.setLiveCameraOptions({
-              ...LiveCameraCon.liveCameraOptions,
+            OptionsCon.setLiveCameraOptions({
+              ...OptionsCon.liveCameraOptions,
               ratio: newRatio,
             })
           }
           icon="aspect-ratio"
         />
         <Setting<CameraType>
-          value={LiveCameraCon.liveCameraOptions.type}
+          value={OptionsCon.liveCameraOptions.type}
           name="camera type"
           possibleValues={[CameraType.back, CameraType.front]}
           handleChangeValue={(newType: CameraType) =>
-            LiveCameraCon.setLiveCameraOptions({
-              ...LiveCameraCon.liveCameraOptions,
+            OptionsCon.setLiveCameraOptions({
+              ...OptionsCon.liveCameraOptions,
               type: newType,
             })
           }
@@ -120,12 +116,12 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           <Text style={settingsPageStyles.settingsTitle}>Server options</Text>
         </CrossedFooter>
         <Setting<boolean>
-          value={CameraCon.cameraOptions.savePhoto}
+          value={OptionsCon.serverOptions.savePhoto}
           name="save photos"
           possibleValues={[true, false]}
           handleChangeValue={(newSavePhoto: boolean) =>
-            CameraCon.setCameraOptions({
-              ...CameraCon.cameraOptions,
+            OptionsCon.setServerOptions({
+              ...OptionsCon.serverOptions,
               savePhoto: newSavePhoto,
             })
           }

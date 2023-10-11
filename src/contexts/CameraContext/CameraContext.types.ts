@@ -1,4 +1,4 @@
-import { Camera, CameraType, PermissionResponse } from "expo-camera";
+import { Camera, PermissionResponse } from "expo-camera";
 
 export interface ICameraContext {
   permission: PermissionResponse | null;
@@ -6,8 +6,6 @@ export interface ICameraContext {
   cameraRef: Camera | null;
   capturedPhoto: string | null;
   predictions: IPrediction[];
-  cameraOptions: ICameraOptions;
-  setCameraOptions: (_: ICameraOptions) => void;
   toggleCameraType: () => void;
   handleTakePicture: () => void;
   setCameraRef: (_: Camera | null) => void;
@@ -42,16 +40,3 @@ export interface IPredictionResponse {
     y2: number;
   };
 }
-
-export interface ICameraOptions {
-  type: CameraType;
-  ratio: Ratio;
-  quality: Quality;
-  savePhoto: boolean;
-}
-
-export const possibleRatios = ["4:3", "16:9"];
-export type Ratio = (typeof possibleRatios)[number];
-
-export const possibleQualities = ["0.1", "0.5", "0.7", "1.0"];
-export type Quality = (typeof possibleQualities)[number];

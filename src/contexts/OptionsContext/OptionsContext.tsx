@@ -85,7 +85,6 @@ const OptionsProvider = ({ children }: IProps) => {
 
   // Store options
   useEffect(() => {
-    console.log("save");
     const saveOptions = async () => {
       LoadingCon.setLoading(true);
       await AsyncStorage.setItem(

@@ -17,6 +17,7 @@ import {
 import { Platform, useWindowDimensions } from "react-native";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
+import * as expoCameraCharacteristics from "@appandflow/expo-camera-characteristics";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -62,7 +63,20 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const ErrorCon = useContext(ErrorContext);
   const OptionsCon = useContext(OptionsContext);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const cameraCharacteristics: {
+      focalLength: number;
+      sensorSize: {
+        height: number;
+        width: number;
+      };
+      imageResolution: {
+        height: number;
+        width: number;
+      };
+    } = expoCameraCharacteristics.getCameraCharacteristics();
+    console.log(cameraCharacteristics);
+  }, []);
 
   // Calculate camera dimensions
   useEffect(() => {

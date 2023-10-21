@@ -4824,17 +4824,11 @@ expo-font@~11.1.1:
   dependencies:
     fontfaceobserver "^2.1.0"
 
-expo-gl-cpp@~11.4.0:
-  version "11.4.0"
-  resolved "https://registry.yarnpkg.com/expo-gl-cpp/-/expo-gl-cpp-11.4.0.tgz#62b4b5c61ef065e94aa790a872aad2eee2ae11ea"
-  integrity sha512-vt9QYKX/4TxMaNnbv9ww5KILwyCmg91gqwA/6xuo4MqWxGkZoxy+b8lqsQthuPdn+FHgF0BNcvFW9nbN+JeSRg==
-
-expo-gl@^11.3.0:
-  version "11.4.0"
-  resolved "https://registry.yarnpkg.com/expo-gl/-/expo-gl-11.4.0.tgz#0aa6b05908f1a8405f804f3e1a360a215569b9f2"
-  integrity sha512-Q0/4git7mNanxPe4/DMC6dk9F1Xu2ACTmacWdoLjS3NByUzFt25vFtrbf9R3FCgWcBlA9ncfVp1CsYgA4+61Dg==
+expo-gl@^13.2.0:
+  version "13.2.0"
+  resolved "https://registry.yarnpkg.com/expo-gl/-/expo-gl-13.2.0.tgz#cb549697b3e9c1343dc520f2acf1c8d787d06476"
+  integrity sha512-4a8kOt7kxTj5IODNaWrw9G5Cgex849ENPW5+8o2ykpL6eu/k3m37jzYq6dLO/dSSwpalvMqz4W3+KPxR5MHfvQ==
   dependencies:
-    expo-gl-cpp "~11.4.0"
     invariant "^2.2.4"
 
 expo-image-loader@~4.1.0:

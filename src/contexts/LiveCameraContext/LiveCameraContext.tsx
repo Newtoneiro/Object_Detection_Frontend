@@ -62,6 +62,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const ErrorCon = useContext(ErrorContext);
   const OptionsCon = useContext(OptionsContext);
 
+  useEffect(() => {}, []);
+
   // Calculate camera dimensions
   useEffect(() => {
     const height = calculateHeightFromWidth(

@@ -10,6 +10,7 @@
     "build-dev": "npx eas build --profile development --platform android"
   },
   "dependencies": {
+    "@appandflow/expo-camera-characteristics": "^1.0.0",
     "@babel/runtime": "^7.22.15",
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo-google-fonts/poppins": "^0.2.3",
@@ -31,6 +32,7 @@
     "expo-build-properties": "~0.6.0",
     "expo-camera": "^13.6.0",
     "expo-dev-client": "~2.2.1",
+    "expo-device": "~5.2.1",
     "expo-font": "~11.1.1",
     "expo-gl": "^11.3.0",
     "expo-gl-cpp": "^11.3.0",

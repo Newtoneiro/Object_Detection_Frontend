@@ -15,6 +15,11 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@appandflow/expo-camera-characteristics@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@appandflow/expo-camera-characteristics/-/expo-camera-characteristics-1.0.0.tgz#0d906e4564054d24edec8b21ecdeb6173bb16cf1"
+  integrity sha512-/nMd5EDoDcV1QaMk2o57F8bwirg8SHiOO14JqEmW6E//+sI9SFs7LveOpP0bsS4q5natMdUejN4BZNnyjiKRTQ==
+
 "@babel/code-frame@7.10.4", "@babel/code-frame@~7.10.4":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
@@ -4296,6 +4301,13 @@ expo-dev-menu@2.2.0:
   dependencies:
     expo-dev-menu-interface "1.1.1"
     semver "^7.3.5"
+
+expo-device@~5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/expo-device/-/expo-device-5.2.1.tgz#2962abdb9682e5b991a82836667f2e7d7103d9ef"
+  integrity sha512-ZWGph+fGQPxo9v2e0YygPb45Hl+ZR3mh4tpLY5AOYK/sNjQy+Lu3T/sLGIdi2TOcYNL2oZwzZ6eGvwVYmdIfLg==
+  dependencies:
+    ua-parser-js "^0.7.33"
 
 expo-file-system@~15.2.2:
   version "15.2.2"
@@ -8749,6 +8761,11 @@ typescript@^4.9.4:
   version "4.9.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
+
+ua-parser-js@^0.7.33:
+  version "0.7.36"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.36.tgz#382c5d6fc09141b6541be2cae446ecfcec284db2"
+  integrity sha512-CPPLoCts2p7D8VbybttE3P2ylv0OBZEAy7a12DsulIEcAiMtWJy+PBgMXgWDI80D5UwqE8oQPHYnk13tm38M2Q==
 
 ua-parser-js@^1.0.35:
   version "1.0.36"

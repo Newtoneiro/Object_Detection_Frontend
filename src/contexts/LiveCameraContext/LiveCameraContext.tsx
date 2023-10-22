@@ -18,6 +18,7 @@ import { Platform, useWindowDimensions } from "react-native";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
 import { calculateDistance } from "./LiveCameraContext.utils";
+import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -62,6 +63,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
   const OptionsCon = useContext(OptionsContext);
+  const PermissionsCon = useContext(PermissionsContext);
 
   // Calculate camera dimensions
   useEffect(() => {

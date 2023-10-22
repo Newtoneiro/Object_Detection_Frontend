@@ -49,6 +49,12 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
       ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
       ["@react-native-google-signin/google-signin"],
       ["@appandflow/expo-camera-characteristics"]
     ],

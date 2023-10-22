@@ -11,12 +11,15 @@ import CameraButton from "../../components/Utils/CameraButton/CameraButton";
 import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import stylesConfig from "../../config.styles";
 import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
+import { PermissionsContext } from "../../contexts/PermissionsContext/PermissionsContext";
+import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 
 const TensorCamera = cameraWithTensors(Camera);
 
 const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
   const LiveCameraCon = useContext(LiveCameraContext);
   const OptionsCon = useContext(OptionsContext);
+  const PermissionsCon = useContext(PermissionsContext);
 
   useEffect(() => {
     LiveCameraCon.prepareLiveCameraPage();
@@ -65,31 +68,52 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
             />
           );
         })}
-        {LiveCameraCon.cameraReady() ? (
+        {PermissionsCon.cameraPermission ? (
           <>
-            {
-              // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
-              <TensorCamera
-                type={OptionsCon.liveCameraOptions.type}
-                style={{
-                  width: LiveCameraCon.liveCameraDimensions.width,
-                  height: LiveCameraCon.liveCameraDimensions.height,
-                }}
-                cameraTextureHeight={LiveCameraCon.liveCameraDimensions.height}
-                cameraTextureWidth={LiveCameraCon.liveCameraDimensions.width}
-                resizeHeight={OptionsCon.liveCameraOptions.resizeHeight}
-                resizeWidth={OptionsCon.liveCameraOptions.resizeWidth}
-                resizeDepth={OptionsCon.liveCameraOptions.resizeDepth}
-                onReady={LiveCameraCon.handleCameraStream}
-                autorender={true}
-              />
-            }
+            {LiveCameraCon.cameraReady() ? (
+              <>
+                {
+                  // @ts-ignore BECAUSE OF LEGACY DEPENDENCIES, maybe will fix later
+                  <TensorCamera
+                    type={OptionsCon.liveCameraOptions.type}
+                    style={{
+                      width: LiveCameraCon.liveCameraDimensions.width,
+                      height: LiveCameraCon.liveCameraDimensions.height,
+                    }}
+                    cameraTextureHeight={
+                      LiveCameraCon.liveCameraDimensions.height
+                    }
+                    cameraTextureWidth={
+                      LiveCameraCon.liveCameraDimensions.width
+                    }
+                    resizeHeight={OptionsCon.liveCameraOptions.resizeHeight}
+                    resizeWidth={OptionsCon.liveCameraOptions.resizeWidth}
+                    resizeDepth={OptionsCon.liveCameraOptions.resizeDepth}
+                    onReady={LiveCameraCon.handleCameraStream}
+                    autorender={true}
+                  />
+                }
+              </>
+            ) : (
+              <View style={liveCameraPageStyles.cameraPlaceholder}>
+                <Text style={liveCameraPageStyles.cameraPlaceholderText}>
+                  Start the camera to view predictions.
+                </Text>
+              </View>
+            )}
           </>
         ) : (
-          <View style={liveCameraPageStyles.cameraPlaceholder}>
-            <Text style={liveCameraPageStyles.cameraPlaceholderText}>
-              Start the camera to view predictions.
-            </Text>
+          <View style={liveCameraPageStyles.noPermissionsView}>
+            <CrossedFooter>
+              <Text style={liveCameraPageStyles.noPermissionsText}>
+                Allow app to use camera.
+              </Text>
+            </CrossedFooter>
+            <PressableIcon
+              handlePress={() => PermissionsCon.handleRequestCameraPermission()}
+              icon="lock-open"
+              size={stylesConfig.fontSize.subtitle}
+            />
           </View>
         )}
       </View>

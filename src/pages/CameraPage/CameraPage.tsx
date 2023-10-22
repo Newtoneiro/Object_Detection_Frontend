@@ -1,4 +1,4 @@
-import { Image, View } from "react-native";
+import { Image, View, Text } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
 import { Camera } from "expo-camera";
@@ -10,12 +10,15 @@ import { cameraPageStyles } from "./CameraPage.styles";
 import stylesConfig from "../../config.styles";
 import CameraButton from "../../components/Utils/CameraButton/CameraButton";
 import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
+import { PermissionsContext } from "../../contexts/PermissionsContext/PermissionsContext";
+import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 
 const CameraPage = ({ navigation }: CameraPageProps) => {
   const [focused, setFocused] = useState<boolean>(false);
 
   const CameraCon = useContext(CameraContext);
   const OptionsCon = useContext(OptionsContext);
+  const PermissionsCon = useContext(PermissionsContext);
 
   useEffect(() => {
     navigation.addListener("focus", () => {
@@ -62,41 +65,58 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
           height: CameraCon.cameraDimensions.height,
         }}
       >
-        {CameraCon.capturedPhoto ? (
+        {PermissionsCon.cameraPermission ? (
           <>
-            <Image
-              style={{
-                width: CameraCon.cameraDimensions.width,
-                height: CameraCon.cameraDimensions.height,
-              }}
-              source={{
-                uri: CameraCon.capturedPhoto,
-              }}
-            />
-            {CameraCon.predictions.map((prediction, i) => {
-              return (
-                <DetectedRectangle
-                  key={i}
-                  name={prediction.name}
-                  class={prediction.class}
-                  confidence={prediction.confidence}
-                  box={prediction.box}
+            {CameraCon.capturedPhoto ? (
+              <>
+                <Image
+                  style={{
+                    width: CameraCon.cameraDimensions.width,
+                    height: CameraCon.cameraDimensions.height,
+                  }}
+                  source={{
+                    uri: CameraCon.capturedPhoto,
+                  }}
                 />
-              );
-            })}
+                {CameraCon.predictions.map((prediction, i) => {
+                  return (
+                    <DetectedRectangle
+                      key={i}
+                      name={prediction.name}
+                      class={prediction.class}
+                      confidence={prediction.confidence}
+                      box={prediction.box}
+                    />
+                  );
+                })}
+              </>
+            ) : (
+              <Camera
+                ref={(ref) => {
+                  CameraCon.setCameraRef(ref);
+                }}
+                style={{
+                  width: CameraCon.cameraDimensions.width,
+                  height: CameraCon.cameraDimensions.height,
+                }}
+                type={OptionsCon.cameraOptions.type}
+                ratio={OptionsCon.cameraOptions.ratio}
+              ></Camera>
+            )}
           </>
         ) : (
-          <Camera
-            ref={(ref) => {
-              CameraCon.setCameraRef(ref);
-            }}
-            style={{
-              width: CameraCon.cameraDimensions.width,
-              height: CameraCon.cameraDimensions.height,
-            }}
-            type={OptionsCon.cameraOptions.type}
-            ratio={OptionsCon.cameraOptions.ratio}
-          ></Camera>
+          <View style={cameraPageStyles.noPermissionsView}>
+            <CrossedFooter>
+              <Text style={cameraPageStyles.noPermissionsText}>
+                Allow app to use camera.
+              </Text>
+            </CrossedFooter>
+            <PressableIcon
+              handlePress={() => PermissionsCon.handleRequestCameraPermission()}
+              icon="lock-open"
+              size={stylesConfig.fontSize.subtitle}
+            />
+          </View>
         )}
       </View>
       <CameraButton handlePress={CameraCon.handleTakePicture} />

@@ -17,6 +17,7 @@ import config from "../../config";
 import { useWindowDimensions } from "react-native";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
 import { ICameraOptions } from "../OptionsContext/OptionsContext.types";
+import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
 
 const defaultCameraDimensions: ICameraDimensions = {
   width: 0,
@@ -24,7 +25,6 @@ const defaultCameraDimensions: ICameraDimensions = {
 };
 
 const defaultCameraContext: ICameraContext = {
-  permission: null,
   cameraDimensions: defaultCameraDimensions,
   cameraRef: null,
   capturedPhoto: null,
@@ -43,7 +43,6 @@ const CameraProvider = ({ children }: IProps) => {
   const [cameraDimensions, setCameraDimensions] = useState<ICameraDimensions>(
     defaultCameraDimensions
   );
-  const [permission, requestPermission] = Camera.useCameraPermissions();
 
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const [predictions, setPredictions] = useState<IPrediction[]>([]);
@@ -54,10 +53,7 @@ const CameraProvider = ({ children }: IProps) => {
   const LoadingCon = useContext(LoadingContext);
   const AuthFetchCon = useContext(AuthFetchContext);
   const OptionsCon = useContext(OptionsContext);
-
-  useEffect(() => {
-    requestPermission();
-  }, []);
+  const PermissionsCon = useContext(PermissionsContext);
 
   useEffect(() => {
     const height = calculateHeightFromWidth(
@@ -85,8 +81,12 @@ const CameraProvider = ({ children }: IProps) => {
       resetCamera();
       return;
     }
+    if (!PermissionsCon.cameraPermission) {
+      ErrorCon.displayError("No permissions granted for camera usage.");
+      return;
+    }
     if (!cameraRef) {
-      ErrorCon.displayError();
+      ErrorCon.displayError("Camera is not initialized.");
       return;
     }
 
@@ -167,7 +167,6 @@ const CameraProvider = ({ children }: IProps) => {
   return (
     <CameraContext.Provider
       value={{
-        permission,
         cameraDimensions,
         cameraRef,
         capturedPhoto,

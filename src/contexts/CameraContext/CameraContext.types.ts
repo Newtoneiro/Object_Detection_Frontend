@@ -27,6 +27,7 @@ export interface IPrediction {
     width: number;
     height: number;
   };
+  distance?: number | null;
 }
 
 export interface IPredictionResponse {

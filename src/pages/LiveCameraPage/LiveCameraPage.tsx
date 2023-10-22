@@ -61,6 +61,7 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
               class={prediction.class}
               confidence={prediction.confidence}
               box={prediction.box}
+              distance={prediction.distance}
             />
           );
         })}

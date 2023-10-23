@@ -61,7 +61,7 @@ const averageHeights: Object = {
   bed: 2.0,
   "dining table": 1.0,
   toilet: 0.4,
-  tv: 0.4,
+  tv: 0.3,
   laptop: 0.3,
   mouse: 0.1,
   remote: 0.1,

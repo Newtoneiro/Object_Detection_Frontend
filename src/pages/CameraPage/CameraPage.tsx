@@ -79,15 +79,7 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
                   }}
                 />
                 {CameraCon.predictions.map((prediction, i) => {
-                  return (
-                    <DetectedRectangle
-                      key={i}
-                      name={prediction.name}
-                      class={prediction.class}
-                      confidence={prediction.confidence}
-                      box={prediction.box}
-                    />
-                  );
+                  return <DetectedRectangle key={i} prediction={prediction} />;
                 })}
               </>
             ) : (

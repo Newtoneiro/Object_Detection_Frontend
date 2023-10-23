@@ -60,11 +60,10 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
           return (
             <DetectedRectangle
               key={i}
-              name={prediction.name}
-              class={prediction.class}
-              confidence={prediction.confidence}
-              box={prediction.box}
-              distance={prediction.distance}
+              prediction={prediction}
+              showDynamicDistance={
+                OptionsCon.liveCameraOptions.showDynamicDistance
+              }
             />
           );
         })}

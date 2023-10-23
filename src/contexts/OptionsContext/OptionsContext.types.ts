@@ -25,6 +25,7 @@ export interface ILiveCameraOptions {
   resizeWidth: number;
   resizeHeight: number;
   resizeDepth: number;
+  showDynamicDistance: boolean;
 }
 
 export interface IServerOptions {
@@ -44,6 +45,7 @@ export const defaultLiveCameraOptions: ILiveCameraOptions = {
   resizeWidth: config.live_camera.RESIZE_WIDTH,
   resizeHeight: config.live_camera.RESIZE_HEIGHT,
   resizeDepth: config.live_camera.RESIZE_DEPTH,
+  showDynamicDistance: true,
 };
 
 export const defaultServerOptions: IServerOptions = {

@@ -10,7 +10,6 @@ import {
   defaultLiveCameraOptions,
   defaultServerOptions,
 } from "./OptionsContext.types";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -36,7 +35,6 @@ const OptionsProvider = ({ children }: IProps) => {
   );
 
   const LoadingCon = useContext(LoadingContext);
-  const ErrorCon = useContext(ErrorContext);
 
   const loadUserOptions = (rawOptions: any, defaultOptions: any) => {
     const storedOptions = rawOptions ? JSON.parse(rawOptions) : {};

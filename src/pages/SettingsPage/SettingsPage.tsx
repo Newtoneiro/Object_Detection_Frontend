@@ -112,6 +112,18 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           }
           icon="flip"
         />
+        <Setting<boolean>
+          value={OptionsCon.liveCameraOptions.showDynamicDistance}
+          name="show distance warning"
+          possibleValues={[true, false]}
+          handleChangeValue={(newShowWarning: boolean) =>
+            OptionsCon.setLiveCameraOptions({
+              ...OptionsCon.liveCameraOptions,
+              showDynamicDistance: newShowWarning,
+            })
+          }
+          icon="warning"
+        />
         <CrossedFooter>
           <Text style={settingsPageStyles.settingsTitle}>Server options</Text>
         </CrossedFooter>

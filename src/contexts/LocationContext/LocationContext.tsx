@@ -3,6 +3,7 @@ import { IProps } from "../../config.types";
 import { ILocationContext, IDangerLevel } from "./LocationContext.types";
 import * as Location from "expo-location";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
+import config from "../../config";
 
 const defaultLocationContext: ILocationContext = {
   trackingLocationStarted: false,
@@ -48,9 +49,9 @@ const LocationProvider = ({ children }: IProps) => {
 
     if (!PermissionsCon.locationPermission || !trackingLocationStarted) {
       return "NONE";
-    } else if (currentSpeed < 2 * distance) {
+    } else if (distance > 2 * currentSpeed + config.distance_risk_margin) {
       return "LOW";
-    } else if (currentSpeed < distance / 2) {
+    } else if (distance > 2 * currentSpeed) {
       return "MEDIUM";
     } else {
       return "HIGH";

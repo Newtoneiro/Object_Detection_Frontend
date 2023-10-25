@@ -1,7 +1,6 @@
-import { Camera, PermissionResponse } from "expo-camera";
+import { Camera } from "expo-camera";
 
 export interface ICameraContext {
-  permission: PermissionResponse | null;
   cameraDimensions: ICameraDimensions;
   cameraRef: Camera | null;
   capturedPhoto: string | null;
@@ -27,6 +26,7 @@ export interface IPrediction {
     width: number;
     height: number;
   };
+  distance?: number | null;
 }
 
 export interface IPredictionResponse {

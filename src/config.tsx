@@ -10,6 +10,7 @@ const config = {
     RESIZE_HEIGHT: 200,
     RESIZE_DEPTH: 3,
   },
+  distance_risk_margin: 5,
 };
 
 export default config;

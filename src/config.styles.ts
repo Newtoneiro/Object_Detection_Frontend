@@ -7,8 +7,9 @@ const stylesConfig = {
     default_low_contrast: "#242424",
     default_font: "#fdfdfd",
     default_font_subtitle: "#ababab",
-    red_alert: "#ed4545",
     green_alert: "#19bd4d",
+    yellow_alert: "#ebdb2a",
+    red_alert: "#ed4545",
     black: "#000000",
   },
   fontFamily: {

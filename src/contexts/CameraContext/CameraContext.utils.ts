@@ -1,4 +1,4 @@
-import { Ratio } from "./CameraContext.types";
+import { Ratio } from "../../config.types";
 
 const calculateHeightFromWidth = (ratio: Ratio, width: number): number => {
   let height = 0;

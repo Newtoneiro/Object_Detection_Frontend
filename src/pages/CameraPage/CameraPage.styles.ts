@@ -27,4 +27,20 @@ export const cameraPageStyles = StyleSheet.create({
 
     marginTop: 30,
   },
+  noPermissionsView: {
+    width: "100%",
+    height: "100%",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  noPermissionsText: {
+    width: "100%",
+    textAlign: "center",
+    fontSize: stylesConfig.fontSize.small,
+    fontFamily: stylesConfig.fontFamily.default,
+    color: stylesConfig.colors.default_font_subtitle,
+  },
 });

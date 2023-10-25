@@ -4,7 +4,6 @@ import stylesConfig from "../../../config.styles";
 export const detectedRectangleStyles = StyleSheet.create({
   container: {
     position: "absolute",
-    borderColor: stylesConfig.colors.red_alert,
     borderWidth: 2,
     zIndex: 5000,
   },
@@ -18,10 +17,11 @@ export const detectedRectangleStyles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "row",
 
-    backgroundColor: stylesConfig.colors.red_alert,
     gap: 10,
   },
   text: {
+    fontFamily: stylesConfig.fontFamily.default,
+    fontSize: stylesConfig.fontSize.small,
     color: stylesConfig.colors.default_font,
   },
 });

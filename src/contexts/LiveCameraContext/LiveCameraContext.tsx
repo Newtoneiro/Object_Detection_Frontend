@@ -17,6 +17,8 @@ import {
 import { Platform, useWindowDimensions } from "react-native";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
+import { calculateDistance } from "./LiveCameraContext.utils";
+import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -61,6 +63,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const LoadingCon = useContext(LoadingContext);
   const ErrorCon = useContext(ErrorContext);
   const OptionsCon = useContext(OptionsContext);
+  const PermissionsCon = useContext(PermissionsContext);
 
   // Calculate camera dimensions
   useEffect(() => {
@@ -157,6 +160,12 @@ const LiveCameraProvider = ({ children }: IProps) => {
         predictions.forEach((prediction) => {
           const [x, y, width, height] = prediction.bbox;
 
+          const distance = calculateDistance(
+            height * predictionVariables.scaleHeight,
+            liveCameraDimensions.height,
+            prediction.class
+          );
+
           new_predictions.push({
             name: prediction.class,
             class: 0, // class attribute does not exist on cocossd predictions
@@ -175,6 +184,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
               width: width * predictionVariables.scaleWidth,
               height: height * predictionVariables.scaleHeight,
             },
+            distance: distance,
           });
         });
         setPredictions([]); // To reset the predictions, so they dont stack

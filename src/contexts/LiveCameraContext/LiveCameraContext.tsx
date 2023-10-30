@@ -19,6 +19,8 @@ import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
 import { calculateDistance } from "./LiveCameraContext.utils";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
+import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
+import config from "../../config";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -64,6 +66,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const ErrorCon = useContext(ErrorContext);
   const OptionsCon = useContext(OptionsContext);
   const PermissionsCon = useContext(PermissionsContext);
+  const AuthFetchCon = useContext(AuthFetchContext);
 
   // Calculate camera dimensions
   useEffect(() => {
@@ -151,7 +154,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
     if (
       cameraReady() &&
       // @ts-ignore Because apparently dataId is defined as 'object'
-      tensor.dataId.id % OptionsCon.liveCameraOptions.frameRate == 0
+      tensor.dataId.id % OptionsCon.liveCameraOptions.frameRate == 0 &&
+      PermissionsCon.cameraPermission
     ) {
       console.warn = () => {}; // Because of outdated libraries (to silence tf.nonMaxSuppression() in webgl locks the UI thread. Call tf.nonMaxSuppressionAsync() instead)
       model?.detect(tensor).then(async (predictions) => {
@@ -191,7 +195,22 @@ const LiveCameraProvider = ({ children }: IProps) => {
         setPredictions(new_predictions);
       });
     }
+    if (OptionsCon.serverOptions.savePhoto) {
+      saveTensorOnServer(tensor);
+    }
     tfjs.dispose([tensor]);
+  };
+
+  const saveTensorOnServer = async (tensor: tfjs.Tensor3D) => {
+    const tensor_array = tensor.arraySync();
+
+    AuthFetchCon.authFetch
+      .post(config.paths.object_detection + "/captureTensor", {
+        shape: tensor.shape,
+        values: tensor_array,
+      })
+      .then((result) => console.log(result.status))
+      .catch((error) => console.log(error));
   };
 
   const modelLoaded = () => {
@@ -214,10 +233,10 @@ const LiveCameraProvider = ({ children }: IProps) => {
     LoadingCon.setLoading(false);
   };
 
-  const handleCameraStream = (images: IterableIterator<tfjs.Tensor3D>) => {
+  const handleCameraStream = (tensors: IterableIterator<tfjs.Tensor3D>) => {
     const loop = async () => {
       if (tfLoaded) {
-        const nextImageTensor = images.next().value;
+        const nextImageTensor = tensors.next().value;
         if (nextImageTensor) {
           predict(nextImageTensor);
         }

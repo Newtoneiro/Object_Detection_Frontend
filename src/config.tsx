@@ -1,6 +1,6 @@
 const config = {
   paths: {
-    home: "http://192.168.114.5:8888",
+    home: "http://192.168.169.5:8888",
     auth: "/auth",
     object_detection: "/objectDetection",
   },
@@ -10,7 +10,7 @@ const config = {
     RESIZE_HEIGHT: 200,
     RESIZE_DEPTH: 3,
   },
-  distance_risk_margin: 5,
+  distance_risk_margin: 0.2,
 };
 
 export default config;

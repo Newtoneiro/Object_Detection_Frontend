@@ -17,10 +17,15 @@ import {
 import { Platform, useWindowDimensions } from "react-native";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
-import { calculateDistance } from "./LiveCameraContext.utils";
+import {
+  calculateDistance,
+  getDateFromTimestamp,
+  getTimestampFromDate,
+} from "./LiveCameraContext.utils";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
 import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
 import config from "../../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -195,10 +200,31 @@ const LiveCameraProvider = ({ children }: IProps) => {
         setPredictions(new_predictions);
       });
     }
-    if (OptionsCon.serverOptions.savePhoto) {
+
+    const doSave = await checkSaveTensorOnServer();
+    if (doSave) {
       saveTensorOnServer(tensor);
     }
+
     tfjs.dispose([tensor]);
+  };
+
+  const checkSaveTensorOnServer = async (): Promise<boolean> => {
+    if (!OptionsCon.serverOptions.savePhoto) {
+      return false;
+    }
+
+    const lastSave = await AsyncStorage.getItem("lastTensorSavedTimestamp");
+
+    const lastSaveDate = getDateFromTimestamp(lastSave);
+    const timeDifference = new Date().getTime() - lastSaveDate.getTime();
+
+    if (timeDifference > config.timeBetweenTensorSaves) {
+      AsyncStorage.setItem("lastTensorSavedTimestamp", getTimestampFromDate());
+      return true;
+    }
+
+    return false;
   };
 
   const saveTensorOnServer = async (tensor: tfjs.Tensor3D) => {
@@ -209,8 +235,12 @@ const LiveCameraProvider = ({ children }: IProps) => {
         shape: tensor.shape,
         values: tensor_array,
       })
-      .then((result) => console.log(result.status))
-      .catch((error) => console.log(error));
+      .catch(() => {
+        ErrorCon.displayError("Couldn't save on the server.");
+        if (cameraRolling) {
+          switchCameraRolling();
+        }
+      });
   };
 
   const modelLoaded = () => {

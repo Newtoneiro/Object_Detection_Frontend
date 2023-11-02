@@ -23,7 +23,7 @@ import {
   getTimestampFromDate,
 } from "./LiveCameraContext.utils";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
-import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
+import authFetch from "../AuthFetch/AuthFetch";
 import config from "../../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -71,7 +71,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const ErrorCon = useContext(ErrorContext);
   const OptionsCon = useContext(OptionsContext);
   const PermissionsCon = useContext(PermissionsContext);
-  const AuthFetchCon = useContext(AuthFetchContext);
 
   // Calculate camera dimensions
   useEffect(() => {
@@ -230,7 +229,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
   const saveTensorOnServer = async (tensor: tfjs.Tensor3D) => {
     const tensor_array = tensor.arraySync();
 
-    AuthFetchCon.authFetch
+    authFetch
       .post(config.paths.object_detection + "/captureTensor", {
         shape: tensor.shape,
         values: tensor_array,

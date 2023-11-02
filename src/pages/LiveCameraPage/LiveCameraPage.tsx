@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 
 import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
-import { Camera } from "expo-camera";
 import { View, Text } from "react-native";
+import { Camera } from "expo-camera";
 import { LiveCameraContext } from "../../contexts/LiveCameraContext/LiveCameraContext";
 import { liveCameraPageStyles } from "./LiveCameraPage.styles";
 import { LiveCameraPageProps } from "./LiveCameraPage.types";

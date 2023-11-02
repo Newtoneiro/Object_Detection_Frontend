@@ -10,7 +10,8 @@ const config = {
     RESIZE_HEIGHT: 200,
     RESIZE_DEPTH: 3,
   },
-  timeBetweenTensorSaves: 10 * 1000, // 15 min in miliseconds
+  timeBetweenTensorSaves: 2 * 60 * 1000, // 2 min in miliseconds
+  timeBetweenTensorSavesRetries: 5 * 1000, // 5 seconds in milliseconds
   distance_risk_margin: 0.2,
 };
 

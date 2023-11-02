@@ -218,8 +218,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
     const lastSaveDate = getDateFromTimestamp(lastSave);
     const timeDifference = new Date().getTime() - lastSaveDate.getTime();
-
-    if (timeDifference > config.timeBetweenTensorSaves) {
+    if (!lastSave || timeDifference > config.timeBetweenTensorSaves) {
+      AsyncStorage.setItem("lastTensorSavedTimestamp", getTimestampFromDate());
       return true;
     }
 
@@ -234,14 +234,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
         shape: tensor.shape,
         values: tensor_array,
       })
-      .then((response) => {
-        if (response?.status == 200) {
-          AsyncStorage.setItem(
-            "lastTensorSavedTimestamp",
-            getTimestampFromDate()
-          );
-        }
-      })
       .catch((error) => {
         const error_code = error.response?.data || "";
         switch (error_code) {
@@ -255,6 +247,15 @@ const LiveCameraProvider = ({ children }: IProps) => {
             setCameraRolling(false);
             break;
         }
+        // If something went wrong, retry in [RETRY] seconds
+        let date_to_retry_in_5_seconds =
+          new Date().getTime() - // Now
+          config.timeBetweenTensorSaves + // - Time between tensor saves (without the next line, the retry would occur immediately)
+          config.timeBetweenTensorSavesRetries; // + The retry timeout
+        AsyncStorage.setItem(
+          "lastTensorSavedTimestamp",
+          getTimestampFromDate(new Date(date_to_retry_in_5_seconds))
+        );
       });
   };
 

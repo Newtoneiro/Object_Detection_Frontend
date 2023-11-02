@@ -9,7 +9,7 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
+import authFetch from "../AuthFetch/AuthFetch";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { IProps } from "../../config.types";
@@ -41,7 +41,6 @@ const AuthProvider = ({ children }: IProps) => {
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  const AuthFetchCon = useContext(AuthFetchContext);
   const ErrorCon = useContext(ErrorContext);
   const LoadingCon = useContext(LoadingContext);
 
@@ -71,12 +70,11 @@ const AuthProvider = ({ children }: IProps) => {
           .then((response) => {
             if (response.status === 200) {
               setIsAuthenticated(true);
-              AuthFetchCon.authFetch.defaults.headers.common[
-                "X-Access-Tokens"
-              ] = authState.token;
+              authFetch.defaults.headers.common["X-Access-Tokens"] =
+                authState.token;
 
-              AuthFetchCon.authFetch.interceptors.response.clear(); // Has to be done there, because the contexts are separated
-              AuthFetchCon.authFetch.interceptors.response.use(
+              authFetch.interceptors.response.clear(); // Has to be done there, because the contexts are separated
+              authFetch.interceptors.response.use(
                 (response) => {
                   return response;
                 },
@@ -98,13 +96,9 @@ const AuthProvider = ({ children }: IProps) => {
                       );
                       break;
                     default:
-                      ErrorCon.displayError(
-                        `[${code}] Something went wrong.`,
-                        "error"
-                      );
                       break;
                   }
-                  return Promise.reject(code);
+                  return Promise.reject(error);
                 }
               );
             } else {
@@ -192,7 +186,7 @@ const AuthProvider = ({ children }: IProps) => {
     }
     await auth().signOut();
 
-    AuthFetchCon.authFetch.defaults.headers.common["X-Access-Tokens"] = "";
+    authFetch.defaults.headers.common["X-Access-Tokens"] = "";
     LoadingCon.setDisplayLoadingCard(false);
   };
 

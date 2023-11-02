@@ -49,7 +49,10 @@ const LocationProvider = ({ children }: IProps) => {
 
     if (!PermissionsCon.locationPermission || !trackingLocationStarted) {
       return "NONE";
-    } else if (distance > 2 * currentSpeed + config.distance_risk_margin) {
+    } else if (
+      distance >
+      2 * currentSpeed + config.distance_risk_margin * currentSpeed
+    ) {
       return "LOW";
     } else if (distance > 2 * currentSpeed) {
       return "MEDIUM";

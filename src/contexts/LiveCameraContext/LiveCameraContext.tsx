@@ -17,8 +17,15 @@ import {
 import { Platform, useWindowDimensions } from "react-native";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
-import { calculateDistance } from "./LiveCameraContext.utils";
+import {
+  calculateDistance,
+  getDateFromTimestamp,
+  getTimestampFromDate,
+} from "./LiveCameraContext.utils";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
+import authFetch from "../AuthFetch/AuthFetch";
+import config from "../../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -151,7 +158,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
     if (
       cameraReady() &&
       // @ts-ignore Because apparently dataId is defined as 'object'
-      tensor.dataId.id % OptionsCon.liveCameraOptions.frameRate == 0
+      tensor.dataId.id % OptionsCon.liveCameraOptions.frameRate == 0 &&
+      PermissionsCon.cameraPermission
     ) {
       console.warn = () => {}; // Because of outdated libraries (to silence tf.nonMaxSuppression() in webgl locks the UI thread. Call tf.nonMaxSuppressionAsync() instead)
       model?.detect(tensor).then(async (predictions) => {
@@ -191,7 +199,64 @@ const LiveCameraProvider = ({ children }: IProps) => {
         setPredictions(new_predictions);
       });
     }
+
+    const doSave = await checkSaveTensorOnServer();
+    if (doSave) {
+      saveTensorOnServer(tensor);
+    }
+
     tfjs.dispose([tensor]);
+  };
+
+  const checkSaveTensorOnServer = async (): Promise<boolean> => {
+    // Check if option for saving Photos is set
+    if (!OptionsCon.serverOptions.savePhoto) {
+      return false;
+    }
+
+    const lastSave = await AsyncStorage.getItem("lastTensorSavedTimestamp");
+
+    const lastSaveDate = getDateFromTimestamp(lastSave);
+    const timeDifference = new Date().getTime() - lastSaveDate.getTime();
+    if (!lastSave || timeDifference > config.timeBetweenTensorSaves) {
+      AsyncStorage.setItem("lastTensorSavedTimestamp", getTimestampFromDate());
+      return true;
+    }
+
+    return false;
+  };
+
+  const saveTensorOnServer = async (tensor: tfjs.Tensor3D) => {
+    const tensor_array = tensor.arraySync();
+
+    authFetch
+      .post(config.paths.object_detection + "/captureTensor", {
+        shape: tensor.shape,
+        values: tensor_array,
+      })
+      .catch((error) => {
+        const error_code = error.response?.data || "";
+        switch (error_code) {
+          case "ERR_TENSOR_INVALID":
+            break;
+          default:
+            ErrorCon.displayError(
+              "Something went wrong with saving the tensor.",
+              "error"
+            );
+            setCameraRolling(false);
+            break;
+        }
+        // If something went wrong, retry in [RETRY] seconds
+        let date_to_retry_in_5_seconds =
+          new Date().getTime() - // Now
+          config.timeBetweenTensorSaves + // - Time between tensor saves (without the next line, the retry would occur immediately)
+          config.timeBetweenTensorSavesRetries; // + The retry timeout
+        AsyncStorage.setItem(
+          "lastTensorSavedTimestamp",
+          getTimestampFromDate(new Date(date_to_retry_in_5_seconds))
+        );
+      });
   };
 
   const modelLoaded = () => {
@@ -214,10 +279,10 @@ const LiveCameraProvider = ({ children }: IProps) => {
     LoadingCon.setLoading(false);
   };
 
-  const handleCameraStream = (images: IterableIterator<tfjs.Tensor3D>) => {
+  const handleCameraStream = (tensors: IterableIterator<tfjs.Tensor3D>) => {
     const loop = async () => {
       if (tfLoaded) {
-        const nextImageTensor = images.next().value;
+        const nextImageTensor = tensors.next().value;
         if (nextImageTensor) {
           predict(nextImageTensor);
         }

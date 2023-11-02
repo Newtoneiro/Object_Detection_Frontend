@@ -8,7 +8,7 @@ import {
 } from "./CameraContext.types";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { AuthFetchContext } from "../AuthFetchContext/AuthFetchContext";
+import authFetch from "../AuthFetch/AuthFetch";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { IProps } from "../../config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
@@ -51,7 +51,6 @@ const CameraProvider = ({ children }: IProps) => {
 
   const ErrorCon = useContext(ErrorContext);
   const LoadingCon = useContext(LoadingContext);
-  const AuthFetchCon = useContext(AuthFetchContext);
   const OptionsCon = useContext(OptionsContext);
   const PermissionsCon = useContext(PermissionsContext);
 
@@ -108,7 +107,7 @@ const CameraProvider = ({ children }: IProps) => {
           );
         }
 
-        await AuthFetchCon.authFetch
+        await authFetch
           .post(config.paths.object_detection + "/capturePhoto", {
             file: photo.base64,
             doSave: OptionsCon.serverOptions.savePhoto,

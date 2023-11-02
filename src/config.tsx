@@ -1,6 +1,6 @@
 const config = {
   paths: {
-    home: "http://192.168.114.5:8888",
+    home: "http://192.168.119.129:8888",
     auth: "/auth",
     object_detection: "/objectDetection",
   },
@@ -10,7 +10,9 @@ const config = {
     RESIZE_HEIGHT: 200,
     RESIZE_DEPTH: 3,
   },
-  distance_risk_margin: 5,
+  timeBetweenTensorSaves: 2 * 60 * 1000, // 2 min in miliseconds
+  timeBetweenTensorSavesRetries: 5 * 1000, // 5 seconds in milliseconds
+  distance_risk_margin: 0.2,
 };
 
 export default config;

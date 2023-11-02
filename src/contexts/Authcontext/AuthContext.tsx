@@ -98,13 +98,9 @@ const AuthProvider = ({ children }: IProps) => {
                       );
                       break;
                     default:
-                      ErrorCon.displayError(
-                        `[${code}] Something went wrong.`,
-                        "error"
-                      );
                       break;
                   }
-                  return Promise.reject(code);
+                  return Promise.reject(error);
                 }
               );
             } else {

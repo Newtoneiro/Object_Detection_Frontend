@@ -210,6 +210,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
   };
 
   const checkSaveTensorOnServer = async (): Promise<boolean> => {
+    // Check if option for saving Photos is set
     if (!OptionsCon.serverOptions.savePhoto) {
       return false;
     }
@@ -220,7 +221,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
     const timeDifference = new Date().getTime() - lastSaveDate.getTime();
 
     if (timeDifference > config.timeBetweenTensorSaves) {
-      AsyncStorage.setItem("lastTensorSavedTimestamp", getTimestampFromDate());
       return true;
     }
 
@@ -235,10 +235,26 @@ const LiveCameraProvider = ({ children }: IProps) => {
         shape: tensor.shape,
         values: tensor_array,
       })
-      .catch(() => {
-        ErrorCon.displayError("Couldn't save on the server.");
-        if (cameraRolling) {
-          switchCameraRolling();
+      .then((response) => {
+        if (response?.status == 200) {
+          AsyncStorage.setItem(
+            "lastTensorSavedTimestamp",
+            getTimestampFromDate()
+          );
+        }
+      })
+      .catch((error) => {
+        const error_code = error.response?.data || "";
+        switch (error_code) {
+          case "ERR_TENSOR_INVALID":
+            break;
+          default:
+            ErrorCon.displayError(
+              "Something went wrong with saving the tensor.",
+              "error"
+            );
+            setCameraRolling(false);
+            break;
         }
       });
   };

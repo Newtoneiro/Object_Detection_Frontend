@@ -1,4 +1,4 @@
-import { IProps } from "../../../config.types";
+import { IProps } from "../../../config/config.types";
 
 export type IBackgroundProps = IProps & {
   handlePressFunction: null | (() => void);

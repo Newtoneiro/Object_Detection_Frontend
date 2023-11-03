@@ -1,7 +1,7 @@
 import { CameraType } from "expo-camera";
 
-import config from "../../config";
-import { FrameRate, Quality, Ratio } from "../../config.types";
+import config from "../../config/config";
+import { FrameRate, Quality, Ratio } from "../../config/config.types";
 
 export interface IOptionsContext {
   cameraOptions: ICameraOptions;

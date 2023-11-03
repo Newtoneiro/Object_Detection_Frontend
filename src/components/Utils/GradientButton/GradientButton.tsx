@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { IGradientButtonProps } from "./GradientButton.types";
 import { LinearGradient } from "expo-linear-gradient";
 import { gradientButtonStyles } from "./GradientButton.styles";
-import stylesConfig from "../../../config.styles";
+import stylesConfig from "../../../config/config.styles";
 
 const GradientButton = ({
   children,

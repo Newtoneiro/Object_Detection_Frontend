@@ -5,7 +5,7 @@ import {
   ILiveCameraDimensions,
   IPredictionVariables,
 } from "./LiveCameraContext.types";
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import * as tfjs from "@tensorflow/tfjs";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";

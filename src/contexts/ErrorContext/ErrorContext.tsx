@@ -1,7 +1,7 @@
 import { ErrorSeverity, IErrorContext } from "./ErrorContext.types";
 import { createContext, useState } from "react";
 
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 
 const defaultErrorMessage = "Something went terribly wrong! Please try again.";
 

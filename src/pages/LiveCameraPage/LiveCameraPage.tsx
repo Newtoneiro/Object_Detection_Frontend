@@ -9,7 +9,7 @@ import { LiveCameraPageProps } from "./LiveCameraPage.types";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
 import CameraButton from "../../components/Utils/CameraButton/CameraButton";
 import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
-import stylesConfig from "../../config.styles";
+import stylesConfig from "../../config/config.styles";
 import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
 import { PermissionsContext } from "../../contexts/PermissionsContext/PermissionsContext";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";

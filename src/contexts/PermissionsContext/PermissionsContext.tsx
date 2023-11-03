@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { IPermissionsContext } from "./PermissionsContext.types";
 import { Camera } from "expo-camera";
 import { ErrorContext } from "../ErrorContext/ErrorContext";

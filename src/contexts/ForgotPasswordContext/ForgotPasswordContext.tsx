@@ -5,7 +5,7 @@ import {
 import { createContext, useContext, useState } from "react";
 
 import { AuthContext } from "../AuthContext/AuthContext";
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
 

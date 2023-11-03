@@ -7,7 +7,7 @@ import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import GradientButton from "../../components/Utils/GradientButton/GradientButton";
 import UserInput from "../../components/Utils/UserInput/UserInput";
-import stylesConfig from "../../config.styles";
+import stylesConfig from "../../config/config.styles";
 import { LoginContext } from "../../contexts/LoginContext/LoginContext";
 import { loginPageStyles } from "./LoginPage.styles";
 import { LoginPageProps } from "./LoginPage.types";

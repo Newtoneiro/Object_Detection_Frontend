@@ -12,10 +12,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import authFetch from "../AuthFetch/AuthFetch";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import axios from "axios";
-import config from "../../config";
+import config from "../../config/config";
 
 const defaultAuthContext: IAuthContext = {
   authState: {

@@ -1,5 +1,1 @@
-const tfjs = {
-  cameraWithTensors: jest.fn(),
-};
-
-export default tfjs;
+export const cameraWithTensors = jest.fn();

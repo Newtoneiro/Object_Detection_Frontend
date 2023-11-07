@@ -1,6 +1,6 @@
 const config = {
   paths: {
-    home: "http://192.168.119.129:8888",
+    home: "http://192.168.169.5:8888",
     auth: "/auth",
     object_detection: "/objectDetection",
   },

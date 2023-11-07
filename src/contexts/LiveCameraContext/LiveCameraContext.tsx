@@ -24,7 +24,7 @@ import {
 } from "./LiveCameraContext.utils";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
 import authFetch from "../AuthFetch/AuthFetch";
-import config from "../../config";
+import config from "../../config/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {

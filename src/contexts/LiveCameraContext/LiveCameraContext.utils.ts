@@ -1,5 +1,5 @@
 import * as expoCameraCharacteristics from "@appandflow/expo-camera-characteristics";
-import averageHeights from "../../averageHeights";
+import averageHeights from "../../config/averageHeights";
 
 const calculateDistance = (
   bboxHeight: number,

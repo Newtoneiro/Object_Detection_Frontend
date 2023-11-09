@@ -2,7 +2,7 @@ import { AuthProvider } from "./AuthContext/AuthContext";
 import { CameraProvider } from "./CameraContext/CameraContext";
 import { ErrorProvider } from "./ErrorContext/ErrorContext";
 import { ForgotPasswordProvider } from "./ForgotPasswordContext/ForgotPasswordContext";
-import { IProps } from "../config.types";
+import { IProps } from "../config/config.types";
 import { LiveCameraProvider } from "./LiveCameraContext/LiveCameraContext";
 import { LoadingProvider } from "./LoadingContext/LoadingContext";
 import { LoginProvider } from "./LoginContext/LoginContext";

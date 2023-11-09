@@ -5,7 +5,7 @@ import {
   ILiveCameraDimensions,
   IPredictionVariables,
 } from "./LiveCameraContext.types";
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import * as tfjs from "@tensorflow/tfjs";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
@@ -24,7 +24,7 @@ import {
 } from "./LiveCameraContext.utils";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
 import authFetch from "../AuthFetch/AuthFetch";
-import config from "../../config";
+import config from "../../config/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {

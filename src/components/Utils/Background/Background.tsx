@@ -4,7 +4,7 @@ import { IBackgroundProps } from "./Background.types";
 import { LinearGradient } from "expo-linear-gradient";
 import PressableIcon from "../PressableIcon/PressableIcon";
 import { backgroundStyles } from "./Background.styles";
-import stylesConfig from "../../../config.styles";
+import stylesConfig from "../../../config/config.styles";
 import { useEffect } from "react";
 
 const logo = "../../../../assets/logo.png";

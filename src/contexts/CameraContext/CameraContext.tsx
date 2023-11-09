@@ -10,10 +10,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import authFetch from "../AuthFetch/AuthFetch";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { calculateHeightFromWidth } from "./CameraContext.utils";
-import config from "../../config";
+import config from "../../config/config";
 import { useWindowDimensions } from "react-native";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
 import { ICameraOptions } from "../OptionsContext/OptionsContext.types";

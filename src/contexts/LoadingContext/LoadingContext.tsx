@@ -5,9 +5,12 @@ import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { loadAsync } from "expo-font";
 
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { ILoadingContext } from "./LoadingContext.types";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
+
+import { WEB_CLIENT_ID } from "@env";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const defaultLoadingContext: ILoadingContext = {
   loading: false,
@@ -53,8 +56,15 @@ const LoadingProvider = ({ children }: IProps) => {
       setDisplayLoadingCard(false);
     };
 
+    const configureGoogleSignIn = async () => {
+      GoogleSignin.configure({
+        webClientId: WEB_CLIENT_ID,
+      });
+    };
+
     if (!assetsLoaded) {
       loadAssets();
+      configureGoogleSignIn();
     }
   }, []);
 

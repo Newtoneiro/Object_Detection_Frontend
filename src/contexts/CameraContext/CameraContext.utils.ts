@@ -1,4 +1,4 @@
-import { Ratio } from "../../config.types";
+import { Ratio } from "../../config/config.types";
 
 const calculateHeightFromWidth = (ratio: Ratio, width: number): number => {
   let height = 0;

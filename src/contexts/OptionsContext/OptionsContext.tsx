@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import {
   ICameraOptions,
   ILiveCameraOptions,

@@ -1,9 +1,9 @@
 import { createContext, useEffect, useContext, useState } from "react";
-import { IProps } from "../../config.types";
+import { IProps } from "../../config/config.types";
 import { ILocationContext, IDangerLevel } from "./LocationContext.types";
 import * as Location from "expo-location";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
-import config from "../../config";
+import config from "../../config/config";
 
 const defaultLocationContext: ILocationContext = {
   trackingLocationStarted: false,

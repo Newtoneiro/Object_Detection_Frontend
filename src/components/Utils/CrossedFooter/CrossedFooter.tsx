@@ -1,4 +1,4 @@
-import { IProps } from "../../../config.types";
+import { IProps } from "../../../config/config.types";
 import { View } from "react-native";
 import { crossedFooterStyle } from "./CrossedFooter.styles";
 

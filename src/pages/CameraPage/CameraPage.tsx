@@ -7,7 +7,7 @@ import { CameraPageProps } from "./CameraPage.types";
 import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
 import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import { cameraPageStyles } from "./CameraPage.styles";
-import stylesConfig from "../../config.styles";
+import stylesConfig from "../../config/config.styles";
 import CameraButton from "../../components/Utils/CameraButton/CameraButton";
 import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
 import { PermissionsContext } from "../../contexts/PermissionsContext/PermissionsContext";

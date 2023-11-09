@@ -6,7 +6,7 @@ import { useContext } from "react";
 import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import Setting from "../../components/Utils/Setting/Setting";
-import stylesConfig from "../../config.styles";
+import stylesConfig from "../../config/config.styles";
 import {
   FrameRate,
   Quality,
@@ -14,7 +14,7 @@ import {
   possibleFrameRates,
   possibleQualities,
   possibleRatios,
-} from "../../config.types";
+} from "../../config/config.types";
 import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
 import { settingsPageStyles } from "./SettingsPage.styles";
 import { SettingsPageProps } from "./SettingsPage.types";

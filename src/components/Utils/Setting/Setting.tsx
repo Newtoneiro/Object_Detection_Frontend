@@ -3,7 +3,7 @@ import { Modal, Pressable, Switch, Text, View } from "react-native";
 import { ISettingsProps } from "./Setting.types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { settingStyles } from "./Setting.styles";
-import stylesConfig from "../../../config.styles";
+import stylesConfig from "../../../config/config.styles";
 import { useState } from "react";
 
 function Setting<T>({

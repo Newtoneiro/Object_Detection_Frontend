@@ -1,17 +1,17 @@
-import { Image, View, Text } from "react-native";
 import { useContext, useEffect, useState } from "react";
+import { Image, Text, View } from "react-native";
 
 import { Camera } from "expo-camera";
-import { CameraContext } from "../../contexts/CameraContext/CameraContext";
-import { CameraPageProps } from "./CameraPage.types";
-import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
-import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
-import { cameraPageStyles } from "./CameraPage.styles";
+import { CameraButton } from "../../components/Utils/CameraButton";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { DetectedRectangle } from "../../components/Utils/DetectedRectangle";
+import { PressableIcon } from "../../components/Utils/PressableIcon";
 import { stylesConfig } from "../../config";
-import CameraButton from "../../components/Utils/CameraButton/CameraButton";
-import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
-import { PermissionsContext } from "../../contexts/PermissionsContext/PermissionsContext";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
+import { CameraContext } from "../../contexts/CameraContext";
+import { OptionsContext } from "../../contexts/OptionsContext";
+import { PermissionsContext } from "../../contexts/PermissionsContext";
+import { cameraPageStyles } from "./CameraPage.styles";
+import { CameraPageProps } from "./CameraPage.types";
 
 const CameraPage = ({ navigation }: CameraPageProps) => {
   const [focused, setFocused] = useState<boolean>(false);

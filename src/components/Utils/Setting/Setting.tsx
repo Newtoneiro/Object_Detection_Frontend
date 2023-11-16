@@ -6,7 +6,7 @@ import { settingStyles } from "./Setting.styles";
 import { stylesConfig } from "../../../config";
 import { useState } from "react";
 
-function Setting<T>({
+export function Setting<T>({
   value,
   name,
   possibleValues,
@@ -101,5 +101,3 @@ function Setting<T>({
     </View>
   );
 }
-
-export default Setting;

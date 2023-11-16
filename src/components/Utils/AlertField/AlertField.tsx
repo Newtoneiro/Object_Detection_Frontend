@@ -3,9 +3,9 @@
  * @description AlertField component.
  */
 
-import { IAlertFieldProps } from "./AlertField.types";
 import { Text } from "react-native";
 import { alertFieldStyles } from "./AlertField.styles";
+import { IAlertFieldProps } from "./AlertField.types";
 
 /**
  * @component
@@ -37,7 +37,7 @@ import { alertFieldStyles } from "./AlertField.styles";
  * @see {@link IAlertFieldProps} for the props object.
  * @see {@link alertFieldStyles} for the style object.
  */
-const AlertField = ({ text, success }: IAlertFieldProps) => {
+export const AlertField = ({ text, success }: IAlertFieldProps) => {
   return (
     <Text
       style={
@@ -53,5 +53,3 @@ const AlertField = ({ text, success }: IAlertFieldProps) => {
     </Text>
   );
 };
-
-export default AlertField;

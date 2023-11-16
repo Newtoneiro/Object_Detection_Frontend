@@ -1,12 +1,12 @@
-export type IUserInputProps = {
+export interface IUserInputProps {
   value: string;
   changeValue: (text: string) => void;
   options: IUserInputOptions;
-};
+}
 
-export type IUserInputOptions = {
+export interface IUserInputOptions {
   isAlert: boolean;
   isSecret: boolean;
   placeholder: string;
   icon: "envelope" | "lock" | null;
-};
+}

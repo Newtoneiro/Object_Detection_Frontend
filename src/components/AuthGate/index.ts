@@ -1,1 +1,1 @@
-export * as AuthGate from "./AuthGate";
+export { AuthGate } from "./AuthGate";

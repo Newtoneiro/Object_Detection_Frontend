@@ -1,2 +1,2 @@
-export * as CrossedFooter from "./CrossedFooter";
-export * as CrossedFooterStyles from "./CrossedFooter.styles";
+export { CrossedFooter } from "./CrossedFooter";
+export { crossedFooterStyle } from "./CrossedFooter.styles";

@@ -1,3 +1,3 @@
-export * as AlertField from "./AlertField";
-export * as alertFieldStyles from "./AlertField.styles";
-export * as AlertFieldTypes from "./AlertField.types";
+export { AlertField } from "./AlertField";
+export { alertFieldStyles } from "./AlertField.styles";
+export { IAlertFieldProps } from "./AlertField.types";

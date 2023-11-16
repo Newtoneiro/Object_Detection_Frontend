@@ -7,7 +7,7 @@ import { LocationContext } from "../../../contexts/LocationContext/LocationConte
 import { IDangerLevel } from "../../../contexts/LocationContext/LocationContext.types";
 import { stylesConfig } from "../../../config";
 
-const DetectedRectangle = ({
+export const DetectedRectangle = ({
   prediction,
   showDynamicDistance = false,
 }: IDetectedRectangleProps) => {
@@ -61,5 +61,3 @@ const DetectedRectangle = ({
     </View>
   );
 };
-
-export default DetectedRectangle;

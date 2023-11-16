@@ -3,7 +3,7 @@
  * @description Background Typescript Type Definitions.
  */
 
-import { globalTypes } from "../../../config";
+import { IProps } from "../../../config";
 
 /**
  * Represents the props for the Background component.
@@ -12,6 +12,6 @@ import { globalTypes } from "../../../config";
  *
  * @property {null | (() => void)} handlePressFunction - The function to call when the return button is pressed.
  */
-export type IBackgroundProps = globalTypes.IProps & {
+export type IBackgroundProps = IProps & {
   handlePressFunction: null | (() => void);
 };

@@ -1,2 +1,2 @@
-export * as LocationContext from "./LocationContext";
-export * as LocationContextTypes from "./LocationContext.types";
+export { LocationContext, LocationProvider } from "./LocationContext";
+export { IDangerLevel, ILocationContext } from "./LocationContext.types";

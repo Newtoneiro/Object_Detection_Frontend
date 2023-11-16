@@ -3,9 +3,9 @@ import { ScrollView, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { CameraType } from "expo-camera";
 import { useContext } from "react";
-import Background from "../../components/Utils/Background/Background";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
-import Setting from "../../components/Utils/Setting/Setting";
+import { Background } from "../../components/Utils/Background";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { Setting } from "../../components/Utils/Setting";
 import { stylesConfig } from "../../config";
 import {
   FrameRate,
@@ -15,7 +15,7 @@ import {
   possibleQualities,
   possibleRatios,
 } from "../../config/config.types";
-import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
+import { OptionsContext } from "../../contexts/OptionsContext";
 import { settingsPageStyles } from "./SettingsPage.styles";
 import { SettingsPageProps } from "./SettingsPage.types";
 

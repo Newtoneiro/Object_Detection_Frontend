@@ -1,2 +1,2 @@
-export * as LoadingContext from "./LoadingContext";
-export * as LoadingContextTypes from "./LoadingContext.types";
+export { LoadingContext, LoadingProvider } from "./LoadingContext";
+export { ILoadingContext } from "./LoadingContext.types";

@@ -1,13 +1,13 @@
+import { createContext, useContext, useState } from "react";
 import {
   IForgotPasswordContext,
   IResetPasswordResponse,
 } from "./ForgotPasswordContext.types";
-import { createContext, useContext, useState } from "react";
 
-import { AuthContext } from "../AuthContext/AuthContext";
-import { globalTypes } from "../../config";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
+import { IProps } from "../../config";
+import { AuthContext } from "../AuthContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
+import { LoadingContext } from "../LoadingContext";
 
 const defaultResetPasswordResponse: IResetPasswordResponse = {
   success: true,
@@ -25,7 +25,7 @@ const ForgotPasswordContext = createContext<IForgotPasswordContext>(
   defaultForgotPasswordContext
 );
 
-const ForgotPasswordProvider = ({ children }: globalTypes.IProps) => {
+const ForgotPasswordProvider = ({ children }: IProps) => {
   const [email, setEmail] = useState<string>("");
   const [response, setResponse] = useState<IResetPasswordResponse>(
     defaultResetPasswordResponse

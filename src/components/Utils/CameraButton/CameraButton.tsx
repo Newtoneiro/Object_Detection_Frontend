@@ -2,7 +2,10 @@ import { Pressable, View } from "react-native";
 import { ICameraButtonProps } from "./CameraButton.types";
 import { cameraButtonStyles } from "./CameraButton.styles";
 
-const CameraButton = ({ handlePress, toggle = false }: ICameraButtonProps) => {
+export const CameraButton = ({
+  handlePress,
+  toggle = false,
+}: ICameraButtonProps) => {
   return (
     <Pressable
       onPress={() => handlePress()}
@@ -19,5 +22,3 @@ const CameraButton = ({ handlePress, toggle = false }: ICameraButtonProps) => {
     </Pressable>
   );
 };
-
-export default CameraButton;

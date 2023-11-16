@@ -1,11 +1,11 @@
 import { Modal, Text, View } from "react-native";
 
-import { ErrorContext } from "../../../contexts/ErrorContext/ErrorContext";
-import GradientButton from "../GradientButton/GradientButton";
-import { errorPopupStyles } from "./ErrorPopup.styles";
 import { useContext } from "react";
+import { ErrorContext } from "../../../contexts/ErrorContext/ErrorContext";
+import { GradientButton } from "../GradientButton";
+import { errorPopupStyles } from "./ErrorPopup.styles";
 
-const ErrorPopup = () => {
+export const ErrorPopup = () => {
   const ErrorCon = useContext(ErrorContext);
 
   return (
@@ -32,5 +32,3 @@ const ErrorPopup = () => {
     </>
   );
 };
-
-export default ErrorPopup;

@@ -1,15 +1,16 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
+      "@babel/plugin-transform-export-namespace-from",
       [
-        'module:react-native-dotenv',
+        "module:react-native-dotenv",
         {
-          moduleName: '@env',
-          path: '.env',
+          moduleName: "@env",
+          path: ".env",
           blacklist: null,
-          whitelist: ['WEB_CLIENT_ID'],
+          whitelist: ["WEB_CLIENT_ID"],
           safe: false,
           allowUndefined: true,
         },

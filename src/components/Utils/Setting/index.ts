@@ -1,3 +1,3 @@
-export * as Setting from "./Setting";
-export * as SettingStyles from "./Setting.styles";
-export * as SettingTypes from "./Setting.types";
+export { Setting } from "./Setting";
+export { settingStyles } from "./Setting.styles";
+export { ISettingsProps } from "./Setting.types";

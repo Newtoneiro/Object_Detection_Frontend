@@ -1,4 +1,4 @@
-export type ICameraButtonProps = {
+export interface ICameraButtonProps {
   toggle?: boolean;
   handlePress: () => void;
-};
+}

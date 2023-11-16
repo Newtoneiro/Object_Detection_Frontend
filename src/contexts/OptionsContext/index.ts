@@ -1,2 +1,7 @@
-export * as OptionsContext from "./OptionsContext";
-export * as OptionsContextTypes from "./OptionsContext.types";
+export { OptionsContext, OptionsProvider } from "./OptionsContext";
+export {
+  ICameraOptions,
+  ILiveCameraOptions,
+  IOptionsContext,
+  IServerOptions,
+} from "./OptionsContext.types";

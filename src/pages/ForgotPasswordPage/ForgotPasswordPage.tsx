@@ -1,17 +1,16 @@
 import { Pressable, Text, View } from "react-native";
 
-import AlertField from "../../components/Utils/AlertField/AlertField";
-import Background from "../../components/Utils/Background/Background";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import { FontAwesome } from "@expo/vector-icons";
-import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext/ForgotPasswordContext";
-import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
-import GradientButton from "../../components/Utils/GradientButton/GradientButton";
-import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
-import UserInput from "../../components/Utils/UserInput/UserInput";
-import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
-import { stylesConfig } from "../../config";
 import { useContext } from "react";
+import { AlertField } from "../../components/Utils/AlertField/";
+import { Background } from "../../components/Utils/Background";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { GradientButton } from "../../components/Utils/GradientButton";
+import { UserInput } from "../../components/Utils/UserInput";
+import { stylesConfig } from "../../config";
+import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
+import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
+import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
 
 const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
   const ForgotPasswordCon = useContext(ForgotPasswordContext);

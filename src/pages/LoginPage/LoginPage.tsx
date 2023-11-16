@@ -2,13 +2,13 @@ import { Pressable, Text, View } from "react-native";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useContext } from "react";
-import AlertField from "../../components/Utils/AlertField/AlertField";
-import Background from "../../components/Utils/Background/Background";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
-import GradientButton from "../../components/Utils/GradientButton/GradientButton";
-import UserInput from "../../components/Utils/UserInput/UserInput";
+import { GradientButton } from "../../components/Utils/GradientButton";
+import { AlertField } from "../../components/Utils/AlertField";
+import { Background } from "../../components/Utils/Background";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { UserInput } from "../../components/Utils/UserInput";
 import { stylesConfig } from "../../config";
-import { LoginContext } from "../../contexts/LoginContext/LoginContext";
+import { LoginContext } from "../../contexts/LoginContext";
 import { loginPageStyles } from "./LoginPage.styles";
 import { LoginPageProps } from "./LoginPage.types";
 

@@ -1,9 +1,9 @@
 import { Text, View } from "react-native";
 
-import Background from "../../components/Utils/Background/Background";
-import GradientButton from "../../components/Utils/GradientButton/GradientButton";
-import { WelcomePageProps } from "./WelcomePage.types";
+import { Background } from "../../components/Utils/Background";
+import { GradientButton } from "../../components/Utils/GradientButton";
 import { welcomePageStyles } from "./WelcomePage.styles";
+import { WelcomePageProps } from "./WelcomePage.types";
 
 export default function WelcomePage({ navigation }: WelcomePageProps) {
   return (

@@ -1,2 +1,2 @@
-export * as ErrorPopup from "./ErrorPopup";
-export * as errorPopupStyles from "./ErrorPopup.styles";
+export { ErrorPopup } from "./ErrorPopup";
+export { errorPopupStyles } from "./ErrorPopup.styles";

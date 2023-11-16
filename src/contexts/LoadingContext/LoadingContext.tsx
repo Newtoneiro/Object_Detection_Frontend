@@ -5,9 +5,9 @@ import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { loadAsync } from "expo-font";
 
-import { globalTypes } from "../../config";
+import { IProps } from "../../config";
+import { ErrorContext } from "../ErrorContext";
 import { ILoadingContext } from "./LoadingContext.types";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
 
 import { WEB_CLIENT_ID } from "@env";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -24,7 +24,7 @@ const defaultLoadingContext: ILoadingContext = {
 
 const LoadingContext = createContext<ILoadingContext>(defaultLoadingContext);
 
-const LoadingProvider = ({ children }: globalTypes.IProps) => {
+const LoadingProvider = ({ children }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [displayLoadingCard, setDisplayLoadingCard] = useState<boolean>(false);
   const [loadingCardText, setLoadingCardText] = useState<string | null>(null);

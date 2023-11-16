@@ -5,7 +5,7 @@ import { loadingOverlayStyles } from "./LoadingOverlay.styles";
 import { stylesConfig } from "../../../config";
 import { useContext } from "react";
 
-const LoadingOverlay = () => {
+export const LoadingOverlay = () => {
   const LoadingCon = useContext(LoadingContext);
 
   return (
@@ -28,5 +28,3 @@ const LoadingOverlay = () => {
     </>
   );
 };
-
-export default LoadingOverlay;

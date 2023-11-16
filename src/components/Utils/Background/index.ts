@@ -1,3 +1,3 @@
-export * as Background from "./Background";
-export * as BackgroundStyles from "./Background.styles";
-export * as BackgroundTypes from "./Background.types";
+export { Background } from "./Background";
+export { backgroundStyles } from "./Background.styles";
+export { IBackgroundProps } from "./Background.types";

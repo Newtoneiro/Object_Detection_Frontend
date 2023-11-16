@@ -1,14 +1,14 @@
+import { createContext, useContext, useState } from "react";
 import {
   ILoginContext,
   IUserInputs,
   IUserInputsAlert,
 } from "./LoginContext.types";
-import { createContext, useContext, useState } from "react";
 
-import { AuthContext } from "../AuthContext/AuthContext";
-import { globalTypes } from "../../config";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
+import { IProps } from "../../config";
+import { AuthContext } from "../AuthContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
+import { LoadingContext } from "../LoadingContext";
 
 const defaultUserInputs = {
   email: "",
@@ -40,7 +40,7 @@ const defaultLoginContext: ILoginContext = {
 
 const LoginContext = createContext<ILoginContext>(defaultLoginContext);
 
-const LoginProvider = ({ children }: globalTypes.IProps) => {
+const LoginProvider = ({ children }: IProps) => {
   const [isLoginMode, setIsLoginMode] = useState<Boolean>(true);
   const [userInputs, setUserInputs] = useState<IUserInputs>(defaultUserInputs);
   const [userInputsAlert, setUserInputsAlert] = useState<IUserInputsAlert>(

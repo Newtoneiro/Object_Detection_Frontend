@@ -1,3 +1,3 @@
-export * as DetectedRectangle from "./DetectedRectangle";
-export * as detectedRectangleStyles from "./DetectedRectangle.styles";
-export * as DetectedRectangleTypes from "./DetectedRectangle.types";
+export { DetectedRectangle } from "./DetectedRectangle";
+export { detectedRectangleStyles } from "./DetectedRectangle.styles";
+export { IDetectedRectangleProps } from "./DetectedRectangle.types";

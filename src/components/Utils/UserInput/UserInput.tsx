@@ -6,7 +6,7 @@ import { stylesConfig } from "../../../config";
 import { useState } from "react";
 import { userInputStyles } from "./UserInput.styles";
 
-const UserInput = ({ value, changeValue, options }: IUserInputProps) => {
+export const UserInput = ({ value, changeValue, options }: IUserInputProps) => {
   const [visible, setVisible] = useState<boolean>(!options.isSecret);
 
   return (
@@ -42,5 +42,3 @@ const UserInput = ({ value, changeValue, options }: IUserInputProps) => {
     </View>
   );
 };
-
-export default UserInput;

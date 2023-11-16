@@ -39,7 +39,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
  *
  * @see {@link RootStackParamList} for the Stack Navigator types.
  */
-export default function Navigator() {
+export function Navigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator

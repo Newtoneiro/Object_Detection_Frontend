@@ -1,23 +1,21 @@
 import { Camera, CameraType } from "expo-camera";
 import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   ICameraContext,
   ICameraDimensions,
   IPrediction,
   IPredictionResponse,
 } from "./CameraContext.types";
-import { createContext, useContext, useEffect, useState } from "react";
 
-import authFetch from "../AuthFetch/AuthFetch";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
-import { globalTypes } from "../../config";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
-import { calculateHeightFromWidth } from "./CameraContext.utils";
-import { globalConfig } from "../../config";
 import { useWindowDimensions } from "react-native";
-import { OptionsContext } from "../OptionsContext/OptionsContext";
-import { ICameraOptions } from "../OptionsContext/OptionsContext.types";
-import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
+import { IProps, globalConfig } from "../../config";
+import { authFetch } from "../AuthFetch";
+import { ErrorContext } from "../ErrorContext";
+import { LoadingContext } from "../LoadingContext";
+import { ICameraOptions, OptionsContext } from "../OptionsContext";
+import { PermissionsContext } from "../PermissionsContext";
+import { calculateHeightFromWidth } from "./CameraContext.utils";
 
 const defaultCameraDimensions: ICameraDimensions = {
   width: 0,
@@ -37,7 +35,7 @@ const defaultCameraContext: ICameraContext = {
 
 const CameraContext = createContext<ICameraContext>(defaultCameraContext);
 
-const CameraProvider = ({ children }: globalTypes.IProps) => {
+const CameraProvider = ({ children }: IProps) => {
   // Camera related
   const [cameraRef, setCameraRef] = useState<Camera | null>(null);
   const [cameraDimensions, setCameraDimensions] = useState<ICameraDimensions>(

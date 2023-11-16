@@ -1,3 +1,3 @@
-export * as UserInput from "./UserInput";
-export * as UserInputStyles from "./UserInput.styles";
-export * as UserInputTypes from "./UserInput.types";
+export { UserInput } from "./UserInput";
+export { userInputStyles } from "./UserInput.styles";
+export { IUserInputOptions, IUserInputProps } from "./UserInput.types";

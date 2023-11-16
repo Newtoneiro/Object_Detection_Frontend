@@ -36,7 +36,7 @@ const logo = "../../../../assets/logo.png";
  *
  * @see {@link animatedLoadingCardStyles} for the style object.
  */
-const AnimatedLoadingCard = () => {
+export const AnimatedLoadingCard = () => {
   const box_rotate = useRef(new Animated.Value(0)).current;
   const inner_box_move = useRef(new Animated.Value(0)).current;
 
@@ -146,5 +146,3 @@ const AnimatedLoadingCard = () => {
     </>
   );
 };
-
-export default AnimatedLoadingCard;

@@ -1,3 +1,3 @@
-export * as GradientButton from "./GradientButton";
-export * as GradientButtonStyles from "./GradientButton.styles";
-export * as GradientButtonTypes from "./GradientButton.types";
+export { GradientButton } from "./GradientButton";
+export { gradientButtonStyles } from "./GradientButton.styles";
+export { IGradientButtonProps } from "./GradientButton.types";

@@ -1,15 +1,15 @@
-import { DashboardPageProps, GridItemProp } from "./DashboardPage.types";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { DashboardPageProps, GridItemProp } from "./DashboardPage.types";
 
-import { AuthContext } from "../../contexts/AuthContext/AuthContext";
-import Background from "../../components/Utils/Background/Background";
-import { ErrorContext } from "../../contexts/ErrorContext/ErrorContext";
 import { LinearGradient } from "expo-linear-gradient";
-import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
-import { dashboardPageStyles } from "./DashboardPage.styles";
-import { stylesConfig } from "../../config";
 import { useContext } from "react";
+import { Background } from "../../components/Utils/Background";
+import { PressableIcon } from "../../components/Utils/PressableIcon";
+import { stylesConfig } from "../../config";
+import { AuthContext } from "../../contexts/AuthContext";
+import { ErrorContext } from "../../contexts/ErrorContext";
+import { dashboardPageStyles } from "./DashboardPage.styles";
 
 export default function DashboardPage({ navigation }: DashboardPageProps) {
   const AuthCon = useContext(AuthContext);

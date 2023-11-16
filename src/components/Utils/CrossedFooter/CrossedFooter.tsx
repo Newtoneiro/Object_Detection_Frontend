@@ -1,8 +1,8 @@
-import { globalTypes } from "../../../config";
+import { IProps } from "../../../config";
 import { View } from "react-native";
 import { crossedFooterStyle } from "./CrossedFooter.styles";
 
-const CrossedFooter = ({ children }: globalTypes.IProps) => {
+export const CrossedFooter = ({ children }: IProps) => {
   return (
     <View style={crossedFooterStyle.container}>
       <View style={crossedFooterStyle.line}></View>
@@ -12,5 +12,3 @@ const CrossedFooter = ({ children }: globalTypes.IProps) => {
     </View>
   );
 };
-
-export default CrossedFooter;

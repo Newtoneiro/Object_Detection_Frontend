@@ -1,2 +1,6 @@
-export * as LoginContext from "./LoginContext";
-export * as LoginContextTypes from "./LoginContext.types";
+export { LoginContext, LoginProvider } from "./LoginContext";
+export {
+  ILoginContext,
+  IUserInputs,
+  IUserInputsAlert,
+} from "./LoginContext.types";

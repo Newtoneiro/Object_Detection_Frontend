@@ -7,7 +7,7 @@ import { Image, SafeAreaView, StatusBar, View } from "react-native";
 
 import { IBackgroundProps } from "./Background.types";
 import { LinearGradient } from "expo-linear-gradient";
-import PressableIcon from "../PressableIcon/PressableIcon";
+import { PressableIcon } from "../PressableIcon";
 import { backgroundStyles } from "./Background.styles";
 import { stylesConfig } from "../../../config";
 import { useEffect } from "react";
@@ -44,8 +44,12 @@ const logo = "../../../../assets/logo.png";
  * };
  *
  * @see {@link IBackgroundProps} for the props object.
+ * @see {@link backgroundStyles} for the style object.
  */
-const Background = ({ children, handlePressFunction }: IBackgroundProps) => {
+export const Background = ({
+  children,
+  handlePressFunction,
+}: IBackgroundProps) => {
   useEffect(() => {
     StatusBar.setTranslucent(true);
     StatusBar.setBarStyle("light-content");
@@ -85,5 +89,3 @@ const Background = ({ children, handlePressFunction }: IBackgroundProps) => {
     </SafeAreaView>
   );
 };
-
-export default Background;

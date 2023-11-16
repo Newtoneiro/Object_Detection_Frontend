@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect } from "react";
-import { globalTypes } from "../../config";
-import { IPermissionsContext } from "./PermissionsContext.types";
 import { Camera } from "expo-camera";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { useForegroundPermissions } from "expo-location";
+import { createContext, useContext, useEffect } from "react";
+import { IProps } from "../../config";
+import { ErrorContext } from "../ErrorContext";
+import { IPermissionsContext } from "./PermissionsContext.types";
 
 const defaultPermissionsContext: IPermissionsContext = {
   cameraPermission: false,
@@ -16,7 +16,7 @@ const PermissionsContext = createContext<IPermissionsContext>(
   defaultPermissionsContext
 );
 
-const PermissionsProvider = ({ children }: globalTypes.IProps) => {
+const PermissionsProvider = ({ children }: IProps) => {
   const [cameraPermission, requestCameraPermission] =
     Camera.useCameraPermissions();
   const [locationPermisson, requestLocationPermission] =

@@ -1,2 +1,2 @@
-export * as Navigator from "./Navigator";
-export * as NavigatorTypes from "./Navigator.types";
+export { Navigator } from "./Navigator";
+export { RootStackParamList } from "./Navigator.types";

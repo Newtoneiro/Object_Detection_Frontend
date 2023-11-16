@@ -38,7 +38,7 @@ const Stack = createNativeStackNavigator<UnAuthRootStackParamList>();
  *
  * @see {@link UnAuthRootStackParamList} for the Stack Navigator types.
  */
-export default function UnAuthNavigator() {
+export function UnAuthNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator

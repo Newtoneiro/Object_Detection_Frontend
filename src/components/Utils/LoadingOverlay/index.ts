@@ -1,2 +1,2 @@
-export * as LoadingOverlay from "./LoadingOverlay";
-export * as LoadingOverlayStyles from "./LoadingOverlay.styles";
+export { LoadingOverlay } from "./LoadingOverlay";
+export { loadingOverlayStyles } from "./LoadingOverlay.styles";

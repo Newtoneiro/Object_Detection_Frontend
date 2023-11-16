@@ -37,6 +37,8 @@
  * @property {string} message - The error message.
  *
  */
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   IAuthContext,
   IAuthState,
@@ -44,17 +46,14 @@ import {
   IRegisterData,
   IUserInfo,
 } from "./AuthContext.types";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import authFetch from "../AuthFetch/AuthFetch";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { globalTypes } from "../../config";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
 import axios from "axios";
-import { globalConfig } from "../../config";
+import { IProps, globalConfig } from "../../config";
+import { authFetch } from "../AuthFetch";
+import { ErrorContext } from "../ErrorContext";
+import { LoadingContext } from "../LoadingContext";
 
 const defaultAuthContext: IAuthContext = {
   authState: {
@@ -81,7 +80,7 @@ const defaultAuthContext: IAuthContext = {
  */
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 
-const AuthProvider = ({ children }: globalTypes.IProps) => {
+const AuthProvider = ({ children }: IProps) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
     userInfo: null,

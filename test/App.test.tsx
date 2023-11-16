@@ -1,6 +1,6 @@
 import React from "react";
 import renderer, { ReactTestRendererJSON } from "react-test-renderer";
-import App from "../src/App";
+import { App } from "../src/App";
 
 describe("App component", () => {
   it("has 1 child", () => {

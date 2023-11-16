@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { globalTypes } from "../../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IProps } from "../../config";
+import { LoadingContext } from "../LoadingContext";
 import {
   ICameraOptions,
   ILiveCameraOptions,
@@ -10,8 +12,6 @@ import {
   defaultLiveCameraOptions,
   defaultServerOptions,
 } from "./OptionsContext.types";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultOptionsContext: IOptionsContext = {
   cameraOptions: defaultCameraOptions,
@@ -24,7 +24,7 @@ const defaultOptionsContext: IOptionsContext = {
 
 const OptionsContext = createContext<IOptionsContext>(defaultOptionsContext);
 
-const OptionsProvider = ({ children }: globalTypes.IProps) => {
+const OptionsProvider = ({ children }: IProps) => {
   const [cameraOptions, setCameraOptions] = useState<ICameraOptions | null>(
     null
   );

@@ -1,16 +1,16 @@
-import { AuthProvider } from "./AuthContext/AuthContext";
-import { CameraProvider } from "./CameraContext/CameraContext";
-import { ErrorProvider } from "./ErrorContext/ErrorContext";
-import { ForgotPasswordProvider } from "./ForgotPasswordContext/ForgotPasswordContext";
-import { globalTypes } from "../config";
-import { LiveCameraProvider } from "./LiveCameraContext/LiveCameraContext";
-import { LoadingProvider } from "./LoadingContext/LoadingContext";
-import { LoginProvider } from "./LoginContext/LoginContext";
-import { OptionsProvider } from "./OptionsContext/OptionsContext";
-import { PermissionsProvider } from "./PermissionsContext/PermissionsContext";
-import { LocationProvider } from "./LocationContext/LocationContext";
+import { IProps } from "../config";
+import { AuthProvider } from "./AuthContext";
+import { CameraProvider } from "./CameraContext";
+import { ErrorProvider } from "./ErrorContext";
+import { ForgotPasswordProvider } from "./ForgotPasswordContext";
+import { LiveCameraProvider } from "./LiveCameraContext";
+import { LoadingProvider } from "./LoadingContext";
+import { LocationProvider } from "./LocationContext";
+import { LoginProvider } from "./LoginContext";
+import { OptionsProvider } from "./OptionsContext";
+import { PermissionsProvider } from "./PermissionsContext";
 
-const AppContextProvider = ({ children }: globalTypes.IProps) => {
+const AppContextProvider = ({ children }: IProps) => {
   return (
     <ErrorProvider>
       <PermissionsProvider>

@@ -1,2 +1,2 @@
-export * as ErrorContext from "./ErrorContext";
-export * as ErrorContextTypes from "./ErrorContext.types";
+export { ErrorContext, ErrorProvider } from "./ErrorContext";
+export { IErrorContext, IErrorSeverity } from "./ErrorContext.types";

@@ -1,9 +1,8 @@
-import { createContext, useEffect, useContext, useState } from "react";
-import { globalTypes } from "../../config";
-import { ILocationContext, IDangerLevel } from "./LocationContext.types";
 import * as Location from "expo-location";
-import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
-import { globalConfig } from "../../config";
+import { createContext, useContext, useEffect, useState } from "react";
+import { IProps, globalConfig } from "../../config";
+import { PermissionsContext } from "../PermissionsContext";
+import { IDangerLevel, ILocationContext } from "./LocationContext.types";
 
 const defaultLocationContext: ILocationContext = {
   trackingLocationStarted: false,
@@ -13,7 +12,7 @@ const defaultLocationContext: ILocationContext = {
 
 const LocationContext = createContext<ILocationContext>(defaultLocationContext);
 
-const LocationProvider = ({ children }: globalTypes.IProps) => {
+const LocationProvider = ({ children }: IProps) => {
   const [trackingLocationStarted, setTrackingLocationStarted] =
     useState<boolean>(false);
   const [location, setLocation] = useState<Location.LocationObject | null>(

@@ -1,2 +1,2 @@
-export * as UnAuthNavigator from "./UnAuthNavigator";
-export * as UnAuthNavigatorTypes from "./UnAuthNavigator.types";
+export { UnAuthNavigator } from "./UnAuthNavigator";
+export { UnAuthRootStackParamList } from "./UnAuthNavigator.types";

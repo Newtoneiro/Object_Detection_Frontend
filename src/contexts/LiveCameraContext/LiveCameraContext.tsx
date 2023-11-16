@@ -1,31 +1,30 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import * as tfjs from "@tensorflow/tfjs";
+import { Platform, useWindowDimensions } from "react-native";
+import { IProps, globalConfig } from "../../config";
+import { authFetch } from "../AuthFetch";
+import {
+  ICameraDimensions,
+  IPrediction,
+} from "../CameraContext/CameraContext.types";
+import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
+import { ErrorContext } from "../ErrorContext";
+import { LoadingContext } from "../LoadingContext";
+import { OptionsContext } from "../OptionsContext";
+import { PermissionsContext } from "../PermissionsContext";
 import {
   ILiveCameraContext,
   ILiveCameraDimensions,
   IPredictionVariables,
 } from "./LiveCameraContext.types";
-import { globalTypes } from "../../config";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
-import * as tfjs from "@tensorflow/tfjs";
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
-import {
-  ICameraDimensions,
-  IPrediction,
-} from "../CameraContext/CameraContext.types";
-import { Platform, useWindowDimensions } from "react-native";
-import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
-import { OptionsContext } from "../OptionsContext/OptionsContext";
 import {
   calculateDistance,
   getDateFromTimestamp,
   getTimestampFromDate,
 } from "./LiveCameraContext.utils";
-import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
-import authFetch from "../AuthFetch/AuthFetch";
-import { globalConfig } from "../../config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
   width: 0,
@@ -47,7 +46,7 @@ const LiveCameraContext = createContext<ILiveCameraContext>(
   defaultLiveCameraContext
 );
 
-const LiveCameraProvider = ({ children }: globalTypes.IProps) => {
+const LiveCameraProvider = ({ children }: IProps) => {
   const [liveCameraDimensions, setLiveCameraDimensions] =
     useState<ICameraDimensions>(defaultLiveCameraDimensions);
   const { width } = useWindowDimensions();

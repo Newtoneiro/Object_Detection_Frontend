@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { gradientButtonStyles } from "./GradientButton.styles";
 import { stylesConfig } from "../../../config";
 
-const GradientButton = ({
+export const GradientButton = ({
   children,
   handlePressFunction,
 }: IGradientButtonProps) => {
@@ -28,5 +28,3 @@ const GradientButton = ({
     </LinearGradient>
   );
 };
-
-export default GradientButton;

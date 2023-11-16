@@ -1,2 +1,2 @@
-export * as AnimatedLoadingCard from "./AnimatedLoadingCard";
-export * as AnimatedLoadingCardStyles from "./AnimatedLoadingCard.styles";
+export { AnimatedLoadingCard } from "./AnimatedLoadingCard";
+export { animatedLoadingCardStyles } from "./AnimatedLoadingCard.styles";

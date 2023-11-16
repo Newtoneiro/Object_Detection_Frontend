@@ -1,1 +1,1 @@
-export * as AuthFetch from "./AuthFetch";
+export { authFetch } from "./AuthFetch";

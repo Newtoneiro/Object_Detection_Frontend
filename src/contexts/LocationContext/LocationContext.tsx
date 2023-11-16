@@ -1,9 +1,9 @@
 import { createContext, useEffect, useContext, useState } from "react";
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import { ILocationContext, IDangerLevel } from "./LocationContext.types";
 import * as Location from "expo-location";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
-import config from "../../config/config";
+import { globalConfig } from "../../config";
 
 const defaultLocationContext: ILocationContext = {
   trackingLocationStarted: false,
@@ -13,7 +13,7 @@ const defaultLocationContext: ILocationContext = {
 
 const LocationContext = createContext<ILocationContext>(defaultLocationContext);
 
-const LocationProvider = ({ children }: IProps) => {
+const LocationProvider = ({ children }: globalTypes.IProps) => {
   const [trackingLocationStarted, setTrackingLocationStarted] =
     useState<boolean>(false);
   const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -51,7 +51,7 @@ const LocationProvider = ({ children }: IProps) => {
       return "NONE";
     } else if (
       distance >
-      2 * currentSpeed + config.distance_risk_margin * currentSpeed
+      2 * currentSpeed + globalConfig.distance_risk_margin * currentSpeed
     ) {
       return "LOW";
     } else if (distance > 2 * currentSpeed) {

@@ -9,7 +9,8 @@
     "eas-build-pre-install": "npm config set legacy-peer-deps true",
     "build-dev": "npx eas build --profile development --platform android",
     "prebuild": "npx expo prebuild",
-    "test": "jest"
+    "test": "jest",
+    "build-docs": "npx typedoc"
   },
   "dependencies": {
     "@appandflow/expo-camera-characteristics": "^1.0.0",
@@ -55,7 +56,8 @@
     "react-native-screens": "~3.20.0",
     "react-native-webview": "^13.6.0",
     "react-navigation": "^4.4.4",
-    "react-test-renderer": "^18.2.0"
+    "react-test-renderer": "^18.2.0",
+    "typedoc": "^0.25.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

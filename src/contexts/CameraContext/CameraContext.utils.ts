@@ -1,6 +1,9 @@
-import { Ratio } from "../../config/config.types";
+import { globalTypes } from "../../config";
 
-const calculateHeightFromWidth = (ratio: Ratio, width: number): number => {
+const calculateHeightFromWidth = (
+  ratio: globalTypes.Ratio,
+  width: number
+): number => {
   let height = 0;
   switch (ratio) {
     case "4:3":

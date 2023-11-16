@@ -1,8 +1,8 @@
 import axios from "axios";
-import config from "../../config/config";
+import { globalConfig } from "../../config";
 
 export default axios.create({
   withCredentials: true,
-  baseURL: config.paths.home,
-  timeout: config.timeout,
+  baseURL: globalConfig.paths.home,
+  timeout: globalConfig.timeout,
 });

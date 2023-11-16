@@ -1,4 +1,4 @@
-const config = {
+export const config = {
   paths: {
     home: "http://192.168.169.5:8888",
     auth: "/auth",
@@ -14,5 +14,3 @@ const config = {
   timeBetweenTensorSavesRetries: 5 * 1000, // 5 seconds in milliseconds
   distance_risk_margin: 0.2,
 };
-
-export default config;

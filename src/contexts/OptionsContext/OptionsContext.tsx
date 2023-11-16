@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import {
   ICameraOptions,
   ILiveCameraOptions,
@@ -24,7 +24,7 @@ const defaultOptionsContext: IOptionsContext = {
 
 const OptionsContext = createContext<IOptionsContext>(defaultOptionsContext);
 
-const OptionsProvider = ({ children }: IProps) => {
+const OptionsProvider = ({ children }: globalTypes.IProps) => {
   const [cameraOptions, setCameraOptions] = useState<ICameraOptions | null>(
     null
   );

@@ -1,8 +1,7 @@
 import { ErrorSeverity, IErrorContext } from "./ErrorContext.types";
 import { createContext, useState } from "react";
 
-import { IProps } from "../../config/config.types";
-
+import { globalTypes } from "../../config";
 const defaultErrorMessage = "Something went terribly wrong! Please try again.";
 
 const defaultSeverity: ErrorSeverity = "none";
@@ -17,7 +16,7 @@ const defaultErrorContext: IErrorContext = {
 
 const ErrorContext = createContext<IErrorContext>(defaultErrorContext);
 
-const ErrorProvider = ({ children }: IProps) => {
+const ErrorProvider = ({ children }: globalTypes.IProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [severity, setSeverity] = useState<ErrorSeverity>(defaultSeverity);
   const [message, setMessage] = useState<string | null>(null);

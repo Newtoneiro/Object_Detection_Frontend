@@ -5,7 +5,7 @@ import { useState, useContext } from "react";
 import { IDetectedRectangleProps } from "./DetectedRectangle.types";
 import { LocationContext } from "../../../contexts/LocationContext/LocationContext";
 import { IDangerLevel } from "../../../contexts/LocationContext/LocationContext.types";
-import stylesConfig from "../../../config/config.styles";
+import { stylesConfig } from "../../../config";
 
 const DetectedRectangle = ({
   prediction,

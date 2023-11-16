@@ -5,7 +5,7 @@ import {
   ILiveCameraDimensions,
   IPredictionVariables,
 } from "./LiveCameraContext.types";
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import * as tfjs from "@tensorflow/tfjs";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
@@ -24,7 +24,7 @@ import {
 } from "./LiveCameraContext.utils";
 import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
 import authFetch from "../AuthFetch/AuthFetch";
-import config from "../../config/config";
+import { globalConfig } from "../../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultLiveCameraDimensions: ILiveCameraDimensions = {
@@ -47,7 +47,7 @@ const LiveCameraContext = createContext<ILiveCameraContext>(
   defaultLiveCameraContext
 );
 
-const LiveCameraProvider = ({ children }: IProps) => {
+const LiveCameraProvider = ({ children }: globalTypes.IProps) => {
   const [liveCameraDimensions, setLiveCameraDimensions] =
     useState<ICameraDimensions>(defaultLiveCameraDimensions);
   const { width } = useWindowDimensions();
@@ -194,6 +194,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
             },
             distance: distance,
           });
+
+          console.log(new_predictions);
         });
         setPredictions([]); // To reset the predictions, so they dont stack
         setPredictions(new_predictions);
@@ -218,7 +220,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
     const lastSaveDate = getDateFromTimestamp(lastSave);
     const timeDifference = new Date().getTime() - lastSaveDate.getTime();
-    if (!lastSave || timeDifference > config.timeBetweenTensorSaves) {
+    if (!lastSave || timeDifference > globalConfig.timeBetweenTensorSaves) {
       AsyncStorage.setItem("lastTensorSavedTimestamp", getTimestampFromDate());
       return true;
     }
@@ -230,7 +232,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
     const tensor_array = tensor.arraySync();
 
     authFetch
-      .post(config.paths.object_detection + "/captureTensor", {
+      .post(globalConfig.paths.object_detection + "/captureTensor", {
         shape: tensor.shape,
         values: tensor_array,
       })
@@ -250,8 +252,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
         // If something went wrong, retry in [RETRY] seconds
         let date_to_retry_in_5_seconds =
           new Date().getTime() - // Now
-          config.timeBetweenTensorSaves + // - Time between tensor saves (without the next line, the retry would occur immediately)
-          config.timeBetweenTensorSavesRetries; // + The retry timeout
+          globalConfig.timeBetweenTensorSaves + // - Time between tensor saves (without the next line, the retry would occur immediately)
+          globalConfig.timeBetweenTensorSavesRetries; // + The retry timeout
         AsyncStorage.setItem(
           "lastTensorSavedTimestamp",
           getTimestampFromDate(new Date(date_to_retry_in_5_seconds))

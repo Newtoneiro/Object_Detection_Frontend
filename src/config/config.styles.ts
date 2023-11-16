@@ -1,4 +1,4 @@
-const stylesConfig = {
+export const stylesConfig = {
   colors: {
     default_color_1: "#b442d7",
     default_color_2: "#fc9d7a",
@@ -26,5 +26,3 @@ const stylesConfig = {
     small: 13,
   },
 };
-
-export default stylesConfig;

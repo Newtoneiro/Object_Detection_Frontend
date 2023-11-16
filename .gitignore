@@ -11,6 +11,7 @@ npm-debug.*
 yarn.lock
 web-build/
 .env
+docs/
 
 # firebase config
 google-services.json

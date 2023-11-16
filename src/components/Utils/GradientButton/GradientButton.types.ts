@@ -1,3 +1,5 @@
-import { IProps } from "../../../config/config.types";
+import { globalTypes } from "../../../config";
 
-export type IGradientButtonProps = IProps & { handlePressFunction: () => void };
+export type IGradientButtonProps = globalTypes.IProps & {
+  handlePressFunction: () => void;
+};

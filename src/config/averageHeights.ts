@@ -1,4 +1,4 @@
-const averageHeights: Object = {
+export const averageHeights: Object = {
   person: 1.7,
   bicycle: 1.0,
   car: 1.5,
@@ -80,5 +80,3 @@ const averageHeights: Object = {
   "hair drier": 0.2,
   toothbrush: 0.1,
 };
-
-export default averageHeights;

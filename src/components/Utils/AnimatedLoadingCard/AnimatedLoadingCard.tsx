@@ -1,3 +1,8 @@
+/**
+ * @file AnimatedLoadingCard.tsx
+ * @description AnimatedLoadingCard component.
+ */
+
 import { Modal, View, Animated, Text } from "react-native";
 import { animatedLoadingCardStyles } from "./AnimatedLoadingCard.styles";
 import { useContext, useEffect, useRef } from "react";
@@ -5,6 +10,32 @@ import { LoadingContext } from "../../../contexts/LoadingContext/LoadingContext"
 
 const logo = "../../../../assets/logo.png";
 
+/**
+ * @component
+ *
+ * AnimatedLoadingCard component.
+ *
+ * @description
+ *
+ * This component is used to display a loading card with a rotating logo.
+ * Mainly used for smaller loading times.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <>
+ *      <AnimatedLoadingCard />
+ *    </>
+ *  );
+ * };
+ *
+ * @see {@link animatedLoadingCardStyles} for the style object.
+ */
 const AnimatedLoadingCard = () => {
   const box_rotate = useRef(new Animated.Value(0)).current;
   const inner_box_move = useRef(new Animated.Value(0)).current;

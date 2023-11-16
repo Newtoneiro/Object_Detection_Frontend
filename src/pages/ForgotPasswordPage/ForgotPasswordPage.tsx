@@ -10,7 +10,7 @@ import GradientButton from "../../components/Utils/GradientButton/GradientButton
 import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
 import UserInput from "../../components/Utils/UserInput/UserInput";
 import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 import { useContext } from "react";
 
 const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {

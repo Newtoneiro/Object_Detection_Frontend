@@ -5,7 +5,7 @@ import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { loadAsync } from "expo-font";
 
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import { ILoadingContext } from "./LoadingContext.types";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 
@@ -24,7 +24,7 @@ const defaultLoadingContext: ILoadingContext = {
 
 const LoadingContext = createContext<ILoadingContext>(defaultLoadingContext);
 
-const LoadingProvider = ({ children }: IProps) => {
+const LoadingProvider = ({ children }: globalTypes.IProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [displayLoadingCard, setDisplayLoadingCard] = useState<boolean>(false);
   const [loadingCardText, setLoadingCardText] = useState<string | null>(null);

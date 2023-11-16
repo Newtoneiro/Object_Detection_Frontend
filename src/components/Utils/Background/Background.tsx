@@ -1,14 +1,50 @@
+/**
+ * @file Background.tsx
+ * @description Background component.
+ */
+
 import { Image, SafeAreaView, StatusBar, View } from "react-native";
 
 import { IBackgroundProps } from "./Background.types";
 import { LinearGradient } from "expo-linear-gradient";
 import PressableIcon from "../PressableIcon/PressableIcon";
 import { backgroundStyles } from "./Background.styles";
-import stylesConfig from "../../../config/config.styles";
+import { stylesConfig } from "../../../config";
 import { useEffect } from "react";
 
 const logo = "../../../../assets/logo.png";
 
+/**
+ * @component
+ *
+ * Background component.
+ *
+ * @description
+ *
+ * This component is used to display a background with a logo and a button
+ * allowing user to return to the previous page.
+ *
+ * @param {IBackgroundProps} props - The props object.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import Background from './Background';
+ *
+ * const SomeComponent = () => {
+ * return (
+ *   <>
+ *    <Background>
+ *      <Text>This is a background component.</Text>
+ *    </Background>
+ *   </>
+ *  );
+ * };
+ *
+ * @see {@link IBackgroundProps} for the props object.
+ */
 const Background = ({ children, handlePressFunction }: IBackgroundProps) => {
   useEffect(() => {
     StatusBar.setTranslucent(true);

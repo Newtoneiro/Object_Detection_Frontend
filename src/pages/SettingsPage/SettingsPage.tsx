@@ -6,7 +6,7 @@ import { useContext } from "react";
 import Background from "../../components/Utils/Background/Background";
 import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import Setting from "../../components/Utils/Setting/Setting";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 import {
   FrameRate,
   Quality,

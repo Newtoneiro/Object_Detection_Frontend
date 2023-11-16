@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 
 export const welcomePageStyles = StyleSheet.create({
   container: {

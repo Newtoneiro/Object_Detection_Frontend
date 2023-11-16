@@ -5,7 +5,7 @@ import {
 import { createContext, useContext, useState } from "react";
 
 import { AuthContext } from "../AuthContext/AuthContext";
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
 
@@ -25,7 +25,7 @@ const ForgotPasswordContext = createContext<IForgotPasswordContext>(
   defaultForgotPasswordContext
 );
 
-const ForgotPasswordProvider = ({ children }: IProps) => {
+const ForgotPasswordProvider = ({ children }: globalTypes.IProps) => {
   const [email, setEmail] = useState<string>("");
   const [response, setResponse] = useState<IResetPasswordResponse>(
     defaultResetPasswordResponse

@@ -1,3 +1,42 @@
+/**
+ * @description
+ * Context that provides authentication state and functions.
+ *
+ *  * @example
+ * const AuthCon = useContext(AuthContext);
+ *
+ * @typedef {Object} IAuthContext
+ * @property {IAuthState} authState - The current authentication state.
+ * @property {boolean | null} isAuthenticated - Whether the user is authenticated or not.
+ * @property {(authState: IAuthState) => void} setAuthInfo - Function to set the authentication state.
+ * @property {() => void} logout - Function to log the user out.
+ * @property {(data: IRegisterData) => Promise<{ success: boolean, message: string }>} register - Function to register a new user.
+ * @property {(data: IRegisterData) => Promise<{ success: boolean, message: string }>} login - Function to log in an existing user.
+ * @property {() => Promise<{ success: boolean, message: string }>} loginGoogle - Function to log in with Google.
+ * @property {() => Promise<{ success: boolean, message: string }>} loginAnonymous - Function to log in anonymously.
+ * @property {(email: string) => Promise<{ success: boolean, message: string }>} resetPassword - Function to reset the user's password.
+ *
+ * @typedef {Object} IAuthState
+ * @property {string | null} token - The user's authentication token.
+ * @property {IUserInfo | null} userInfo - The user's information.
+ *
+ * @typedef {Object} IUserInfo
+ * @property {string} email - The user's email address.
+ * @property {string} name - The user's name.
+ * @property {string} uid - The user's unique ID.
+ * @property {string | null} picture - The user's profile picture URL.
+ * @property {boolean} isAnonymous - Whether the user is anonymous or not.
+ * @property {boolean} isByGoogleAuth - Whether the user is authenticated by Google or not.
+ *
+ * @typedef {Object} IRegisterData
+ * @property {string} email - The user's email address.
+ * @property {string} password - The user's password.
+ *
+ * @typedef {Object} IFirebaseError
+ * @property {string} code - The error code.
+ * @property {string} message - The error message.
+ *
+ */
 import {
   IAuthContext,
   IAuthState,
@@ -12,10 +51,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import authFetch from "../AuthFetch/AuthFetch";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import axios from "axios";
-import config from "../../config/config";
+import { globalConfig } from "../../config";
 
 const defaultAuthContext: IAuthContext = {
   authState: {
@@ -32,9 +71,17 @@ const defaultAuthContext: IAuthContext = {
   resetPassword: (_) => null,
 };
 
+/**
+ * @description
+ * Context that provides authentication state and functions.
+ *
+ * @example
+ * const AuthCon = useContext(AuthContext);
+ *
+ */
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 
-const AuthProvider = ({ children }: IProps) => {
+const AuthProvider = ({ children }: globalTypes.IProps) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
     userInfo: null,
@@ -64,9 +111,12 @@ const AuthProvider = ({ children }: IProps) => {
       LoadingCon.setLoadingCardText("Logging you in");
       if (authState.token) {
         await axios
-          .post(config.paths.home + config.paths.auth + "/verifyToken", {
-            token: authState.token,
-          })
+          .post(
+            globalConfig.paths.home + globalConfig.paths.auth + "/verifyToken",
+            {
+              token: authState.token,
+            }
+          )
           .then((response) => {
             if (response.status === 200) {
               setIsAuthenticated(true);

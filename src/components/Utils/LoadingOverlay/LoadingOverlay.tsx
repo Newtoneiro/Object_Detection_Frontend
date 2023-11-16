@@ -2,7 +2,7 @@ import { ActivityIndicator, Modal, View } from "react-native";
 
 import { LoadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 import { loadingOverlayStyles } from "./LoadingOverlay.styles";
-import stylesConfig from "../../../config/config.styles";
+import { stylesConfig } from "../../../config";
 import { useContext } from "react";
 
 const LoadingOverlay = () => {

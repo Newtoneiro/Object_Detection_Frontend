@@ -8,7 +8,7 @@ import { ErrorContext } from "../../contexts/ErrorContext/ErrorContext";
 import { LinearGradient } from "expo-linear-gradient";
 import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
 import { dashboardPageStyles } from "./DashboardPage.styles";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 import { useContext } from "react";
 
 export default function DashboardPage({ navigation }: DashboardPageProps) {

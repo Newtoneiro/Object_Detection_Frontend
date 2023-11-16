@@ -2,7 +2,7 @@ import { Pressable, TextInput, View } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
 import { IUserInputProps } from "./UserInput.types";
-import stylesConfig from "../../../config/config.styles";
+import { stylesConfig } from "../../../config";
 import { useState } from "react";
 import { userInputStyles } from "./UserInput.styles";
 

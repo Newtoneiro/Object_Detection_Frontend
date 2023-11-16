@@ -1,0 +1,9 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src"],
+  "entryPointStrategy": "resolve",
+  "out": "./docs",
+  "exclude": ["**/node_modules/**/*", "**/dist/**/*"],
+  "excludeExternals": true,
+  "name": "Object Detection Frontend"
+}

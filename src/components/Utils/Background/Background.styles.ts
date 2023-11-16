@@ -1,6 +1,14 @@
-import { StyleSheet } from "react-native";
-import stylesConfig from "../../../config/config.styles";
+/**
+ * @file Background.styles.tsx
+ * @description Background Stylesheet.
+ */
 
+import { StyleSheet } from "react-native";
+import { stylesConfig } from "../../../config";
+
+/**
+ * Stylesheet for the Background component.
+ */
 export const backgroundStyles = StyleSheet.create({
   container: {
     position: "absolute",

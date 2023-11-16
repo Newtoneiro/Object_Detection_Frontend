@@ -6,7 +6,7 @@ import {
 import { createContext, useContext, useState } from "react";
 
 import { AuthContext } from "../AuthContext/AuthContext";
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
 
@@ -40,7 +40,7 @@ const defaultLoginContext: ILoginContext = {
 
 const LoginContext = createContext<ILoginContext>(defaultLoginContext);
 
-const LoginProvider = ({ children }: IProps) => {
+const LoginProvider = ({ children }: globalTypes.IProps) => {
   const [isLoginMode, setIsLoginMode] = useState<Boolean>(true);
   const [userInputs, setUserInputs] = useState<IUserInputs>(defaultUserInputs);
   const [userInputsAlert, setUserInputsAlert] = useState<IUserInputsAlert>(

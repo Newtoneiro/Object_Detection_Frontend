@@ -1,3 +1,8 @@
+/**
+ * @file Navigator.tsx
+ * @description Authenticated Navigator component.
+ */
+
 import CameraPage from "../../pages/CameraPage/CameraPage";
 import DashboardPage from "../../pages/DashboardPage/DashboardPage";
 import LiveCameraPage from "../../pages/LiveCameraPage/LiveCameraPage";
@@ -8,6 +13,32 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+/**
+ * @component
+ *
+ * Authenticated Navigator component.
+ *
+ * @description
+ *
+ * This component renders the authenticated navigator.
+ *
+ * @returns {JSX.Element} Rendered component based on authentication status.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import Navigator from './Navigator';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <>
+ *      <Navigator />
+ *    </>
+ *  );
+ * };
+ *
+ * @see {@link RootStackParamList} for the Stack Navigator types.
+ */
 export default function Navigator() {
   return (
     <NavigationContainer>

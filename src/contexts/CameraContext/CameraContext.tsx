@@ -10,10 +10,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import authFetch from "../AuthFetch/AuthFetch";
 import { ErrorContext } from "../ErrorContext/ErrorContext";
-import { IProps } from "../../config/config.types";
+import { globalTypes } from "../../config";
 import { LoadingContext } from "../LoadingContext/LoadingContext";
 import { calculateHeightFromWidth } from "./CameraContext.utils";
-import config from "../../config/config";
+import { globalConfig } from "../../config";
 import { useWindowDimensions } from "react-native";
 import { OptionsContext } from "../OptionsContext/OptionsContext";
 import { ICameraOptions } from "../OptionsContext/OptionsContext.types";
@@ -37,7 +37,7 @@ const defaultCameraContext: ICameraContext = {
 
 const CameraContext = createContext<ICameraContext>(defaultCameraContext);
 
-const CameraProvider = ({ children }: IProps) => {
+const CameraProvider = ({ children }: globalTypes.IProps) => {
   // Camera related
   const [cameraRef, setCameraRef] = useState<Camera | null>(null);
   const [cameraDimensions, setCameraDimensions] = useState<ICameraDimensions>(
@@ -108,7 +108,7 @@ const CameraProvider = ({ children }: IProps) => {
         }
 
         await authFetch
-          .post(config.paths.object_detection + "/capturePhoto", {
+          .post(globalConfig.paths.object_detection + "/capturePhoto", {
             file: photo.base64,
             doSave: OptionsCon.serverOptions.savePhoto,
           })

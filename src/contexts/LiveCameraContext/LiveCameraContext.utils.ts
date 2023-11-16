@@ -1,5 +1,5 @@
 import * as expoCameraCharacteristics from "@appandflow/expo-camera-characteristics";
-import averageHeights from "../../config/averageHeights";
+import { averageHeights } from "../../config";
 
 const calculateDistance = (
   bboxHeight: number,
@@ -45,4 +45,4 @@ const getDateFromTimestamp = (timestamp: string | null = null): Date => {
   return new Date(year, month - 1, day, hour, minute, second);
 };
 
-export { calculateDistance, getTimestampFromDate, getDateFromTimestamp };
+export { calculateDistance, getDateFromTimestamp, getTimestampFromDate };

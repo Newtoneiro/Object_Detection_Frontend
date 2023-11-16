@@ -194,8 +194,6 @@ const LiveCameraProvider = ({ children }: globalTypes.IProps) => {
             },
             distance: distance,
           });
-
-          console.log(new_predictions);
         });
         setPredictions([]); // To reset the predictions, so they dont stack
         setPredictions(new_predictions);

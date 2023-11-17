@@ -1,5 +1,12 @@
+/**
+ * @file LoadingOverlay.styles.tsx
+ * @description LoadingOverlay Stylesheet.
+ */
 import { StyleSheet } from "react-native";
 
+/**
+ * Stylesheet for the LoadingOverlay component.
+ */
 export const loadingOverlayStyles = StyleSheet.create({
   container: {
     position: "absolute",

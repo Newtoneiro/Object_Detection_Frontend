@@ -18,7 +18,7 @@ const logo = "../../../../assets/logo.png";
  * @description
  *
  * This component is used to display a loading card with a rotating logo.
- * Mainly used for smaller loading times.
+ * Mainly used for smaller loading times. It is controlled by {@link LoadingContext}
  *
  * @returns {JSX.Element} Rendered component.
  *
@@ -35,6 +35,7 @@ const logo = "../../../../assets/logo.png";
  * };
  *
  * @see {@link animatedLoadingCardStyles} for the style object.
+ * @see {@link LoadingContext} for the context object.
  */
 export const AnimatedLoadingCard = () => {
   const box_rotate = useRef(new Animated.Value(0)).current;

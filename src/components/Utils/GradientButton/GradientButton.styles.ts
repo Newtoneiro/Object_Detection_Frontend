@@ -1,6 +1,14 @@
+/**
+ * @file GradientButton.styles.tsx
+ * @description GradientButton Stylesheet.
+ */
+
 import { StyleSheet } from "react-native";
 import { stylesConfig } from "../../../config";
 
+/**
+ * Stylesheet for the GradientButton component.
+ */
 export const gradientButtonStyles = StyleSheet.create({
   container: {
     width: "100%",

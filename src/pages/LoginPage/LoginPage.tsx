@@ -2,17 +2,17 @@ import { Pressable, Text, View } from "react-native";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useContext } from "react";
-import { GradientButton } from "../../components/Utils/GradientButton";
 import { AlertField } from "../../components/Utils/AlertField";
 import { Background } from "../../components/Utils/Background";
 import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { GradientButton } from "../../components/Utils/GradientButton";
 import { UserInput } from "../../components/Utils/UserInput";
 import { stylesConfig } from "../../config";
 import { LoginContext } from "../../contexts/LoginContext";
 import { loginPageStyles } from "./LoginPage.styles";
 import { LoginPageProps } from "./LoginPage.types";
 
-const LoginPage = ({ navigation }: LoginPageProps) => {
+export const LoginPage = ({ navigation }: LoginPageProps) => {
   const LoginCon = useContext(LoginContext);
 
   return (
@@ -124,5 +124,3 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
     </Background>
   );
 };
-
-export default LoginPage;

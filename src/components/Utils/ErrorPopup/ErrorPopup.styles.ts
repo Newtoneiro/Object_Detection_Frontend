@@ -1,6 +1,14 @@
+/**
+ * @file ErrorPopup.styles.tsx
+ * @description ErrorPopup Stylesheet.
+ */
+
 import { StyleSheet } from "react-native";
 import { stylesConfig } from "../../../config";
 
+/**
+ * Stylesheet for the ErrorPopup component.
+ */
 export const errorPopupStyles = StyleSheet.create({
   container: {
     position: "absolute",

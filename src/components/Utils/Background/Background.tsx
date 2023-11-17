@@ -25,6 +25,9 @@ const logo = "../../../../assets/logo.png";
  * allowing user to return to the previous page.
  *
  * @param {IBackgroundProps} props - The props object.
+ * @param {JSX.Element} [props.children] - The children to be displayed.
+ * @param {Function} [props.handlePressFunction] - The function to be called when
+ * the button is pressed.
  *
  * @returns {JSX.Element} Rendered component.
  *

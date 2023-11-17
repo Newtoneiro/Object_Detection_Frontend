@@ -1,3 +1,7 @@
+/**
+ * @file Setting.tsx
+ * @description Setting Component.
+ */
 import { Modal, Pressable, Switch, Text, View } from "react-native";
 
 import { ISettingsProps } from "./Setting.types";
@@ -6,6 +10,48 @@ import { settingStyles } from "./Setting.styles";
 import { stylesConfig } from "../../../config";
 import { useState } from "react";
 
+/**
+ * @component
+ *
+ * Setting component.
+ *
+ * @description
+ *
+ * This component is used to display a setting with a name, a value, possible values and a button
+ * allowing user to change the value. These settings are used on the {@link SettingsPage}.
+ *
+ * @param {ISettingsProps} props - The props object.
+ * @param {T} props.value - The value of the setting.
+ * @param {string} props.name - The name of the setting.
+ * @param {T[]} props.possibleValues - The possible values of the setting.
+ * @param {Function} props.handleChangeValue - The function to be called when the
+ * button is pressed.
+ * @param {string} [props.icon="settings"] - The name of the icon to be displayed.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { Setting } from './Setting';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <>
+ *      <Setting
+ *        value={true}
+ *        name="Setting name"
+ *        possibleValues={[true, false]}
+ *        handleChangeValue={(value) => console.log(value)}
+ *      />
+ *    </>
+ *  );
+ * };
+ *
+ * @see {@link ISettingsProps} for the props object.
+ * @see {@link settingStyles} for the style object.
+ * @see {@link SettingsPage} for the page where these settings are used.
+ */
 export function Setting<T>({
   value,
   name,

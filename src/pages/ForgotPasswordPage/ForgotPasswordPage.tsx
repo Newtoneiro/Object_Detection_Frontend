@@ -12,7 +12,7 @@ import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
 import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
 import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
 
-const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
+export const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
   const ForgotPasswordCon = useContext(ForgotPasswordContext);
 
   return (
@@ -71,5 +71,3 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
     </Background>
   );
 };
-
-export default ForgotPasswordPage;

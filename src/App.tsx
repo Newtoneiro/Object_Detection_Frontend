@@ -9,7 +9,7 @@ import { AuthGate } from "./components/AuthGate";
 import { AnimatedLoadingCard } from "./components/Utils/AnimatedLoadingCard";
 import { ErrorPopup } from "./components/Utils/ErrorPopup";
 import { LoadingOverlay } from "./components/Utils/LoadingOverlay";
-import AppContextProvider from "./contexts/AppContextProvider";
+import { AppContextProvider } from "./contexts";
 
 /**
  * @component

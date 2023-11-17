@@ -13,7 +13,7 @@ import { PermissionsContext } from "../../contexts/PermissionsContext";
 import { cameraPageStyles } from "./CameraPage.styles";
 import { CameraPageProps } from "./CameraPage.types";
 
-const CameraPage = ({ navigation }: CameraPageProps) => {
+export const CameraPage = ({ navigation }: CameraPageProps) => {
   const [focused, setFocused] = useState<boolean>(false);
 
   const CameraCon = useContext(CameraContext);
@@ -117,5 +117,3 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
     <></>
   );
 };
-
-export default CameraPage;

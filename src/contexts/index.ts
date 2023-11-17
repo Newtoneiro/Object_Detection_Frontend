@@ -1,4 +1,4 @@
-export * as AppContextProvider from "./AppContextProvider";
+export { AppContextProvider } from "./AppContextProvider";
 
 export * as AuthContext from "./AuthContext";
 export * as AuthFetch from "./AuthFetch";

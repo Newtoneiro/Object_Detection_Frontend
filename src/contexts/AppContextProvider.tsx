@@ -10,7 +10,7 @@ import { LoginProvider } from "./LoginContext";
 import { OptionsProvider } from "./OptionsContext";
 import { PermissionsProvider } from "./PermissionsContext";
 
-const AppContextProvider = ({ children }: IProps) => {
+export const AppContextProvider = ({ children }: IProps) => {
   return (
     <ErrorProvider>
       <PermissionsProvider>
@@ -33,5 +33,3 @@ const AppContextProvider = ({ children }: IProps) => {
     </ErrorProvider>
   );
 };
-
-export default AppContextProvider;

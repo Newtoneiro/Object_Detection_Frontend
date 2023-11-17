@@ -17,6 +17,10 @@ import { IAlertFieldProps } from "./AlertField.types";
  * This component is used to display success and failure alert messages.
  *
  * @param {IAlertFieldProps} props - The props object.
+ * @param {string} props.text - The text to be displayed.
+ * @param {boolean} [props.success=false] - The toggle state of the alert.
+ * If true, the alert will be displayed as a success message.
+ * If false, the alert will be displayed as a failure message.
  *
  * @returns {JSX.Element} Rendered component.
  *

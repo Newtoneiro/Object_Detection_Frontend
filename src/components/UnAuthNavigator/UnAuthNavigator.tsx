@@ -3,12 +3,12 @@
  * @description Unauthenticated Navigator component.
  */
 
-import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPage";
-import LoginPage from "../../pages/LoginPage/LoginPage";
 import { NavigationContainer } from "@react-navigation/native";
-import { UnAuthRootStackParamList } from "./UnAuthNavigator.types";
-import WelcomePage from "../../pages/WelcomePage/WelcomePage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ForgotPasswordPage } from "../../pages/ForgotPasswordPage";
+import { LoginPage } from "../../pages/LoginPage";
+import { WelcomePage } from "../../pages/WelcomePage";
+import { UnAuthRootStackParamList } from "./UnAuthNavigator.types";
 
 const Stack = createNativeStackNavigator<UnAuthRootStackParamList>();
 

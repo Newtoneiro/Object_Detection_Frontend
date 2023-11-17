@@ -11,7 +11,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { ErrorContext } from "../../contexts/ErrorContext";
 import { dashboardPageStyles } from "./DashboardPage.styles";
 
-export default function DashboardPage({ navigation }: DashboardPageProps) {
+export function DashboardPage({ navigation }: DashboardPageProps) {
   const AuthCon = useContext(AuthContext);
   const ErrorCon = useContext(ErrorContext);
 

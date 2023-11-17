@@ -16,7 +16,7 @@ import { LiveCameraPageProps } from "./LiveCameraPage.types";
 
 const TensorCamera = cameraWithTensors(Camera);
 
-const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
+export const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
   const LiveCameraCon = useContext(LiveCameraContext);
   const OptionsCon = useContext(OptionsContext);
   const PermissionsCon = useContext(PermissionsContext);
@@ -125,5 +125,3 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
     <></>
   );
 };
-
-export default LiveCameraPage;

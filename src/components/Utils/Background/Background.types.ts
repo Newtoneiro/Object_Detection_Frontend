@@ -12,6 +12,6 @@ import { IProps } from "../../../config";
  *
  * @property {null | (() => void)} handlePressFunction - The function to call when the return button is pressed.
  */
-export type IBackgroundProps = IProps & {
+export interface IBackgroundProps extends IProps {
   handlePressFunction: null | (() => void);
-};
+}

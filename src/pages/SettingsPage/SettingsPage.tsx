@@ -19,7 +19,7 @@ import { OptionsContext } from "../../contexts/OptionsContext";
 import { settingsPageStyles } from "./SettingsPage.styles";
 import { SettingsPageProps } from "./SettingsPage.types";
 
-const SettingsPage = ({ navigation }: SettingsPageProps) => {
+export const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const OptionsCon = useContext(OptionsContext);
 
   return (
@@ -143,5 +143,3 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     </Background>
   );
 };
-
-export default SettingsPage;

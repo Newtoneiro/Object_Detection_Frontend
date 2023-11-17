@@ -1,6 +1,13 @@
+/**
+ * @file Setting.styles.tsx
+ * @description Setting Stylesheet.
+ */
 import { StyleSheet } from "react-native";
 import { stylesConfig } from "../../../config";
 
+/**
+ * Stylesheet for the Setting component.
+ */
 export const settingStyles = StyleSheet.create({
   container: {
     width: "100%",

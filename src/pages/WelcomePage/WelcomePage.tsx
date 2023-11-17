@@ -5,7 +5,7 @@ import { GradientButton } from "../../components/Utils/GradientButton";
 import { welcomePageStyles } from "./WelcomePage.styles";
 import { WelcomePageProps } from "./WelcomePage.types";
 
-export default function WelcomePage({ navigation }: WelcomePageProps) {
+export function WelcomePage({ navigation }: WelcomePageProps) {
   return (
     <Background handlePressFunction={null}>
       <View style={welcomePageStyles.container}>

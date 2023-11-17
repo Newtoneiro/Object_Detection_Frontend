@@ -1,6 +1,14 @@
+/**
+ * @file DetectedRectangle.styles.tsx
+ * @description DetectedRectangle Stylesheet.
+ */
+
 import { StyleSheet } from "react-native";
 import { stylesConfig } from "../../../config";
 
+/**
+ * Stylesheet for the DetectedRectangle component.
+ */
 export const detectedRectangleStyles = StyleSheet.create({
   container: {
     position: "absolute",

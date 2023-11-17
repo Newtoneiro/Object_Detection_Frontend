@@ -3,13 +3,13 @@
  * @description Authenticated Navigator component.
  */
 
-import CameraPage from "../../pages/CameraPage/CameraPage";
-import DashboardPage from "../../pages/DashboardPage/DashboardPage";
-import LiveCameraPage from "../../pages/LiveCameraPage/LiveCameraPage";
 import { NavigationContainer } from "@react-navigation/native";
-import { RootStackParamList } from "./Navigator.types";
-import SettingsPage from "../../pages/SettingsPage/SettingsPage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CameraPage } from "../../pages/CameraPage";
+import { DashboardPage } from "../../pages/DashboardPage";
+import { LiveCameraPage } from "../../pages/LiveCameraPage";
+import { SettingsPage } from "../../pages/SettingsPage";
+import { RootStackParamList } from "./Navigator.types";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

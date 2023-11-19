@@ -1,3 +1,7 @@
+/**
+ * @file LiveCameraPage.tsx
+ * @description LiveCameraPage component.
+ */
 import { useContext, useEffect } from "react";
 
 import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
@@ -16,6 +20,34 @@ import { LiveCameraPageProps } from "./LiveCameraPage.types";
 
 const TensorCamera = cameraWithTensors(Camera);
 
+/**
+ * @component
+ *
+ * Live camera page component.
+ *
+ * @description
+ *
+ * This component displays the live camera and the in real time predictions.
+ *
+ * @param {LiveCameraPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LiveCameraPage } from './LiveCameraPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LiveCameraPage />
+ *  );
+ * };
+ *
+ * @see {@link LiveCameraPageProps} for the props object type.
+ * @see {@link liveCameraPageStyles} for the styles.
+ */
 export const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
   const LiveCameraCon = useContext(LiveCameraContext);
   const OptionsCon = useContext(OptionsContext);

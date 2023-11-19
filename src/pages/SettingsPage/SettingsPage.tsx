@@ -1,3 +1,7 @@
+/**
+ * @file SettingsPage.tsx
+ * @description SettingsPage component.
+ */
 import { ScrollView, Text } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -19,6 +23,34 @@ import { OptionsContext } from "../../contexts/OptionsContext";
 import { settingsPageStyles } from "./SettingsPage.styles";
 import { SettingsPageProps } from "./SettingsPage.types";
 
+/**
+ * @component
+ *
+ * Settings page component.
+ *
+ * @description
+ *
+ * This component displays the settings page. It is used to change the settings.
+ *
+ * @param {SettingsPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { SettingsPage } from './SettingsPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <SettingsPage />
+ *  );
+ * };
+ *
+ * @see {@link SettingsPageProps} for the props object type.
+ * @see {@link settingsPageStyles} for the styles.
+ */
 export const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const OptionsCon = useContext(OptionsContext);
 

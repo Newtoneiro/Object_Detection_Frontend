@@ -1,7 +1,12 @@
+/**
+ * @file OptionsContext.tsx
+ * @description OptionsContext component.
+ */
 import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IProps } from "../../config";
+import { SettingsPage } from "../../pages/SettingsPage/SettingsPage";
 import { LoadingContext } from "../LoadingContext";
 import {
   ICameraOptions,
@@ -22,8 +27,60 @@ const defaultOptionsContext: IOptionsContext = {
   setServerOptions: (_) => {},
 };
 
+/**
+ * @object
+ *
+ * Options context object.
+ *
+ * @description
+ *
+ * This context provides all the necessary functions and variables for handling
+ * options functionality. Mainly used in the {@link SettingsPage} component.
+ *
+ * @example
+ * import { OptionsContext } from "../contexts/OptionsContext/OptionsContext";
+ *
+ * const CameraPage = () => {
+ *  const OptionsCon = useContext(OptionsContext);
+ *
+ *  OptionsContext.setCameraOptions(...);
+ *  return (...)
+ * };
+ *
+ * @see {@link IOptionsContext} for more information on the context object
+ */
 const OptionsContext = createContext<IOptionsContext>(defaultOptionsContext);
 
+/**
+ * @component
+ *
+ * Options provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link OptionsContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { OptionsProvider } from './OptionsProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <OptionsProvider>
+ *      <SomeOtherComponent />
+ *    </OptionsProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link OptionsContext} for the context object.
+ */
 const OptionsProvider = ({ children }: IProps) => {
   const [cameraOptions, setCameraOptions] = useState<ICameraOptions | null>(
     null

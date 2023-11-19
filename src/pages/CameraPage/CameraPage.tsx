@@ -1,3 +1,7 @@
+/**
+ * @file CameraPage.tsx
+ * @description CameraPage component.
+ */
 import { useContext, useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 
@@ -13,6 +17,35 @@ import { PermissionsContext } from "../../contexts/PermissionsContext";
 import { cameraPageStyles } from "./CameraPage.styles";
 import { CameraPageProps } from "./CameraPage.types";
 
+/**
+ * @component
+ *
+ * Camera page component.
+ *
+ * @description
+ *
+ * This component displays the camera and the captured photo among with
+ * the predictions.
+ *
+ * @param {CameraPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { CameraPage } from './CameraPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <CameraPage />
+ *  );
+ * };
+ *
+ * @see {@link CameraPageProps} for the props object type.
+ * @see {@link cameraPageStyles} for the styles.
+ */
 export const CameraPage = ({ navigation }: CameraPageProps) => {
   const [focused, setFocused] = useState<boolean>(false);
 

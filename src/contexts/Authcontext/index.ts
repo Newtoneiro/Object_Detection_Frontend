@@ -4,7 +4,7 @@ export {
   IAuthResponse,
   IAuthState,
   IFirebaseError,
-  IRegisterData,
+  IUserInputData as IRegisterData,
   IUserInfo,
 } from "./AuthContext.types";
 export * as AuthContextUtils from "./AuthContext.utils";

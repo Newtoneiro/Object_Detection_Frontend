@@ -13,9 +13,11 @@ import { AppContextProvider } from "./contexts";
 
 /**
  * @component
+ *
  * The main application component.
  *
  * @description
+ *
  * This component serves as the entry point for the application and wraps it
  * with essential context providers and components.
  *

@@ -4,11 +4,12 @@
  */
 import { Modal, Pressable, Switch, Text, View } from "react-native";
 
-import { ISettingsProps } from "./Setting.types";
 import { MaterialIcons } from "@expo/vector-icons";
-import { settingStyles } from "./Setting.styles";
-import { stylesConfig } from "../../../config";
 import { useState } from "react";
+import { stylesConfig } from "../../../config";
+import { SettingsPage } from "../../../pages/SettingsPage/SettingsPage";
+import { settingStyles } from "./Setting.styles";
+import { ISettingsProps } from "./Setting.types";
 
 /**
  * @component

@@ -3,7 +3,7 @@
  * @description DetectedRectangle Typescript Type Definitions.
  */
 
-import { IPrediction } from "../../../contexts/CameraContext/CameraContext.types";
+import { IPrediction } from "../../../config";
 
 /**
  * Represents the props for the DetectedRectangle component.

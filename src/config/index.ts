@@ -4,6 +4,8 @@ export { stylesConfig } from "./config.styles";
 
 export {
   FrameRate,
+  ICameraDimensions,
+  IPrediction,
   IProps,
   Quality,
   Ratio,

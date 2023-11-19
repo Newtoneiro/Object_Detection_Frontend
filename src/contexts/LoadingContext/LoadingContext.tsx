@@ -1,3 +1,7 @@
+/**
+ * @file LoadingContext.tsx
+ * @description LoadingContext component.
+ */
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { Montserrat_500Medium } from "@expo-google-fonts/montserrat";
@@ -22,8 +26,60 @@ const defaultLoadingContext: ILoadingContext = {
   setLoadingCardText: (_) => {},
 };
 
+/**
+ * @object
+ *
+ * Loading context object.
+ *
+ * @description
+ *
+ * This context provides all the necessary functions and variables for handling
+ * loading functionality in the whole application.
+ *
+ * @example
+ * import { LoadingContext } from "../contexts/LoadingContext/LoadingContext";
+ *
+ * const CameraPage = () => {
+ *  const LoadingCon = useContext(LoadingContext);
+ *
+ *  LoadingContext.setLoading(true);
+ *  return (...)
+ * };
+ *
+ * @see {@link ILoadingContext} for more information on the context object
+ */
 const LoadingContext = createContext<ILoadingContext>(defaultLoadingContext);
 
+/**
+ * @component
+ *
+ * Loading provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link LoadingContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LoadingProvider } from './LoadingProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LoadingProvider>
+ *      <SomeOtherComponent />
+ *    </LoadingProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link LoadingContext} for the context object.
+ */
 const LoadingProvider = ({ children }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [displayLoadingCard, setDisplayLoadingCard] = useState<boolean>(false);

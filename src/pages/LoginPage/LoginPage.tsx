@@ -1,3 +1,7 @@
+/**
+ * @file LoginPage.tsx
+ * @description LoginPage component.
+ */
 import { Pressable, Text, View } from "react-native";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -12,6 +16,34 @@ import { LoginContext } from "../../contexts/LoginContext";
 import { loginPageStyles } from "./LoginPage.styles";
 import { LoginPageProps } from "./LoginPage.types";
 
+/**
+ * @component
+ *
+ * Login page component.
+ *
+ * @description
+ *
+ * This component displays the login page. It is used to login or register the user.
+ *
+ * @param {LoginPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LoginPage } from './LoginPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LoginPage />
+ *  );
+ * };
+ *
+ * @see {@link LoginPageProps} for the props object type.
+ * @see {@link loginPageStyles} for the styles.
+ */
 export const LoginPage = ({ navigation }: LoginPageProps) => {
   const LoginCon = useContext(LoginContext);
 

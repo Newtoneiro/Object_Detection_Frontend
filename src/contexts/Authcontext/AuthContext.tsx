@@ -1,41 +1,6 @@
 /**
- * @description
- * Context that provides authentication state and functions.
- *
- *  * @example
- * const AuthCon = useContext(AuthContext);
- *
- * @typedef {Object} IAuthContext
- * @property {IAuthState} authState - The current authentication state.
- * @property {boolean | null} isAuthenticated - Whether the user is authenticated or not.
- * @property {(authState: IAuthState) => void} setAuthInfo - Function to set the authentication state.
- * @property {() => void} logout - Function to log the user out.
- * @property {(data: IRegisterData) => Promise<{ success: boolean, message: string }>} register - Function to register a new user.
- * @property {(data: IRegisterData) => Promise<{ success: boolean, message: string }>} login - Function to log in an existing user.
- * @property {() => Promise<{ success: boolean, message: string }>} loginGoogle - Function to log in with Google.
- * @property {() => Promise<{ success: boolean, message: string }>} loginAnonymous - Function to log in anonymously.
- * @property {(email: string) => Promise<{ success: boolean, message: string }>} resetPassword - Function to reset the user's password.
- *
- * @typedef {Object} IAuthState
- * @property {string | null} token - The user's authentication token.
- * @property {IUserInfo | null} userInfo - The user's information.
- *
- * @typedef {Object} IUserInfo
- * @property {string} email - The user's email address.
- * @property {string} name - The user's name.
- * @property {string} uid - The user's unique ID.
- * @property {string | null} picture - The user's profile picture URL.
- * @property {boolean} isAnonymous - Whether the user is anonymous or not.
- * @property {boolean} isByGoogleAuth - Whether the user is authenticated by Google or not.
- *
- * @typedef {Object} IRegisterData
- * @property {string} email - The user's email address.
- * @property {string} password - The user's password.
- *
- * @typedef {Object} IFirebaseError
- * @property {string} code - The error code.
- * @property {string} message - The error message.
- *
+ * @file AuthContext.tsx
+ * @description Context that provides authentication state and authentication related functions.
  */
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -43,7 +8,7 @@ import {
   IAuthContext,
   IAuthState,
   IFirebaseError,
-  IRegisterData,
+  IUserInputData,
   IUserInfo,
 } from "./AuthContext.types";
 
@@ -71,15 +36,59 @@ const defaultAuthContext: IAuthContext = {
 };
 
 /**
+ * @object
+ *
+ * Authentication context Object.
+ *
  * @description
- * Context that provides authentication state and functions.
+ *
+ * This context provides authentication state and authentication related functions.
  *
  * @example
- * const AuthCon = useContext(AuthContext);
+ * // Usage within another component or file:
+ * import React, { useContext } from 'react';
+ * import { AuthContext } from './AuthContext';
+ *
+ * const SomeComponent = () => {
+ *  const AuthCon = useContext(AuthContext);
+ *  return (...)
+ * };
+ *
+ * @see {@link IAuthContext} for more information on the context object.
  *
  */
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 
+/**
+ * @component
+ *
+ * Authentication provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link AuthContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { AuthProvider } from './AuthProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <AuthProvider>
+ *      <SomeOtherComponent />
+ *    </AuthProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link AuthContext} for the context object.
+ */
 const AuthProvider = ({ children }: IProps) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
@@ -239,7 +248,7 @@ const AuthProvider = ({ children }: IProps) => {
     LoadingCon.setDisplayLoadingCard(false);
   };
 
-  const register = async ({ email, password }: IRegisterData) => {
+  const register = async ({ email, password }: IUserInputData) => {
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
@@ -260,7 +269,7 @@ const AuthProvider = ({ children }: IProps) => {
     }
   };
 
-  const login = async ({ email, password }: IRegisterData) => {
+  const login = async ({ email, password }: IUserInputData) => {
     try {
       await auth()
         .signInWithEmailAndPassword(email, password)

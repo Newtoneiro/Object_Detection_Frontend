@@ -1,15 +1,21 @@
+/**
+ * @file LiveCameraContext.tsx
+ * @description Context for live camera related functions
+ */
 import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as tfjs from "@tensorflow/tfjs";
 import { Platform, useWindowDimensions } from "react-native";
-import { IProps, globalConfig } from "../../config";
-import { authFetch } from "../AuthFetch";
 import {
   ICameraDimensions,
   IPrediction,
-} from "../CameraContext/CameraContext.types";
+  IProps,
+  globalConfig,
+} from "../../config";
+import { LiveCameraPage } from "../../pages/LiveCameraPage/LiveCameraPage";
+import { authFetch } from "../AuthFetch";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
 import { ErrorContext } from "../ErrorContext";
 import { LoadingContext } from "../LoadingContext";
@@ -17,7 +23,6 @@ import { OptionsContext } from "../OptionsContext";
 import { PermissionsContext } from "../PermissionsContext";
 import {
   ILiveCameraContext,
-  ILiveCameraDimensions,
   IPredictionVariables,
 } from "./LiveCameraContext.types";
 import {
@@ -26,7 +31,7 @@ import {
   getTimestampFromDate,
 } from "./LiveCameraContext.utils";
 
-const defaultLiveCameraDimensions: ILiveCameraDimensions = {
+const defaultLiveCameraDimensions: ICameraDimensions = {
   width: 0,
   height: 0,
 };
@@ -42,10 +47,62 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   modelLoaded: () => false,
 };
 
+/**
+ * @object
+ *
+ * Live camera context object.
+ *
+ * @description
+ *
+ * This context provides all the necessary functions and variables for handling
+ * live camera functionality. Mainly used in the {@link LiveCameraPage} component.
+ *
+ * @example
+ * import { LiveCameraContext } from "../contexts/LiveCameraContext/LiveCameraContext";
+ *
+ * const CameraPage = () => {
+ *  const LiveCameraCon = useContext(LiveCameraContext);
+ *
+ *  LiveCameraContext.prepareLiveCameraPage();
+ *  return (...)
+ * };
+ *
+ * @see {@link ILiveCameraContext} for more information on the context object
+ */
 const LiveCameraContext = createContext<ILiveCameraContext>(
   defaultLiveCameraContext
 );
 
+/**
+ * @component
+ *
+ * ForgotPassword provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link LiveCameraContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LiveCameraProvider } from './LiveCameraProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LiveCameraProvider>
+ *      <SomeOtherComponent />
+ *    </LiveCameraProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link LiveCameraContext} for the context object.
+ */
 const LiveCameraProvider = ({ children }: IProps) => {
   const [liveCameraDimensions, setLiveCameraDimensions] =
     useState<ICameraDimensions>(defaultLiveCameraDimensions);

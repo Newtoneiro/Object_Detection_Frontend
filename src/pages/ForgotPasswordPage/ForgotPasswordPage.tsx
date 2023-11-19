@@ -1,3 +1,7 @@
+/**
+ * @file ForgotPasswordPage.tsx
+ * @description ForgotPasswordPage component.
+ */
 import { Pressable, Text, View } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
@@ -12,6 +16,34 @@ import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
 import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
 import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
 
+/**
+ * @component
+ *
+ * Forgot password page component.
+ *
+ * @description
+ *
+ * This component displays the forgot password page. It is used to send a reset password email.
+ *
+ * @param {ForgotPasswordPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { ForgotPasswordPage } from './ForgotPasswordPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <ForgotPasswordPage />
+ *  );
+ * };
+ *
+ * @see {@link ForgotPasswordPageProps} for the props object type.
+ * @see {@link forgotPasswordPageStyles} for the styles.
+ */
 export const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
   const ForgotPasswordCon = useContext(ForgotPasswordContext);
 

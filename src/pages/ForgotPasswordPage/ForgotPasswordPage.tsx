@@ -1,19 +1,50 @@
+/**
+ * @file ForgotPasswordPage.tsx
+ * @description ForgotPasswordPage component.
+ */
 import { Pressable, Text, View } from "react-native";
 
-import AlertField from "../../components/Utils/AlertField/AlertField";
-import Background from "../../components/Utils/Background/Background";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 import { FontAwesome } from "@expo/vector-icons";
-import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext/ForgotPasswordContext";
-import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
-import GradientButton from "../../components/Utils/GradientButton/GradientButton";
-import LoadingOverlay from "../../components/Utils/LoadingOverlay/LoadingOverlay";
-import UserInput from "../../components/Utils/UserInput/UserInput";
-import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
-import stylesConfig from "../../config/config.styles";
 import { useContext } from "react";
+import { AlertField } from "../../components/Utils/AlertField/";
+import { Background } from "../../components/Utils/Background";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { GradientButton } from "../../components/Utils/GradientButton";
+import { UserInput } from "../../components/Utils/UserInput";
+import { stylesConfig } from "../../config";
+import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
+import { forgotPasswordPageStyles } from "./ForgotPasswordPage.styles";
+import { ForgotPasswordPageProps } from "./ForgotPasswordPage.types";
 
-const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
+/**
+ * @component
+ *
+ * Forgot password page component.
+ *
+ * @description
+ *
+ * This component displays the forgot password page. It is used to send a reset password email.
+ *
+ * @param {ForgotPasswordPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { ForgotPasswordPage } from './ForgotPasswordPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <ForgotPasswordPage />
+ *  );
+ * };
+ *
+ * @see {@link ForgotPasswordPageProps} for the props object type.
+ * @see {@link forgotPasswordPageStyles} for the styles.
+ */
+export const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
   const ForgotPasswordCon = useContext(ForgotPasswordContext);
 
   return (
@@ -72,5 +103,3 @@ const ForgotPasswordPage = ({ navigation }: ForgotPasswordPageProps) => {
     </Background>
   );
 };
-
-export default ForgotPasswordPage;

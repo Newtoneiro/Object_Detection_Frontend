@@ -1,6 +1,14 @@
-import { StyleSheet } from "react-native";
-import stylesConfig from "../../../config/config.styles";
+/**
+ * @file CameraButton.styles.tsx
+ * @description CameraButton Stylesheet.
+ */
 
+import { StyleSheet } from "react-native";
+import { stylesConfig } from "../../../config";
+
+/**
+ * Stylesheet for the CameraButton component.
+ */
 export const cameraButtonStyles = StyleSheet.create({
   captureButton: {
     position: "absolute",

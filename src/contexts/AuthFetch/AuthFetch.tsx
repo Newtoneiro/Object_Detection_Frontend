@@ -1,8 +1,28 @@
-import axios from "axios";
-import config from "../../config/config";
+/**
+ * @file AuthFetch.tsx
+ * @description Axios instance for authenticated requests
+ */
 
-export default axios.create({
+import axios from "axios";
+import { globalConfig } from "../../config";
+
+/**
+ * Axios instance for authenticated requests
+ * @constant authFetch
+ * @type {AxiosInstance}
+ *
+ *
+ * @example
+ * import { authFetch } from "../contexts/AuthFetch/AuthFetch";
+ *
+ * authFetch.get("/api/endpoint");
+ * authFetch.post("/api/endpoint", { data: "data" });
+ *
+ * @see {@link https://axios-http.com/docs/instance} for more information
+ *
+ */
+export const authFetch = axios.create({
   withCredentials: true,
-  baseURL: config.paths.home,
-  timeout: config.timeout,
+  baseURL: globalConfig.paths.home,
+  timeout: globalConfig.timeout,
 });

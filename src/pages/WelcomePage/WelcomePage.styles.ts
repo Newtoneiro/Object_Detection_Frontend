@@ -1,6 +1,13 @@
+/**
+ * @file WelcomePage.styles.tsx
+ * @description CSS styles for the WelcomePage component
+ */
 import { StyleSheet } from "react-native";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 
+/**
+ * Stylesheet for the Welcome Page.
+ */
 export const welcomePageStyles = StyleSheet.create({
   container: {
     position: "absolute",

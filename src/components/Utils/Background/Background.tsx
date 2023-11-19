@@ -1,15 +1,58 @@
+/**
+ * @file Background.tsx
+ * @description Background component.
+ */
+
 import { Image, SafeAreaView, StatusBar, View } from "react-native";
 
 import { IBackgroundProps } from "./Background.types";
 import { LinearGradient } from "expo-linear-gradient";
-import PressableIcon from "../PressableIcon/PressableIcon";
+import { PressableIcon } from "../PressableIcon";
 import { backgroundStyles } from "./Background.styles";
-import stylesConfig from "../../../config/config.styles";
+import { stylesConfig } from "../../../config";
 import { useEffect } from "react";
 
 const logo = "../../../../assets/logo.png";
 
-const Background = ({ children, handlePressFunction }: IBackgroundProps) => {
+/**
+ * @component
+ *
+ * Background component.
+ *
+ * @description
+ *
+ * This component is used to display a background with a logo and a button
+ * allowing user to return to the previous page.
+ *
+ * @param {IBackgroundProps} props - The props object.
+ * @param {JSX.Element} [props.children] - The children to be displayed.
+ * @param {Function} [props.handlePressFunction] - The function to be called when
+ * the button is pressed.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import Background from './Background';
+ *
+ * const SomeComponent = () => {
+ * return (
+ *   <>
+ *    <Background>
+ *      <Text>This is a background component.</Text>
+ *    </Background>
+ *   </>
+ *  );
+ * };
+ *
+ * @see {@link IBackgroundProps} for the props object.
+ * @see {@link backgroundStyles} for the style object.
+ */
+export const Background = ({
+  children,
+  handlePressFunction,
+}: IBackgroundProps) => {
   useEffect(() => {
     StatusBar.setTranslucent(true);
     StatusBar.setBarStyle("light-content");
@@ -49,5 +92,3 @@ const Background = ({ children, handlePressFunction }: IBackgroundProps) => {
     </SafeAreaView>
   );
 };
-
-export default Background;

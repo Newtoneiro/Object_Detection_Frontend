@@ -1,6 +1,14 @@
-import { StyleSheet } from "react-native";
-import stylesConfig from "../../../config/config.styles";
+/**
+ * @file AnimatedLoadingCard.styles.tsx
+ * @description AnimatedLoadingCard Stylesheet.
+ */
 
+import { StyleSheet } from "react-native";
+import { stylesConfig } from "../../../config";
+
+/**
+ * Stylesheet for the AnimatedLoadingCard component.
+ */
 export const animatedLoadingCardStyles = StyleSheet.create({
   modal: {
     position: "absolute",

@@ -1,22 +1,54 @@
+/**
+ * @file LiveCameraPage.tsx
+ * @description LiveCameraPage component.
+ */
 import { useContext, useEffect } from "react";
 
 import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
-import { View, Text } from "react-native";
 import { Camera } from "expo-camera";
-import { LiveCameraContext } from "../../contexts/LiveCameraContext/LiveCameraContext";
+import { Text, View } from "react-native";
+import { CameraButton } from "../../components/Utils/CameraButton";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { DetectedRectangle } from "../../components/Utils/DetectedRectangle";
+import { PressableIcon } from "../../components/Utils/PressableIcon";
+import { stylesConfig } from "../../config";
+import { LiveCameraContext } from "../../contexts/LiveCameraContext";
+import { OptionsContext } from "../../contexts/OptionsContext";
+import { PermissionsContext } from "../../contexts/PermissionsContext";
 import { liveCameraPageStyles } from "./LiveCameraPage.styles";
 import { LiveCameraPageProps } from "./LiveCameraPage.types";
-import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
-import CameraButton from "../../components/Utils/CameraButton/CameraButton";
-import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
-import stylesConfig from "../../config/config.styles";
-import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
-import { PermissionsContext } from "../../contexts/PermissionsContext/PermissionsContext";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
 
 const TensorCamera = cameraWithTensors(Camera);
 
-const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
+/**
+ * @component
+ *
+ * Live camera page component.
+ *
+ * @description
+ *
+ * This component displays the live camera and the in real time predictions.
+ *
+ * @param {LiveCameraPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LiveCameraPage } from './LiveCameraPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LiveCameraPage />
+ *  );
+ * };
+ *
+ * @see {@link LiveCameraPageProps} for the props object type.
+ * @see {@link liveCameraPageStyles} for the styles.
+ */
+export const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
   const LiveCameraCon = useContext(LiveCameraContext);
   const OptionsCon = useContext(OptionsContext);
   const PermissionsCon = useContext(PermissionsContext);
@@ -125,5 +157,3 @@ const LiveCameraPage = ({ navigation }: LiveCameraPageProps) => {
     <></>
   );
 };
-
-export default LiveCameraPage;

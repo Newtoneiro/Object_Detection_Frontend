@@ -1,6 +1,13 @@
+/**
+ * @file LiveCameraPage.styles.tsx
+ * @description CSS styles for the LiveCameraPage component
+ */
 import { StyleSheet } from "react-native";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 
+/**
+ * Stylesheet for the Live Camera Page.
+ */
 export const liveCameraPageStyles = StyleSheet.create({
   container: {
     position: "relative",

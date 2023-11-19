@@ -1,14 +1,19 @@
+/**
+ * @file LoginContext.tsx
+ * @description LoginContext component.
+ */
+import { createContext, useContext, useState } from "react";
 import {
   ILoginContext,
   IUserInputs,
   IUserInputsAlert,
 } from "./LoginContext.types";
-import { createContext, useContext, useState } from "react";
 
-import { AuthContext } from "../AuthContext/AuthContext";
-import { IProps } from "../../config/config.types";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
+import { IProps } from "../../config";
+import { LoginPage } from "../../pages/LoginPage/LoginPage";
+import { AuthContext } from "../AuthContext";
 import { validateEmail } from "../AuthContext/AuthContext.utils";
+import { LoadingContext } from "../LoadingContext";
 
 const defaultUserInputs = {
   email: "",
@@ -38,8 +43,60 @@ const defaultLoginContext: ILoginContext = {
   loginAnonymous: () => {},
 };
 
+/**
+ * @object
+ *
+ * Login context object.
+ *
+ * @description
+ *
+ * This context provides all the necessary functions and variables for handling
+ * login functionality. Mainly used on the {@link LoginPage} component.
+ *
+ * @example
+ * import { LoginContext } from "../contexts/LoginContext/LoginContext";
+ *
+ * const CameraPage = () => {
+ *  const LoginCon = useContext(LoginContext);
+ *
+ *  LoginContext.handleSubmitData();
+ *  return (...)
+ * };
+ *
+ * @see {@link ILoginContext} for more information on the context object
+ */
 const LoginContext = createContext<ILoginContext>(defaultLoginContext);
 
+/**
+ * @component
+ *
+ * Login provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link LoginContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LoginProvider } from './LoginProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LoginProvider>
+ *      <SomeOtherComponent />
+ *    </LoginProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link LoginContext} for the context object.
+ */
 const LoginProvider = ({ children }: IProps) => {
   const [isLoginMode, setIsLoginMode] = useState<Boolean>(true);
   const [userInputs, setUserInputs] = useState<IUserInputs>(defaultUserInputs);

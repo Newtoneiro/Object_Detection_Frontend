@@ -1,17 +1,49 @@
-import { DashboardPageProps, GridItemProp } from "./DashboardPage.types";
+/**
+ * @file DashboardPage.tsx
+ * @description DashboardPage component.
+ */
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { DashboardPageProps, GridItemProp } from "./DashboardPage.types";
 
-import { AuthContext } from "../../contexts/AuthContext/AuthContext";
-import Background from "../../components/Utils/Background/Background";
-import { ErrorContext } from "../../contexts/ErrorContext/ErrorContext";
 import { LinearGradient } from "expo-linear-gradient";
-import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
-import { dashboardPageStyles } from "./DashboardPage.styles";
-import stylesConfig from "../../config/config.styles";
 import { useContext } from "react";
+import { Background } from "../../components/Utils/Background";
+import { PressableIcon } from "../../components/Utils/PressableIcon";
+import { stylesConfig } from "../../config";
+import { AuthContext } from "../../contexts/AuthContext";
+import { ErrorContext } from "../../contexts/ErrorContext";
+import { dashboardPageStyles } from "./DashboardPage.styles";
 
-export default function DashboardPage({ navigation }: DashboardPageProps) {
+/**
+ * @component
+ *
+ * Dashboard page component.
+ *
+ * @description
+ *
+ * This component displays the dashboard page. It is used to navigate to other pages.
+ *
+ * @param {DashboardPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { DashboardPage } from './DashboardPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <DashboardPage />
+ *  );
+ * };
+ *
+ * @see {@link DashboardPageProps} for the props object type.
+ * @see {@link dashboardPageStyles} for the styles.
+ */
+export function DashboardPage({ navigation }: DashboardPageProps) {
   const AuthCon = useContext(AuthContext);
   const ErrorCon = useContext(ErrorContext);
 

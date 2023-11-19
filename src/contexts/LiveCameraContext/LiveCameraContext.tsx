@@ -1,33 +1,37 @@
+/**
+ * @file LiveCameraContext.tsx
+ * @description Context for live camera related functions
+ */
 import { createContext, useContext, useEffect, useState } from "react";
 
-import {
-  ILiveCameraContext,
-  ILiveCameraDimensions,
-  IPredictionVariables,
-} from "./LiveCameraContext.types";
-import { IProps } from "../../config/config.types";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
-import * as tfjs from "@tensorflow/tfjs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
+import * as tfjs from "@tensorflow/tfjs";
+import { Platform, useWindowDimensions } from "react-native";
 import {
   ICameraDimensions,
   IPrediction,
-} from "../CameraContext/CameraContext.types";
-import { Platform, useWindowDimensions } from "react-native";
+  IProps,
+  globalConfig,
+} from "../../config";
+import { LiveCameraPage } from "../../pages/LiveCameraPage/LiveCameraPage";
+import { authFetch } from "../AuthFetch";
 import { calculateHeightFromWidth } from "../CameraContext/CameraContext.utils";
-import { OptionsContext } from "../OptionsContext/OptionsContext";
+import { ErrorContext } from "../ErrorContext";
+import { LoadingContext } from "../LoadingContext";
+import { OptionsContext } from "../OptionsContext";
+import { PermissionsContext } from "../PermissionsContext";
+import {
+  ILiveCameraContext,
+  IPredictionVariables,
+} from "./LiveCameraContext.types";
 import {
   calculateDistance,
   getDateFromTimestamp,
   getTimestampFromDate,
 } from "./LiveCameraContext.utils";
-import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
-import authFetch from "../AuthFetch/AuthFetch";
-import config from "../../config/config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const defaultLiveCameraDimensions: ILiveCameraDimensions = {
+const defaultLiveCameraDimensions: ICameraDimensions = {
   width: 0,
   height: 0,
 };
@@ -43,10 +47,62 @@ const defaultLiveCameraContext: ILiveCameraContext = {
   modelLoaded: () => false,
 };
 
+/**
+ * @object
+ *
+ * Live camera context object.
+ *
+ * @description
+ *
+ * This context provides all the necessary functions and variables for handling
+ * live camera functionality. Mainly used in the {@link LiveCameraPage} component.
+ *
+ * @example
+ * import { LiveCameraContext } from "../contexts/LiveCameraContext/LiveCameraContext";
+ *
+ * const CameraPage = () => {
+ *  const LiveCameraCon = useContext(LiveCameraContext);
+ *
+ *  LiveCameraContext.prepareLiveCameraPage();
+ *  return (...)
+ * };
+ *
+ * @see {@link ILiveCameraContext} for more information on the context object
+ */
 const LiveCameraContext = createContext<ILiveCameraContext>(
   defaultLiveCameraContext
 );
 
+/**
+ * @component
+ *
+ * ForgotPassword provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link LiveCameraContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LiveCameraProvider } from './LiveCameraProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LiveCameraProvider>
+ *      <SomeOtherComponent />
+ *    </LiveCameraProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link LiveCameraContext} for the context object.
+ */
 const LiveCameraProvider = ({ children }: IProps) => {
   const [liveCameraDimensions, setLiveCameraDimensions] =
     useState<ICameraDimensions>(defaultLiveCameraDimensions);
@@ -218,7 +274,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
 
     const lastSaveDate = getDateFromTimestamp(lastSave);
     const timeDifference = new Date().getTime() - lastSaveDate.getTime();
-    if (!lastSave || timeDifference > config.timeBetweenTensorSaves) {
+    if (!lastSave || timeDifference > globalConfig.timeBetweenTensorSaves) {
       AsyncStorage.setItem("lastTensorSavedTimestamp", getTimestampFromDate());
       return true;
     }
@@ -230,7 +286,7 @@ const LiveCameraProvider = ({ children }: IProps) => {
     const tensor_array = tensor.arraySync();
 
     authFetch
-      .post(config.paths.object_detection + "/captureTensor", {
+      .post(globalConfig.paths.object_detection + "/captureTensor", {
         shape: tensor.shape,
         values: tensor_array,
       })
@@ -250,8 +306,8 @@ const LiveCameraProvider = ({ children }: IProps) => {
         // If something went wrong, retry in [RETRY] seconds
         let date_to_retry_in_5_seconds =
           new Date().getTime() - // Now
-          config.timeBetweenTensorSaves + // - Time between tensor saves (without the next line, the retry would occur immediately)
-          config.timeBetweenTensorSavesRetries; // + The retry timeout
+          globalConfig.timeBetweenTensorSaves + // - Time between tensor saves (without the next line, the retry would occur immediately)
+          globalConfig.timeBetweenTensorSavesRetries; // + The retry timeout
         AsyncStorage.setItem(
           "lastTensorSavedTimestamp",
           getTimestampFromDate(new Date(date_to_retry_in_5_seconds))

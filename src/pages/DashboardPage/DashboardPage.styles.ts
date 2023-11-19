@@ -1,6 +1,13 @@
+/**
+ * @file DashboardPage.styles.ts
+ * @description CSS styles for the DashboardPage component
+ */
 import { StyleSheet } from "react-native";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 
+/**
+ * Stylesheet for the Dashboard Page.
+ */
 export const dashboardPageStyles = StyleSheet.create({
   container: {
     width: "100%",

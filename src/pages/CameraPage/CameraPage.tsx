@@ -1,19 +1,52 @@
-import { Image, View, Text } from "react-native";
+/**
+ * @file CameraPage.tsx
+ * @description CameraPage component.
+ */
 import { useContext, useEffect, useState } from "react";
+import { Image, Text, View } from "react-native";
 
 import { Camera } from "expo-camera";
-import { CameraContext } from "../../contexts/CameraContext/CameraContext";
-import { CameraPageProps } from "./CameraPage.types";
-import DetectedRectangle from "../../components/Utils/DetectedRectangle/DetectedRectangle";
-import PressableIcon from "../../components/Utils/PressableIcon/PressableIcon";
+import { CameraButton } from "../../components/Utils/CameraButton";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { DetectedRectangle } from "../../components/Utils/DetectedRectangle";
+import { PressableIcon } from "../../components/Utils/PressableIcon";
+import { stylesConfig } from "../../config";
+import { CameraContext } from "../../contexts/CameraContext";
+import { OptionsContext } from "../../contexts/OptionsContext";
+import { PermissionsContext } from "../../contexts/PermissionsContext";
 import { cameraPageStyles } from "./CameraPage.styles";
-import stylesConfig from "../../config/config.styles";
-import CameraButton from "../../components/Utils/CameraButton/CameraButton";
-import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
-import { PermissionsContext } from "../../contexts/PermissionsContext/PermissionsContext";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
+import { CameraPageProps } from "./CameraPage.types";
 
-const CameraPage = ({ navigation }: CameraPageProps) => {
+/**
+ * @component
+ *
+ * Camera page component.
+ *
+ * @description
+ *
+ * This component displays the camera and the captured photo among with
+ * the predictions.
+ *
+ * @param {CameraPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { CameraPage } from './CameraPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <CameraPage />
+ *  );
+ * };
+ *
+ * @see {@link CameraPageProps} for the props object type.
+ * @see {@link cameraPageStyles} for the styles.
+ */
+export const CameraPage = ({ navigation }: CameraPageProps) => {
   const [focused, setFocused] = useState<boolean>(false);
 
   const CameraCon = useContext(CameraContext);
@@ -117,5 +150,3 @@ const CameraPage = ({ navigation }: CameraPageProps) => {
     <></>
   );
 };
-
-export default CameraPage;

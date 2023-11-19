@@ -1,3 +1,8 @@
+/**
+ * @file DetectedRectangle.tsx
+ * @description DetectedRectangle component.
+ */
+
 import { Text, View } from "react-native";
 
 import { detectedRectangleStyles } from "./DetectedRectangle.styles";
@@ -5,9 +10,52 @@ import { useState, useContext } from "react";
 import { IDetectedRectangleProps } from "./DetectedRectangle.types";
 import { LocationContext } from "../../../contexts/LocationContext/LocationContext";
 import { IDangerLevel } from "../../../contexts/LocationContext/LocationContext.types";
-import stylesConfig from "../../../config/config.styles";
+import { stylesConfig } from "../../../config";
 
-const DetectedRectangle = ({
+/**
+ * @component
+ *
+ * DetectedRectangle component.
+ *
+ * @description
+ *
+ * This component is used to display a rectangle around a detected object.
+ *
+ * @param {IDetectedRectangleProps} props - The props object.
+ * @param {IPrediction} props.prediction - The prediction object.
+ * @param {boolean} [props.showDynamicDistance=false] - The toggle state of the
+ *  distance display. If true, the distance will be displayed dynamically.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { DetectedRectangle } from './DetectedRectangle';
+ *
+ * const SomeComponent = () => {
+ *    return (
+ *      <>
+ *        <DetectedRectangle
+ *          prediction={{
+ *          name: "person",
+ *          confidence: 0.9,
+ *          box: {
+ *            x: 100,
+ *            y: 100,
+ *            width: 100,
+ *            height: 100,
+ *          },
+ *        }}
+ *      />
+ *    </>
+ *  );
+ * };
+ *
+ * @see {@link IDetectedRectangleProps} for the props object.
+ * @see {@link detectedRectangleStyles} for the style object.
+ */
+export const DetectedRectangle = ({
   prediction,
   showDynamicDistance = false,
 }: IDetectedRectangleProps) => {
@@ -61,5 +109,3 @@ const DetectedRectangle = ({
     </View>
   );
 };
-
-export default DetectedRectangle;

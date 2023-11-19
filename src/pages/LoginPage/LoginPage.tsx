@@ -1,18 +1,50 @@
+/**
+ * @file LoginPage.tsx
+ * @description LoginPage component.
+ */
 import { Pressable, Text, View } from "react-native";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useContext } from "react";
-import AlertField from "../../components/Utils/AlertField/AlertField";
-import Background from "../../components/Utils/Background/Background";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
-import GradientButton from "../../components/Utils/GradientButton/GradientButton";
-import UserInput from "../../components/Utils/UserInput/UserInput";
-import stylesConfig from "../../config/config.styles";
-import { LoginContext } from "../../contexts/LoginContext/LoginContext";
+import { AlertField } from "../../components/Utils/AlertField";
+import { Background } from "../../components/Utils/Background";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { GradientButton } from "../../components/Utils/GradientButton";
+import { UserInput } from "../../components/Utils/UserInput";
+import { stylesConfig } from "../../config";
+import { LoginContext } from "../../contexts/LoginContext";
 import { loginPageStyles } from "./LoginPage.styles";
 import { LoginPageProps } from "./LoginPage.types";
 
-const LoginPage = ({ navigation }: LoginPageProps) => {
+/**
+ * @component
+ *
+ * Login page component.
+ *
+ * @description
+ *
+ * This component displays the login page. It is used to login or register the user.
+ *
+ * @param {LoginPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { LoginPage } from './LoginPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <LoginPage />
+ *  );
+ * };
+ *
+ * @see {@link LoginPageProps} for the props object type.
+ * @see {@link loginPageStyles} for the styles.
+ */
+export const LoginPage = ({ navigation }: LoginPageProps) => {
   const LoginCon = useContext(LoginContext);
 
   return (
@@ -124,5 +156,3 @@ const LoginPage = ({ navigation }: LoginPageProps) => {
     </Background>
   );
 };
-
-export default LoginPage;

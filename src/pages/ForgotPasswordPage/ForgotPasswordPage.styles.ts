@@ -1,6 +1,13 @@
+/**
+ * @file ForgotPasswordPage.styles.ts
+ * @description CSS styles for the ForgotPasswordPage component
+ */
 import { StyleSheet } from "react-native";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 
+/**
+ * Stylesheet for the Forgot Password Page.
+ */
 export const forgotPasswordPageStyles = StyleSheet.create({
   container: {
     width: "100%",

@@ -1,5 +1,17 @@
-import { IProps } from "../../../config/config.types";
+/**
+ * @file Background.types.ts
+ * @description Background Typescript Type Definitions.
+ */
 
-export type IBackgroundProps = IProps & {
+import { IProps } from "../../../config";
+
+/**
+ * Represents the props for the Background component.
+ * @interface IBackgroundProps
+ * @exports IBackgroundProps
+ *
+ * @property {null | (() => void)} handlePressFunction - The function to call when the return button is pressed.
+ */
+export interface IBackgroundProps extends IProps {
   handlePressFunction: null | (() => void);
-};
+}

@@ -1,21 +1,24 @@
+/**
+ * @file AuthContext.tsx
+ * @description Context that provides authentication state and authentication related functions.
+ */
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   IAuthContext,
   IAuthState,
   IFirebaseError,
-  IRegisterData,
+  IUserInputData,
   IUserInfo,
 } from "./AuthContext.types";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { createContext, useContext, useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import authFetch from "../AuthFetch/AuthFetch";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { IProps } from "../../config/config.types";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
 import axios from "axios";
-import config from "../../config/config";
+import { IProps, globalConfig } from "../../config";
+import { authFetch } from "../AuthFetch";
+import { ErrorContext } from "../ErrorContext";
+import { LoadingContext } from "../LoadingContext";
 
 const defaultAuthContext: IAuthContext = {
   authState: {
@@ -32,8 +35,60 @@ const defaultAuthContext: IAuthContext = {
   resetPassword: (_) => null,
 };
 
+/**
+ * @object
+ *
+ * Authentication context Object.
+ *
+ * @description
+ *
+ * This context provides authentication state and authentication related functions.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React, { useContext } from 'react';
+ * import { AuthContext } from './AuthContext';
+ *
+ * const SomeComponent = () => {
+ *  const AuthCon = useContext(AuthContext);
+ *  return (...)
+ * };
+ *
+ * @see {@link IAuthContext} for more information on the context object.
+ *
+ */
 const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 
+/**
+ * @component
+ *
+ * Authentication provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link AuthContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { AuthProvider } from './AuthProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <AuthProvider>
+ *      <SomeOtherComponent />
+ *    </AuthProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link AuthContext} for the context object.
+ */
 const AuthProvider = ({ children }: IProps) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
@@ -64,9 +119,12 @@ const AuthProvider = ({ children }: IProps) => {
       LoadingCon.setLoadingCardText("Logging you in");
       if (authState.token) {
         await axios
-          .post(config.paths.home + config.paths.auth + "/verifyToken", {
-            token: authState.token,
-          })
+          .post(
+            globalConfig.paths.home + globalConfig.paths.auth + "/verifyToken",
+            {
+              token: authState.token,
+            }
+          )
           .then((response) => {
             if (response.status === 200) {
               setIsAuthenticated(true);
@@ -190,7 +248,7 @@ const AuthProvider = ({ children }: IProps) => {
     LoadingCon.setDisplayLoadingCard(false);
   };
 
-  const register = async ({ email, password }: IRegisterData) => {
+  const register = async ({ email, password }: IUserInputData) => {
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
@@ -211,7 +269,7 @@ const AuthProvider = ({ children }: IProps) => {
     }
   };
 
-  const login = async ({ email, password }: IRegisterData) => {
+  const login = async ({ email, password }: IUserInputData) => {
     try {
       await auth()
         .signInWithEmailAndPassword(email, password)

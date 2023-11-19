@@ -1,6 +1,13 @@
+/**
+ * @file CameraPage.styles.tsx
+ * @description CSS styles for the CameraPage component
+ */
 import { StyleSheet } from "react-native";
-import stylesConfig from "../../config/config.styles";
+import { stylesConfig } from "../../config";
 
+/**
+ * Stylesheet for the Camera Page.
+ */
 export const cameraPageStyles = StyleSheet.create({
   container: {
     position: "relative",

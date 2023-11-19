@@ -1,4 +1,16 @@
-const averageHeights: Object = {
+/**
+ * @file averageHeights.ts
+ * @description averageHeights Typescript Type Definitions.
+ * It holds the average heights of the objects
+ * used to estimate the distance based on the live camera footage.
+ *
+ */
+
+/**
+ * Represents the average heights of the objects
+ * used to estimate the distance based on the live camera footage.
+ */
+export const averageHeights: Object = {
   person: 1.7,
   bicycle: 1.0,
   car: 1.5,
@@ -80,5 +92,3 @@ const averageHeights: Object = {
   "hair drier": 0.2,
   toothbrush: 0.1,
 };
-
-export default averageHeights;

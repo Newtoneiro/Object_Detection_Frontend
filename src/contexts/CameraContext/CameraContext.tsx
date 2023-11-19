@@ -1,23 +1,22 @@
+/**
+ * @file CameraContext.tsx
+ * @description Context for camera related functions
+ */
 import { Camera, CameraType } from "expo-camera";
 import { FlipType, SaveFormat, manipulateAsync } from "expo-image-manipulator";
-import {
-  ICameraContext,
-  ICameraDimensions,
-  IPrediction,
-  IPredictionResponse,
-} from "./CameraContext.types";
 import { createContext, useContext, useEffect, useState } from "react";
+import { ICameraDimensions, IPrediction } from "../../config";
+import { ICameraContext, IPredictionResponse } from "./CameraContext.types";
 
-import authFetch from "../AuthFetch/AuthFetch";
-import { ErrorContext } from "../ErrorContext/ErrorContext";
-import { IProps } from "../../config/config.types";
-import { LoadingContext } from "../LoadingContext/LoadingContext";
-import { calculateHeightFromWidth } from "./CameraContext.utils";
-import config from "../../config/config";
 import { useWindowDimensions } from "react-native";
-import { OptionsContext } from "../OptionsContext/OptionsContext";
-import { ICameraOptions } from "../OptionsContext/OptionsContext.types";
-import { PermissionsContext } from "../PermissionsContext/PermissionsContext";
+import { IProps, globalConfig } from "../../config";
+import { CameraPage } from "../../pages/CameraPage/CameraPage";
+import { authFetch } from "../AuthFetch";
+import { ErrorContext } from "../ErrorContext";
+import { LoadingContext } from "../LoadingContext";
+import { ICameraOptions, OptionsContext } from "../OptionsContext";
+import { PermissionsContext } from "../PermissionsContext";
+import { calculateHeightFromWidth } from "./CameraContext.utils";
 
 const defaultCameraDimensions: ICameraDimensions = {
   width: 0,
@@ -35,8 +34,59 @@ const defaultCameraContext: ICameraContext = {
   resetCamera: () => {},
 };
 
+/**
+ * @object
+ *
+ * Camera context object.
+ *
+ * @description
+ *
+ * This context provides all the necessary functions and variables for the camera
+ * used on the {@link CameraPage}.
+ *
+ * @example
+ * import { CameraContext } from "../contexts/CameraContext/CameraContext";
+ *
+ * const CameraPage = () => {
+ *  const CameraCon = useContext(CameraContext);
+ *
+ *  return (...)
+ * };
+ *
+ * @see {@link ICameraContext} for more information on the context object
+ */
 const CameraContext = createContext<ICameraContext>(defaultCameraContext);
 
+/**
+ * @component
+ *
+ * Camera provider component.
+ *
+ * @description
+ *
+ * This component provides the {@link CameraContext} to all its children.
+ *
+ * @param {IProps} props - The props object.
+ * @param {JSX.Element} props.children - The children of the component.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { CameraProvider } from './CameraProvider';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <CameraProvider>
+ *      <SomeOtherComponent />
+ *    </CameraProvider>
+ *  );
+ * };
+ *
+ * @see {@link IProps} for the props object.
+ * @see {@link CameraContext} for the context object.
+ */
 const CameraProvider = ({ children }: IProps) => {
   // Camera related
   const [cameraRef, setCameraRef] = useState<Camera | null>(null);
@@ -108,7 +158,7 @@ const CameraProvider = ({ children }: IProps) => {
         }
 
         await authFetch
-          .post(config.paths.object_detection + "/capturePhoto", {
+          .post(globalConfig.paths.object_detection + "/capturePhoto", {
             file: photo.base64,
             doSave: OptionsCon.serverOptions.savePhoto,
           })

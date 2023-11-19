@@ -1,12 +1,16 @@
+/**
+ * @file SettingsPage.tsx
+ * @description SettingsPage component.
+ */
 import { ScrollView, Text } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { CameraType } from "expo-camera";
 import { useContext } from "react";
-import Background from "../../components/Utils/Background/Background";
-import CrossedFooter from "../../components/Utils/CrossedFooter/CrossedFooter";
-import Setting from "../../components/Utils/Setting/Setting";
-import stylesConfig from "../../config/config.styles";
+import { Background } from "../../components/Utils/Background";
+import { CrossedFooter } from "../../components/Utils/CrossedFooter";
+import { Setting } from "../../components/Utils/Setting";
+import { stylesConfig } from "../../config";
 import {
   FrameRate,
   Quality,
@@ -15,11 +19,39 @@ import {
   possibleQualities,
   possibleRatios,
 } from "../../config/config.types";
-import { OptionsContext } from "../../contexts/OptionsContext/OptionsContext";
+import { OptionsContext } from "../../contexts/OptionsContext";
 import { settingsPageStyles } from "./SettingsPage.styles";
 import { SettingsPageProps } from "./SettingsPage.types";
 
-const SettingsPage = ({ navigation }: SettingsPageProps) => {
+/**
+ * @component
+ *
+ * Settings page component.
+ *
+ * @description
+ *
+ * This component displays the settings page. It is used to change the settings.
+ *
+ * @param {SettingsPageProps} props - The props object.
+ * @param {import("react-navigation").NavigationProp<import("react-navigation").NavigationState>} props.navigation - The navigation prop.
+ *
+ * @returns {JSX.Element} Rendered component.
+ *
+ * @example
+ * // Usage within another component or file:
+ * import React from 'react';
+ * import { SettingsPage } from './SettingsPage';
+ *
+ * const SomeComponent = () => {
+ *  return (
+ *    <SettingsPage />
+ *  );
+ * };
+ *
+ * @see {@link SettingsPageProps} for the props object type.
+ * @see {@link settingsPageStyles} for the styles.
+ */
+export const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const OptionsCon = useContext(OptionsContext);
 
   return (
@@ -143,5 +175,3 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     </Background>
   );
 };
-
-export default SettingsPage;

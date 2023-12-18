@@ -1,15 +1,22 @@
 import React from "react";
 import { createRenderer } from "react-test-renderer/shallow";
-import { DashboardPage } from "../../src/pages/DashboardPage";
+import {
+  DashboardPage,
+  dashboardPageStyles,
+} from "../../src/pages/DashboardPage";
 import { when } from "jest-when";
 import { IAuthContext } from "../../src/contexts/AuthContext";
 import { ErrorContext, IErrorContext } from "../../src/contexts/ErrorContext";
 import { Image } from "react-native";
 import { AuthContext } from "../../src/contexts/AuthContext";
 import { FontAwesome } from "@expo/vector-icons";
+import renderer, { ReactTestRendererJSON } from "react-test-renderer";
 
 let realUseContext: any;
 let useContextMock: any;
+
+const protectedPages = ["Your stats", "Live mode", "Friends"];
+const unProtectedPages = ["Picture mode"];
 
 let mockAuthContest: IAuthContext = {
   isAuthenticated: true,
@@ -45,6 +52,10 @@ describe("[page] DashboardPage", () => {
   beforeEach(() => {
     realUseContext = React.useContext;
     useContextMock = React.useContext = jest.fn();
+
+    when(useContextMock)
+      .calledWith(AuthContext)
+      .mockReturnValue(mockAuthContest);
 
     when(useContextMock)
       .calledWith(ErrorContext)
@@ -95,5 +106,77 @@ describe("[page] DashboardPage", () => {
         .props.children;
     expect(image.type).toBe(FontAwesome);
     expect(image.props.name).toEqual("user-circle");
+  });
+
+  it("Some panels are protected", () => {
+    let props: any; // To mock navigation prop
+
+    const tree: any = createRenderer().render(<DashboardPage {...props} />);
+    const gridItems = tree.props.children.props.children[1].props.children;
+
+    gridItems.forEach((gridItem: any) => {
+      if (protectedPages.includes(gridItem.props.name)) {
+        expect(gridItem.props.isProtected).toBe(true);
+      } else if (unProtectedPages.includes(gridItem.props.name)) {
+        expect(gridItem.props.isProtected).toBe(false);
+      }
+    });
+  });
+
+  it("Allows panels if user is not anonymous", () => {
+    when(useContextMock)
+      .calledWith(AuthContext)
+      .mockReturnValue({
+        ...mockAuthContest,
+        authState: {
+          ...mockAuthContest.authState,
+          userInfo: {
+            ...mockAuthContest.authState.userInfo,
+            isAnonymous: false,
+          },
+        },
+      });
+
+    let props: any; // To mock navigation prop
+
+    const tree = renderer
+      .create(<DashboardPage {...props} />)
+      .toJSON() as ReactTestRendererJSON;
+    // @ts-ignore
+    let gridItems = tree?.children[3].children[1].children[0].children;
+    gridItems.forEach((gridItem: any) => {
+      expect(gridItem.children.length).toBe(2);
+    });
+  });
+
+  it("Doesn't allow some panels if user is anonymous", () => {
+    when(useContextMock)
+      .calledWith(AuthContext)
+      .mockReturnValue({
+        ...mockAuthContest,
+        authState: {
+          ...mockAuthContest.authState,
+          userInfo: {
+            ...mockAuthContest.authState.userInfo,
+            isAnonymous: true,
+          },
+        },
+      });
+
+    let props: any; // To mock navigation prop
+
+    const tree = renderer
+      .create(<DashboardPage {...props} />)
+      .toJSON() as ReactTestRendererJSON;
+    // @ts-ignore
+    let gridItems = tree?.children[3].children[1].children[0];
+    gridItems.children.forEach((gridItem: any) => {
+      let name = gridItem.children[gridItem.children.length - 1].children[0]; // Get the Text
+      if (protectedPages.includes(name)) {
+        expect(gridItem.children.length).toBe(3); // Verify the blurring view is there
+      } else if (unProtectedPages.includes(name)) {
+        expect(gridItem.children.length).toBe(2);
+      }
+    });
   });
 });

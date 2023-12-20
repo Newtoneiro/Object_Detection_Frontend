@@ -279,7 +279,6 @@ const AuthProvider = ({ children }: IProps) => {
       return { success: true, message: "Login successfull." };
     } catch (error: IFirebaseError | any) {
       let message = "Something went wrong.";
-      console.log(error.code);
       switch (error.code) {
         case "auth/user-not-found":
           message = "No such user exists.";

@@ -3,56 +3,94 @@ import renderer, { act } from "react-test-renderer";
 import { AuthProvider } from "../../../src/contexts/AuthContext";
 import { AuthContext } from "../../../src/contexts/AuthContext";
 import AsyncStorage from "../../__mocks__/@react-native-async-storage/async-storage";
-import auth from "../../__mocks__/@react-native-firebase/auth";
 import { when } from "jest-when";
+import { queryText } from "../../jest.utils";
+import axios from "axios";
+import { globalConfig } from "../../../src/config";
 
-jest.mock("@react-native-firebase/auth");
+jest.mock("axios");
 
-describe("[context] AuthContext - first time login", () => {
-  beforeAll(() => {
-    when(AsyncStorage.getItem).calledWith("token").mockResolvedValue(null);
-    when(AsyncStorage.getItem).calledWith("userInfo").mockResolvedValue(null);
-  });
+const MOCK_TOKEN = "8fhaf721418as174ad";
+const MOCK_USER_INFO = {
+  email: "a@b.c",
+  name: "abc",
+  uid: "123",
+  picture: null,
+  isAnonymous: false,
+  isByGoogleAuth: true,
+};
 
-  afterAll(() => {
-    AsyncStorage.getItem.mockClear();
-  });
+describe("[context] AuthContext", () => {
+  describe("First Time login", () => {
+    beforeAll(() => {
+      when(AsyncStorage.getItem).calledWith("token").mockResolvedValue(null);
+      when(AsyncStorage.getItem).calledWith("userInfo").mockResolvedValue(null);
+    });
 
-  it("Renders", () => {
-    const TestComponent = () => {
-      const AuthCon = React.useContext(AuthContext);
-      expect(AuthCon).toBeDefined();
-      expect(AuthCon.isAuthenticated).toBeFalsy();
-      expect(AuthCon.authState.token).toBeNull();
-      expect(AuthCon.authState.userInfo).toBeNull();
+    it("Renders", async () => {
+      let tree;
 
-      return <></>;
-    };
-
-    const tree = renderer.create(
-      <AuthProvider>
-        <TestComponent />
-      </AuthProvider>
-    );
-  });
-
-  xit("Logs in", () => {
-    when(auth.auth.signInWithEmailAndPassword)
-      .calledWith("email", "password")
-      .mockImplementationOnce(() => {
-        console.log("mocked");
+      await act(async () => {
+        tree = renderer.create(
+          <AuthProvider>
+            <AuthContext.Consumer>
+              {(value) => (
+                <span>
+                  {`Is authenticated: ${value.isAuthenticated?.toString()}`}
+                </span>
+              )}
+            </AuthContext.Consumer>
+          </AuthProvider>
+        );
       });
 
-    const TestComponent = () => {
-      const AuthCon = React.useContext(AuthContext);
+      if (!tree) throw new Error("Tree is null");
 
-      return <></>;
-    };
+      expect(queryText(tree, "Is authenticated: false").length).toBe(1);
+    });
+  });
 
-    const tree = renderer.create(
-      <AuthProvider>
-        <TestComponent />
-      </AuthProvider>
-    );
+  describe("Data in Local Storage", () => {
+    beforeAll(() => {
+      when(AsyncStorage.getItem)
+        .calledWith("token")
+        .mockResolvedValue(MOCK_TOKEN);
+      when(AsyncStorage.getItem)
+        .calledWith("userInfo")
+        .mockResolvedValue(JSON.stringify(MOCK_USER_INFO));
+
+      when(axios.post)
+        .calledWith(
+          globalConfig.paths.home + globalConfig.paths.auth + "/verifyToken",
+          {
+            token: MOCK_TOKEN,
+          }
+        )
+        .mockResolvedValue({
+          status: 200,
+        });
+    });
+
+    it("Renders", async () => {
+      let tree;
+
+      await act(async () => {
+        tree = renderer.create(
+          <AuthProvider>
+            <AuthContext.Consumer>
+              {(value) => (
+                <span>
+                  {`Is authenticated: ${value.isAuthenticated?.toString()}`}
+                </span>
+              )}
+            </AuthContext.Consumer>
+          </AuthProvider>
+        );
+      });
+
+      if (!tree) throw new Error("Tree is null");
+
+      expect(queryText(tree, "Is authenticated: true").length).toBe(1);
+    });
   });
 });

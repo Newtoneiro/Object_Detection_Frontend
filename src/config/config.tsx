@@ -22,7 +22,7 @@
  */
 export const config = {
   paths: {
-    home: "http://192.168.235.5:8888",
+    home: "http://192.168.70.87:8888",
     auth: "/auth",
     object_detection: "/objectDetection",
   },

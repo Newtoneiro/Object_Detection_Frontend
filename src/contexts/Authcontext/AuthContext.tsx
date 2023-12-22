@@ -252,8 +252,8 @@ const AuthProvider = ({ children }: IProps) => {
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((userCredentials) => {
-          updateUserToken(userCredentials);
+        .then(async (userCredentials) => {
+          await updateUserToken(userCredentials);
         });
 
       return { success: true, message: "Register successfull." };
@@ -273,8 +273,8 @@ const AuthProvider = ({ children }: IProps) => {
     try {
       await auth()
         .signInWithEmailAndPassword(email, password)
-        .then((userCredentials) => {
-          updateUserToken(userCredentials);
+        .then(async (userCredentials) => {
+          await updateUserToken(userCredentials);
         });
       return { success: true, message: "Login successfull." };
     } catch (error: IFirebaseError | any) {
@@ -312,12 +312,13 @@ const AuthProvider = ({ children }: IProps) => {
       // Sign-in the user with the credential
       await auth()
         .signInWithCredential(googleCredential)
-        .then((userCredentials) => {
-          updateUserToken(userCredentials);
+        .then(async (userCredentials) => {
+          await updateUserToken(userCredentials);
         });
 
       return { success: true, message: "Login successfull." };
     } catch (error: any) {
+      console.log(error);
       return { success: true, message: "Something went wrong." };
     }
   };

@@ -1,16 +1,15 @@
+import axios from "axios";
+import { when } from "jest-when";
 import React from "react";
 import renderer, { ReactTestRenderer, act } from "react-test-renderer";
-import { AuthProvider } from "../../../src/contexts/AuthContext";
-import { AuthContext } from "../../../src/contexts/AuthContext";
-import AsyncStorage from "../../__mocks__/@react-native-async-storage/async-storage";
-import { when } from "jest-when";
-import { queryText } from "../../jest.utils";
-import axios from "axios";
 import { globalConfig } from "../../../src/config";
+import { AuthContext, AuthProvider } from "../../../src/contexts/AuthContext";
 import { IUserInputData } from "../../../src/contexts/AuthContext/AuthContext.types";
+import { LoadingContext } from "../../../src/contexts/LoadingContext";
+import AsyncStorage from "../../__mocks__/@react-native-async-storage/async-storage";
 import auth from "../../__mocks__/@react-native-firebase/auth";
 import { GoogleSignin } from "../../__mocks__/@react-native-google-signin/google-signin";
-import { LoadingContext } from "../../../src/contexts/LoadingContext";
+import { queryText } from "../../jest.utils";
 
 jest.mock("axios");
 

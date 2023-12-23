@@ -87,7 +87,7 @@ const PermissionsProvider = ({ children }: IProps) => {
 
   const handleRequestCameraPermission = async () => {
     const response = await requestCameraPermission();
-    if (!response.canAskAgain) {
+    if (!response?.canAskAgain) {
       ErrorCon.displayError(
         "Can not ask for camera permissions. Please provide the permission manually."
       );
@@ -96,7 +96,7 @@ const PermissionsProvider = ({ children }: IProps) => {
 
   const handleRequestLocationPermission = async () => {
     const response = await requestLocationPermission();
-    if (!response.canAskAgain) {
+    if (!response?.canAskAgain) {
       ErrorCon.displayError(
         "Can not ask for location permissions. Please provide the permission manually."
       );

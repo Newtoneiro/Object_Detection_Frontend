@@ -3,7 +3,7 @@
  * @description Background component.
  */
 
-import { Image, SafeAreaView, StatusBar, View } from "react-native";
+import { Image, Platform, SafeAreaView, StatusBar, View } from "react-native";
 
 import { IBackgroundProps } from "./Background.types";
 import { LinearGradient } from "expo-linear-gradient";
@@ -54,7 +54,9 @@ export const Background = ({
   handlePressFunction,
 }: IBackgroundProps) => {
   useEffect(() => {
-    StatusBar.setTranslucent(true);
+    if (Platform.OS === "android") {
+      StatusBar.setTranslucent(true);
+    }
     StatusBar.setBarStyle("light-content");
   }, []);
 

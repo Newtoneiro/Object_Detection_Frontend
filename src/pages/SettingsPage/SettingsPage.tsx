@@ -110,7 +110,7 @@ export const SettingsPage = ({ navigation }: SettingsPageProps) => {
         </CrossedFooter>
         <Setting<FrameRate>
           value={OptionsCon.liveCameraOptions.frameRate}
-          name={`predict every [${OptionsCon.liveCameraOptions.frameRate}] frames`}
+          name={`Frames / Prediction`}
           possibleValues={possibleFrameRates}
           handleChangeValue={(newFrameRate: FrameRate) =>
             OptionsCon.setLiveCameraOptions({

@@ -14,5 +14,5 @@ const emailRegex =
  * @returns {boolean} - The flag indicating if the email is valid.
  */
 export const validateEmail = (email: string): boolean => {
-  return String(email).toLowerCase().match(emailRegex) == null;
+  return String(email).toLowerCase().match(emailRegex) != null;
 };

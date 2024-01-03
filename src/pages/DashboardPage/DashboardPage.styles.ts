@@ -102,7 +102,7 @@ export const dashboardPageStyles = StyleSheet.create({
   widgetGridItem: {
     position: "relative",
     width: "48%",
-    height: 180,
+    height: 150,
 
     display: "flex",
     alignItems: "center",

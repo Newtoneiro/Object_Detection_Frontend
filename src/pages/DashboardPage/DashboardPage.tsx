@@ -144,6 +144,7 @@ export function DashboardPage({ navigation }: DashboardPageProps) {
             name="Picture mode"
             icon="camera-alt"
             iconColor="#de0030"
+            isProtected={false}
           />
           <DashboardGridItem
             page="CameraPage"

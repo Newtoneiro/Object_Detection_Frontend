@@ -1,10 +1,15 @@
 import React from "react";
-import renderer, { ReactTestRendererJSON } from "react-test-renderer";
+import renderer, { ReactTestRenderer, act } from "react-test-renderer";
 import { App } from "../src/App";
 
 describe("App component", () => {
-  it("has 1 child", () => {
-    const tree = renderer.create(<App />).toJSON() as ReactTestRendererJSON;
-    expect(tree?.children?.length).toBe(1);
+  it("renders correctly", async () => {
+    let component: ReactTestRenderer;
+
+    await act(async () => {
+      component = renderer.create(<App />);
+    });
+
+    expect(component!.root.children.length).toBe(1);
   });
 });

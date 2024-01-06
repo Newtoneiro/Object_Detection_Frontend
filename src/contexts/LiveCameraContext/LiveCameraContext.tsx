@@ -220,7 +220,6 @@ const LiveCameraProvider = ({ children }: IProps) => {
       console.warn = () => {}; // Because of outdated libraries (to silence tf.nonMaxSuppression() in webgl locks the UI thread. Call tf.nonMaxSuppressionAsync() instead)
       model?.detect(tensor).then(async (predictions) => {
         const new_predictions: IPrediction[] = [];
-
         predictions.forEach((prediction) => {
           const [x, y, width, height] = prediction.bbox;
 

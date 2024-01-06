@@ -146,7 +146,7 @@ export const SettingsPage = ({ navigation }: SettingsPageProps) => {
         />
         <Setting<boolean>
           value={OptionsCon.liveCameraOptions.showDynamicDistance}
-          name="show distance warning"
+          name="distance warning"
           possibleValues={[true, false]}
           handleChangeValue={(newShowWarning: boolean) =>
             OptionsCon.setLiveCameraOptions({

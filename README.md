@@ -7,6 +7,7 @@ Welcome to the Object Detection frontend app! This React Native Expo application
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Build and Installation](#build-and-installation)
 - [Running the Application](#running-the-application)
 - [License](#license)
 - [Contributing](#contributing)
@@ -83,6 +84,40 @@ Before you begin, make sure you have the following prerequisites installed on yo
      SERVER_API_ADDRESS=YOUR_SERVER_API_ADDRESS
      SERVER_API_PORT=YOUR_SERVER_API_PORT
      ```
+
+## Build and Installation
+
+1. **Build the Expo App:**
+
+   ```bash
+   npm run build-dev
+   ```
+
+2. Follow the On-Screen Instructions:
+
+- During the build process, Expo will prompt you to choose a build type (e.g., development, production). Select the appropriate option.
+
+3. Wait for the Build to Complete:
+
+- Expo will take some time to build your app. It will provide you with a build ID, which you can use to check the build status.
+
+4. Download the APK (Android) or IPA (iOS):
+
+- Follow the provided link to download the generated APK file (for Android) or IPA file (for iOS).
+
+5. Install on an Emulator or Physical Device:
+
+- For Android, you can install the APK on an emulator or a physical device by running:
+
+  ```bash
+  adb install path/to/your/app.apk
+  ```
+
+  Make sure that you have the Android Debug Bridge (ADB) installed on your machine.
+
+- For iOS, you can use Xcode to install the app on an emulator or a physical device. Open the .xcworkspace file in the ios directory with Xcode, select your target device, and click the "Run" button.
+
+- Alternatively, you can use the Expo Client app on your physical device to scan the QR code provided during the build process. This will install and run the app on your device over the network.
 
 ## Running the Application
 
